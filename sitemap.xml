@@ -2,7 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>https://spindriftks.github.io/about/index.html</loc>
+    <loc>https://spindriftks.github.io/2020/12/25/python%E6%97%B6%E5%8C%BA%E7%9B%B8%E5%85%B3/</loc>
     
     <lastmod>2020-12-25</lastmod>
     
@@ -10,6 +10,20 @@
   
   <url>
     <loc>https://spindriftks.github.io/tags/index.html</loc>
+    
+    <lastmod>2020-12-25</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://spindriftks.github.io/categories/index.html</loc>
+    
+    <lastmod>2020-12-25</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://spindriftks.github.io/about/index.html</loc>
     
     <lastmod>2020-12-25</lastmod>
     
