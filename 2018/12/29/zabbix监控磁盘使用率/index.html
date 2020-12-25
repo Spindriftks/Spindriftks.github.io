@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <!--[if lt IE 9]>
+        <style>body {display: none; background: none !important} </style>
+        <meta http-equiv="Refresh" Content="0; url=//outdatedbrowser.com/" />
+    <![endif]-->
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="format-detection" content="telephone=no" />
+<meta name="author" content="Kyle" />
+
+
+
+<meta name="description" content="zabbix各种键值">
+<meta property="og:type" content="article">
+<meta property="og:title" content="zabbix监控磁盘使用率">
+<meta property="og:url" content="https://spindriftks.github.io/2018/12/29/zabbix%E7%9B%91%E6%8E%A7%E7%A3%81%E7%9B%98%E4%BD%BF%E7%94%A8%E7%8E%87/index.html">
+<meta property="og:site_name" content="简洁的时光">
+<meta property="og:description" content="zabbix各种键值">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2018-12-28T19:38:48.000Z">
+<meta property="article:modified_time" content="2020-12-21T06:39:15.098Z">
+<meta property="article:author" content="Kyle">
+<meta property="article:tag" content="zabbix3.4">
+<meta name="twitter:card" content="summary">
+
+<link rel="apple-touch-icon" href= "/apple-touch-icon.png">
+
+
+    <link rel="alternate" href="/atom.xml" title="简洁的时光" type="application/atom+xml">
+
+
+
+    <link rel="shortcut icon" href="/Snow.png">
+
+
+
+    <link href="//cdn.bootcss.com/animate.css/3.5.1/animate.min.css" rel="stylesheet">
+
+
+
+    <link href="//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.css" rel="stylesheet">
+
+
+
+    <script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+    <link href="//cdn.bootcss.com/pace/1.0.2/themes/blue/pace-theme-minimal.css" rel="stylesheet">
+
+
+
+<link rel="stylesheet" href="/css/style.css">
+
+
+
+
+<link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+
+
+<title>zabbix监控磁盘使用率 | 简洁的时光</title>
+
+<script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+
+<script>
+    var yiliaConfig = {
+        fancybox: true,
+        animate: true,
+        isHome: false,
+        isPost: true,
+        isArchive: false,
+        isTag: false,
+        isCategory: false,
+        fancybox_js: "//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.js",
+        scrollreveal: "//cdn.bootcss.com/scrollReveal.js/3.1.4/scrollreveal.min.js",
+        search: true
+    }
+</script>
+
+
+    <script> yiliaConfig.jquery_ui = [false]; </script>
+
+
+
+    <script> yiliaConfig.rootUrl = "\/";</script>
+
+
+
+
+
+
+<meta name="generator" content="Hexo 5.3.0"></head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+            <img src="/img/cats.png" class="animated zoomIn">
+        </a>
+        <hgroup>
+          <h1 class="header-author"><a href="/"></a></h1>
+        </hgroup>
+
+        
+
+        
+            <form id="search-form">
+            <input type="text" id="local-search-input" name="q" placeholder="search..." class="search form-control" autocomplete="off" autocorrect="off" searchonload="false" />
+            <i class="fa fa-times" onclick="resetSearch()"></i>
+            </form>
+            <div id="local-search-result"></div>
+            <p class='no-result'>No results found <i class='fa fa-spinner fa-pulse'></i></p>
+        
+
+
+        
+            <div id="switch-btn" class="switch-btn">
+                <div class="icon">
+                    <div class="icon-ctn">
+                        <div class="icon-wrap icon-house" data-idx="0">
+                            <div class="birdhouse"></div>
+                            <div class="birdhouse_holes"></div>
+                        </div>
+                        <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                            <div class="ribbon"></div>
+                        </div>
+                        
+                        <div class="icon-wrap icon-link hide" data-idx="2">
+                            <div class="loopback_l"></div>
+                            <div class="loopback_r"></div>
+                        </div>
+                        
+                        
+                        <div class="icon-wrap icon-me hide" data-idx="3">
+                            <div class="user"></div>
+                            <div class="shoulder"></div>
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+                <div class="tips-box hide">
+                    <div class="tips-arrow"></div>
+                    <ul class="tips-inner">
+                        <li>Menu</li>
+                        <li>Tags</li>
+                        
+                        <li>Friends</li>
+                        
+                        
+                        <li>About Me</li>
+                        
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a href="/">主页</a></li>
+                        
+                            <li><a href="/archives/">所有文章</a></li>
+                        
+                            <li><a href="/tags/">标签云</a></li>
+                        
+                            <li><a href="/about/">关于我</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" href="mailto:&#115;&#104;&#105;&#104;&#117;&#97;&#110;&#50;&#52;&#64;&#49;&#54;&#51;&#46;&#99;&#111;&#109;" title="Email"></a>
+                            
+                                <a class="fa GitHub" target="_blank" rel="noopener" href="https://github.com/Spindriftks" title="GitHub"></a>
+                            
+                                <a class="fa RSS" href="/atom.xml" title="RSS"></a>
+                            
+                        </ul>
+                    </nav>
+                </section>
+                
+                
+                <section class="switch-part switch-part2">
+                    <div class="widget tagcloud" id="js-tagcloud">
+                        <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/net-core/" rel="tag">.net core</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android/" rel="tag">Android</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Ant/" rel="tag">Ant</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CPU/" rel="tag">CPU</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Centos7/" rel="tag">Centos7</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Chronograf/" rel="tag">Chronograf</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DES/" rel="tag">DES</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Django/" rel="tag">Django</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hexo/" rel="tag">Hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HmacSHA256/" rel="tag">HmacSHA256</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IO/" rel="tag">IO</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Influxdb/" rel="tag">Influxdb</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Istio/" rel="tag">Istio</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JVM/" rel="tag">JVM</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Jmeter/" rel="tag">Jmeter</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Jumpserver/" rel="tag">Jumpserver</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/" rel="tag">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Locust/" rel="tag">Locust</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MD5/" rel="tag">MD5</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Macaca/" rel="tag">Macaca</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Monkey/" rel="tag">Monkey</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Nginx/" rel="tag">Nginx</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Nitrate/" rel="tag">Nitrate</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NumPy/" rel="tag">NumPy</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/One-Piece/" rel="tag">One Piece</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Redis/" rel="tag">Redis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Requests/" rel="tag">Requests</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Service-Mesh/" rel="tag">Service Mesh</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SiteScope/" rel="tag">SiteScope</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SonarQube/" rel="tag">SonarQube</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SqlServer/" rel="tag">SqlServer</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Vultr/" rel="tag">Vultr</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/adb/" rel="tag">adb</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/android/" rel="tag">android</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/appium/" rel="tag">appium</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/buff-cache/" rel="tag">buff/cache</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cmder/" rel="tag">cmder</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ddt/" rel="tag">ddt</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/" rel="tag">docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/elasticsearch/" rel="tag">elasticsearch</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/elasticsearch-head/" rel="tag">elasticsearch head</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/excel/" rel="tag">excel</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/exchange/" rel="tag">exchange</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/explain/" rel="tag">explain</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/faker/" rel="tag">faker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/fiddler/" rel="tag">fiddler</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/" rel="tag">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/grafana/" rel="tag">grafana</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/https/" rel="tag">https</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iostat/" rel="tag">iostat</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iphone/" rel="tag">iphone</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/journalctl/" rel="tag">journalctl</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/k8s/" rel="tag">k8s</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kibana/" rel="tag">kibana</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/lives/" rel="tag">lives</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/loadrunner/" rel="tag">loadrunner</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/logging/" rel="tag">logging</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/logstash/" rel="tag">logstash</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/matplotlib/" rel="tag">matplotlib</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/memory/" rel="tag">memory</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/" rel="tag">mysql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nGrinder/" rel="tag">nGrinder</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/netstat/" rel="tag">netstat</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nose/" rel="tag">nose</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/openpyxl/" rel="tag">openpyxl</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pip3/" rel="tag">pip3</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pipenv/" rel="tag">pipenv</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/profiler/" rel="tag">profiler</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pycharm/" rel="tag">pycharm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pygal/" rel="tag">pygal</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pymysql/" rel="tag">pymysql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pytest/" rel="tag">pytest</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python3/" rel="tag">python3</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pywin32/" rel="tag">pywin32</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/regex/" rel="tag">regex</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/response-time/" rel="tag">response time</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/selenium/" rel="tag">selenium</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/smtplib/" rel="tag">smtplib</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/systemd/" rel="tag">systemd</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/testlink/" rel="tag">testlink</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/uiautomator2/" rel="tag">uiautomator2</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/unittest/" rel="tag">unittest</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/webpagetest/" rel="tag">webpagetest</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/win32api/" rel="tag">win32api</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/windows/" rel="tag">windows</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/wordpress/" rel="tag">wordpress</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/yum/" rel="tag">yum</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/zabbix3-4/" rel="tag">zabbix3.4</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95/" rel="tag">单元测试</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%80%A7%E8%83%BD/" rel="tag">性能</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E6%8D%AE%E5%88%86%E7%A6%BB/" rel="tag">数据分离</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BA%BF%E7%A8%8B/" rel="tag">线程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%87%AA%E5%8A%A8%E5%8C%96%E6%B5%8B%E8%AF%95/" rel="tag">自动化测试</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%BF%9B%E7%A8%8B/" rel="tag">进程</a></li></ul>
+                    </div>
+                </section>
+                
+                
+                
+                <section class="switch-part switch-part3">
+                    <div id="js-friends">
+                    
+                      <a class="main-nav-link switch-friends-link" target="_blank" rel="noopener" href="https://stackoverflow.com/">StackOverflow</a>
+                    
+                      <a class="main-nav-link switch-friends-link" target="_blank" rel="noopener" href="https://pixabay.com/">pixabay</a>
+                    
+                      <a class="main-nav-link switch-friends-link" target="_blank" rel="noopener" href="https://testerhome.com/topics/popular">testerhome</a>
+                    
+                    </div>
+                </section>
+                
+
+                
+                
+                <section class="switch-part switch-part4">
+                
+                    <div id="js-aboutme">kyle(时欢)</div>
+                </section>
+                
+            </div>
+        </div>
+    </header>                
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="回到主页"></a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                <img src="/img/cats.png" class="animated zoomIn">
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="回到主页"></a></h1>
+            </hgroup>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/">主页</a></li>
+                
+                    <li><a href="/archives/">所有文章</a></li>
+                
+                    <li><a href="/tags/">标签云</a></li>
+                
+                    <li><a href="/about/">关于我</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" target="_blank" href="mailto:&#115;&#104;&#105;&#104;&#117;&#97;&#110;&#50;&#52;&#64;&#49;&#54;&#51;&#46;&#99;&#111;&#109;" title="Email"></a>
+                            
+                                <a class="fa GitHub" target="_blank" href="https://github.com/Spindriftks" title="GitHub"></a>
+                            
+                                <a class="fa RSS" target="_blank" href="/atom.xml" title="RSS"></a>
+                            
+                        </ul>
+            </nav>
+        </header>                
+    </div>
+    <link class="menu-list" tags="Tags" friends="Friends" about="About Me"/>
+</nav>
+      <div class="body-wrap"><article id="post-zabbix监控磁盘使用率" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2018/12/29/zabbix%E7%9B%91%E6%8E%A7%E7%A3%81%E7%9B%98%E4%BD%BF%E7%94%A8%E7%8E%87/" class="article-date">
+      <time datetime="2018-12-28T19:38:48.000Z" itemprop="datePublished">2018-12-29</time>
+</a>
+
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      zabbix监控磁盘使用率
+    </h1>
+  
+
+	
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/categories/skill/">skill</a>
+    </div>
+
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/zabbix3-4/" rel="tag">zabbix3.4</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <p>zabbix各种键值</p>
+<a id="more"></a>
+
+<p>做grafana对接zabbix展示磁盘指定分区当前使用百分比时候，找到了一篇总结了zabbix各种键值的博客，搬运来做记录</p>
+<h3 id="监控磁盘"><a href="#监控磁盘" class="headerlink" title="监控磁盘"></a>监控磁盘</h3><p>zabbix监控linux不用分区磁盘使用量百分比方式：<br>配置-模板-Template OS Linux-自动发现规则-Mounted filesystem discovery-监控项原型，添加两个监控项，used以及pused（百分比）</p>
+<p>used</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">名称：Used disk space on $1</span><br><span class="line"></span><br><span class="line">类型：zabbix客户端</span><br><span class="line"></span><br><span class="line">键值：“vfs.fs.size[&#x2F;elasticsearch,used]”</span><br><span class="line"></span><br><span class="line">信息类型：数字（无正负）</span><br><span class="line"></span><br><span class="line">单位：B</span><br></pre></td></tr></table></figure>
+<p>pused</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">名称：Used disk space on $1 (percentage)</span><br><span class="line"></span><br><span class="line">类型：zabbix客户端</span><br><span class="line"></span><br><span class="line">键值：“vfs.fs.size[&#x2F;elasticsearch,pused]”</span><br><span class="line"></span><br><span class="line">信息类型：浮点型</span><br><span class="line"></span><br><span class="line">单位：%</span><br></pre></td></tr></table></figure>
+<p>然后将图加进去：<code>图形原型</code>,”Disk space usage /elasticsearch”，选择<code>添加原型</code>，选择”Template OS Linux: Used disk space on /elasticsearch”保存，完成。</p>
+<h3 id="各键值"><a href="#各键值" class="headerlink" title="各键值"></a>各键值</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br><span class="line">253</span><br><span class="line">254</span><br><span class="line">255</span><br><span class="line">256</span><br><span class="line">257</span><br><span class="line">258</span><br><span class="line">259</span><br><span class="line">260</span><br><span class="line">261</span><br><span class="line">262</span><br><span class="line">263</span><br><span class="line">264</span><br><span class="line">265</span><br><span class="line">266</span><br><span class="line">267</span><br><span class="line">268</span><br><span class="line">269</span><br><span class="line">270</span><br><span class="line">271</span><br><span class="line">272</span><br><span class="line">273</span><br><span class="line">274</span><br><span class="line">275</span><br><span class="line">276</span><br><span class="line">277</span><br><span class="line">278</span><br><span class="line">279</span><br><span class="line">280</span><br><span class="line">281</span><br><span class="line">282</span><br><span class="line">283</span><br><span class="line">284</span><br><span class="line">285</span><br><span class="line">286</span><br><span class="line">287</span><br><span class="line">288</span><br><span class="line">289</span><br><span class="line">290</span><br><span class="line">291</span><br><span class="line">292</span><br><span class="line">293</span><br><span class="line">294</span><br><span class="line">295</span><br><span class="line">296</span><br><span class="line">297</span><br><span class="line">298</span><br><span class="line">299</span><br><span class="line">300</span><br><span class="line">301</span><br><span class="line">302</span><br><span class="line">303</span><br><span class="line">304</span><br><span class="line">305</span><br><span class="line">306</span><br><span class="line">307</span><br><span class="line">308</span><br><span class="line">309</span><br><span class="line">310</span><br><span class="line">311</span><br><span class="line">312</span><br><span class="line">313</span><br><span class="line">314</span><br><span class="line">315</span><br><span class="line">316</span><br><span class="line">317</span><br><span class="line">318</span><br><span class="line">319</span><br><span class="line">320</span><br><span class="line">321</span><br><span class="line">322</span><br><span class="line">323</span><br><span class="line">324</span><br><span class="line">325</span><br><span class="line">326</span><br><span class="line">327</span><br><span class="line">328</span><br><span class="line">329</span><br><span class="line">330</span><br><span class="line">331</span><br><span class="line">332</span><br><span class="line">333</span><br><span class="line">334</span><br><span class="line">335</span><br><span class="line">336</span><br><span class="line">337</span><br><span class="line">338</span><br><span class="line">339</span><br><span class="line">340</span><br><span class="line">341</span><br><span class="line">342</span><br><span class="line">343</span><br><span class="line">344</span><br><span class="line">345</span><br></pre></td><td class="code"><pre><span class="line">以下表格是zabbix agent所支持的所有key列表，添加一项监控的时候，首先想到的应该是zabbix agent是否已经有相关的key存在，而不是自己去写脚本来获取key。</span><br><span class="line"></span><br><span class="line">agent.hostname</span><br><span class="line">返回被监控端名称(字符串)</span><br><span class="line"></span><br><span class="line">agent.ping</span><br><span class="line">检测被监控端是否存活(1:运行中 其他:未运行)-使用函数 nodata()检测客户端是否正在运行</span><br><span class="line"></span><br><span class="line">agent.version</span><br><span class="line">zabbix agent版本字符串</span><br><span class="line"></span><br><span class="line">kernel.maxfiles</span><br><span class="line">系统支持最大的open files整数</span><br><span class="line"></span><br><span class="line">kernel.maxproc</span><br><span class="line">系统支持最大的进程数量整数</span><br><span class="line"></span><br><span class="line">log[file,&lt;regexp&gt;,&lt;encoding&gt;,&lt;maxlines&gt;,&lt;mode&gt;,&lt;output&gt;]</span><br><span class="line">监控日志文件</span><br><span class="line">file - 文件详细路径</span><br><span class="line">regexp - 正则</span><br><span class="line">encoding - 编码</span><br><span class="line">maxlines - zabbix agent向server或者proxy发送最大的行数。</span><br><span class="line">  这个参数覆盖配置文件zabbxi_agentd.conf中的’MaxLinesPerSecond’</span><br><span class="line">mode - 可选值:all (默认), skip (跳过处理老数据).mode参数从2.0版本开始支持</span><br><span class="line">output - 可选项，输出格式模板.</span><br><span class="line">示例: log[&#x2F;var&#x2F;log&#x2F;syslog] log[&#x2F;var&#x2F;log&#x2F;syslog,error] log[&#x2F;home&#x2F;zabbix&#x2F;logs&#x2F;logfile,,,100]</span><br><span class="line"></span><br><span class="line">logrt[file_pattern,&lt;regexp&gt;,&lt;encoding&gt;,&lt;maxlines&gt;,&lt;mode&gt;,&lt;output&gt;]</span><br><span class="line">Monitoring of log file with log rotation support.</span><br><span class="line">file_pattern - 文件绝对路径</span><br><span class="line"></span><br><span class="line">net.dns[&lt;ip&gt;,zone,&lt;type&gt;,&lt;timeout&gt;,&lt;count&gt;]</span><br><span class="line">检测DNS服务是否开启0 – DNS挂了  1 - DNS运行中</span><br><span class="line">ip - DNS服务器的ip地址(留空表示使用本地DNS, ignored onWindows)</span><br><span class="line">zone - 需要测试的域名</span><br><span class="line">type - 记录类型 (默认为 SOA),type可选值:  ANY, A, NS, CNAME, MB, MG, MR, PTR, MD, MF, MX, SOA, NULL, WKS (除了windows), HINFO, MINFO, TXT, SRV SRV</span><br><span class="line">timeout (ignored on Windows) – 超时时间(默认1秒)</span><br><span class="line">count (ignored on Windows) – 重试次数 (默认值2)</span><br><span class="line">示例key: net.dns[8.8.8.8,zabbix.com,MX,2,1]</span><br><span class="line"></span><br><span class="line">net.dns.record[&lt;ip&gt;,zone,&lt;type&gt;,&lt;timeout&gt;,&lt;count&gt;]</span><br><span class="line">执行一个DNS查询获取DNS查询数据.</span><br><span class="line">ip - DNS服务器的ip地址(留空表示使用本地DNS, ignored on Windows)</span><br><span class="line">zone - 需要测试的域名</span><br><span class="line">type - 记录类型 (默认SOA,可选值同net.dns)</span><br><span class="line">timeout (ignored on Windows) – 超时时间(默认1秒)</span><br><span class="line">count (ignored on Windows) – 重试次数 (默认值2)</span><br><span class="line">示例key: net.dns.record[8.8.8.8,ttlsa.com,MX,2,1]</span><br><span class="line"></span><br><span class="line">net.if.collisions[if]</span><br><span class="line">Out-of-window collision.Number of collisions. Integer.if - 网卡</span><br><span class="line"></span><br><span class="line">net.if.discovery</span><br><span class="line">列出网卡.通常用于低级别的discovery.JSON对象</span><br><span class="line"></span><br><span class="line">net.if.in[if,&lt;mode&gt;]</span><br><span class="line">网卡入口流量整数.</span><br><span class="line">if - 网卡名称</span><br><span class="line">mode - 可用值: bytes - 字节数 (默认)</span><br><span class="line">packets - 包数量</span><br><span class="line">errors - 错误数量</span><br><span class="line">dropped - 丢包数量</span><br><span class="line">示例keys: net.if.in[eth0,errors] net.if.in[eth0]</span><br><span class="line"></span><br><span class="line">net.if.out[if,&lt;mode&gt;]</span><br><span class="line">网卡出口流量（参数参见net.if.in）</span><br><span class="line"></span><br><span class="line">net.if.total[if,&lt;mode&gt;]</span><br><span class="line">网卡进&#x2F;出流量的总和（参数参见net.if.in）</span><br><span class="line"></span><br><span class="line">net.tcp.listen[port]</span><br><span class="line">检测端口是否开启0 – （not listen） 1 –  in LISTEN stateport</span><br><span class="line">示例: net.tcp.listen[80]</span><br><span class="line"></span><br><span class="line">net.tcp.port[&lt;ip&gt;,port]</span><br><span class="line">是否可以连接到指定的TCP端口0 – cannot connect 1 – can connect</span><br><span class="line">   ip - IP地址(默认是 127.0.0.1)</span><br><span class="line">   port - 端口</span><br><span class="line">范例: net.tcp.port[,80] 检测web服务器端口是否运行中</span><br><span class="line"></span><br><span class="line">net.tcp.service[service,&lt;ip&gt;,&lt;port&gt;]</span><br><span class="line">检测服务是否开启，并且端口可用0 – 服务挂了 1 – 服务运行中</span><br><span class="line">    service - 如下:ssh, ntp, ldap, smtp, ftp, http, pop, nntp,imap, tcp, https, telnet</span><br><span class="line">    ip - IP地址 (默认127.0.0.1)</span><br><span class="line">    port - 端口 (默认情况为标准端口号)</span><br><span class="line">示例key: net.tcp.service[ftp,,45]</span><br><span class="line"></span><br><span class="line">net.tcp.service.perf[service,&lt;ip&gt;,&lt;port&gt;]</span><br><span class="line">检测服务器性能0 – 服务挂了; seconds – 链接到服务器端口消耗的时间</span><br><span class="line">service - 如下:ssh, ntp, ldap, smtp, ftp, http, pop, nntp,imap, tcp, https, telnet</span><br><span class="line">ip - IP地址 (默认127.0.0.1)</span><br><span class="line">port - 端口 (默认情况为标准端口号)</span><br><span class="line">示例key: net.tcp.service.perf[ssh]</span><br><span class="line"></span><br><span class="line">         net.udp.listen[port]</span><br><span class="line"></span><br><span class="line">proc.mem[&lt;name&gt;,&lt;user&gt;,&lt;mode&gt;,&lt;cmdline&gt;]</span><br><span class="line">用户进程消耗的内存内存使用量 (字节单位).</span><br><span class="line">name - 进程名 (默认值 “all processes”)</span><br><span class="line">user - 用户名 (默认值“all users”)</span><br><span class="line">mode - 可选值: avg, max, min, sum (默认)</span><br><span class="line">cmdline - 命令行过滤(正则表达时)</span><br><span class="line">示例keys: proc.mem[,root] – root的进程消耗了多少内存</span><br><span class="line">    proc.mem[zabbix_server,zabbix] – zabbix用户运行的zabbix_server使用了多少内存</span><br><span class="line">    proc.mem[,oracle,max,oracleZABBIX]</span><br><span class="line"></span><br><span class="line">proc.num[&lt;name&gt;,&lt;user&gt;,&lt;state&gt;,&lt;cmdline&gt;]</span><br><span class="line">某用户某些状态的进程的数量进程数量</span><br><span class="line">name - 进程名称 (默认“all processes”)</span><br><span class="line">user - 用户名 (默认 “all users”)</span><br><span class="line">state - 可用值: all (默认), run,sleep, zomb</span><br><span class="line">cmdline - 命令行过滤(正则表达时)</span><br><span class="line">示例keys: proc.num[,mysql] – MySQL用户运行的进程数量</span><br><span class="line">proc.num[apache2,www-data] – www-data运行了多少个apache2进程</span><br><span class="line">proc.num[,oracle,sleep,oracleZABBIX]</span><br><span class="line">备注：Windows系统只支持name和user两个参数</span><br><span class="line"></span><br><span class="line">sensor[device,sensor,&lt;mode&gt;]</span><br><span class="line">读取硬件传感器</span><br><span class="line">device - 设备名称</span><br><span class="line">sensor - 传感器名称</span><br><span class="line">mode - 可选值:avg, max, min</span><br><span class="line">示例key: sensor[w83781d-i2c-0-2d,temp1] Prior to Zabbix 1.8.4, the sensor[temp1] format was used. On Linux 2.6+, 读取&#x2F;sys&#x2F;class&#x2F;hwmon. On OpenBSD, 读取hw.sensors MIB.示例keys: sensor[cpu0,temp0] – CPU0的温度 sensor[cpu[0-2]$,temp,avg] – cpu平均温度Zabbix 1.8.4开始支持OpenBSD</span><br><span class="line"></span><br><span class="line">system.boottime</span><br><span class="line">系统启动的时间戳整数.unix时间戳</span><br><span class="line"></span><br><span class="line">system.cpu.intr</span><br><span class="line">设备中断整数</span><br><span class="line"></span><br><span class="line">system.cpu.load[&lt;cpu&gt;,&lt;mode&gt;]</span><br><span class="line">CPU负载浮点数</span><br><span class="line">cpu - 可用值: all (默认), percpu (所有在线cpu的负载)</span><br><span class="line">mode - 可用值:avg1 (1分钟 默认值), avg5(5分钟平均), avg15 (15分钟平均值)</span><br><span class="line">范例key: system.cpu.load[,avg5]</span><br><span class="line"></span><br><span class="line">system.cpu.num[&lt;type&gt;]</span><br><span class="line">CPU数量处理器个数type - 可用值: online (默认值), max范例: system.cpu.num</span><br><span class="line"></span><br><span class="line">system.cpu.switches</span><br><span class="line">上下文交换交换次数老命名方式: system[switches]</span><br><span class="line"></span><br><span class="line">system.cpu.util[&lt;cpu&gt;,&lt;type&gt;,&lt;mode&gt;]</span><br><span class="line">CPU利用率百分比</span><br><span class="line">cpu - cpu数量 (默认是所有cpu)</span><br><span class="line">type - 可用值: idle, nice, user (默认), system (windows系统默认值）, iowait, interrupt, softirq,steal</span><br><span class="line">mode - 可用值: avg1 (一分钟平均，默认值), avg5(5分钟平均, avg15 (15分钟平均值)</span><br><span class="line">范例key: system.cpu.util[0,user,avg5]</span><br><span class="line"></span><br><span class="line">system.hostname[&lt;type&gt;]</span><br><span class="line">返回主机名字符串</span><br><span class="line">type (仅用于windows系统) – 可用值: netbios(默认) or host</span><br><span class="line"></span><br><span class="line">system.hw.chassis[&lt;info&gt;]</span><br><span class="line">返回机架信息字符串</span><br><span class="line">info - full (默认), model, serial, type 或vendor</span><br><span class="line">例如: system.hw.chassis</span><br><span class="line">Hewlett-Packard HP Pro 3010 Small Form Factor PC CZXXXXXXXX Desktop]</span><br><span class="line">备注：要root权限，因为这些信息是从内存中读取的。</span><br><span class="line"></span><br><span class="line">system.hw.cpu[&lt;cpu&gt;,&lt;info&gt;]</span><br><span class="line">返回CPU信息字符&#x2F;数字</span><br><span class="line">cpu - cpu数量或者all (默认)</span><br><span class="line">info - full (默认), curfreq, maxfreq, model 或者vendor</span><br><span class="line">例如: system.hw.cpu[0,vendor] AuthenticAMD 从&#x2F;proc&#x2F;cpuinfo、&#x2F;sys&#x2F;devices&#x2F;system&#x2F;cpu&#x2F;[cpunum]&#x2F;cpufreq&#x2F;cpuinfo_max_freq获取信息. 如果指定了CPU数量和 curfreq或者maxfreq, 将会返回数值(Hz).</span><br><span class="line"></span><br><span class="line">system.hw.devices[&lt;type&gt;]</span><br><span class="line">列出PCI或者USB文本值</span><br><span class="line">type - pci (默认) or usb</span><br><span class="line">范例: system.hw.devices[pci] 00:00.0 Host bridge: Advanced Micro Devices [AMD] RS780 Host Bridge [..] 返回lspci或者lsusb (不带参数)</span><br><span class="line"></span><br><span class="line">system.hw.macaddr[&lt;interface&gt;,&lt;format&gt;]</span><br><span class="line">列出MAC地址字符串</span><br><span class="line">interface - all (默认) 或者正则表达式</span><br><span class="line">format - full (默认) 、short</span><br><span class="line">范例: system.hw.macaddr[&quot;eth0$&quot;,full] [eth0] 00:11:22:33:44:55 列出指定接口mac地址 如果format指定为short，MAC地址相同的将会被忽略掉</span><br><span class="line"></span><br><span class="line">system.localtime[&lt;type&gt;]</span><br><span class="line">系统时间.数字或者字符串</span><br><span class="line"></span><br><span class="line">system.run[command,&lt;mode&gt;]</span><br><span class="line">在制定的主机上运行命令文本</span><br><span class="line">command - 命令</span><br><span class="line">mode - wait (默认值, 执行超时时间), nowait (不等待)最大可用返回512KB数据，包含空白数据。 命令输出数据必须是文本</span><br><span class="line">例如: system.run[ls -l &#x2F;] – 列出&#x2F;的文件和目录.</span><br><span class="line">Note: 启用这个方法, agent配置文件必须配置 EnableRemoteCommands&#x3D;1选项</span><br><span class="line"></span><br><span class="line">system.stat[resource,&lt;type&gt;]</span><br><span class="line">虚拟内存状态数字ent</span><br><span class="line"></span><br><span class="line">system.sw.arch</span><br><span class="line">返回软件信息字符串</span><br><span class="line">范例: system.sw.arch i686</span><br><span class="line"></span><br><span class="line">system.sw.os[&lt;info&gt;]</span><br><span class="line">返回系统信息字符串</span><br><span class="line">info - full (default), short ,name</span><br><span class="line">范例: system.sw.os[short] Ubuntu 2.6.35-28.50-generic 2.6.35.11</span><br><span class="line">信息来自如下文件：</span><br><span class="line">&#x2F;proc&#x2F;version [short]</span><br><span class="line">&#x2F;proc&#x2F;version_signature [name]</span><br><span class="line">&#x2F;etc&#x2F;issue.net</span><br><span class="line"></span><br><span class="line">system.sw.packages[&lt;package&gt;,&lt;manager&gt;,&lt;format&gt;]</span><br><span class="line">已安装软件列表文本值</span><br><span class="line">package - all (默认)或者正则表达式</span><br><span class="line">manager - all (默认) or a package manager</span><br><span class="line">format - full (默认) ，short</span><br><span class="line">范例: system.sw.packages[mini,dpkg,short]</span><br><span class="line"></span><br><span class="line">system.swap.in[&lt;device&gt;,&lt;type&gt;]</span><br><span class="line">交换分区IN（磁盘交换到内存）数字</span><br><span class="line">device - 交换分区设备 (默认all)</span><br><span class="line">type - 可选值: count (swapins数量), sectors(sectors swapped in), pages (pages swapped in).</span><br><span class="line">示例key: system.swap.in[,pages]</span><br><span class="line">数据采集自: Linux 2.4: &#x2F;proc&#x2F;swaps, &#x2F;proc&#x2F;partitions, &#x2F;proc&#x2F;stat</span><br><span class="line">            Linux 2.6: &#x2F;proc&#x2F;swaps, &#x2F;proc&#x2F;diskstats, &#x2F;proc&#x2F;vmstat</span><br><span class="line"></span><br><span class="line">system.swap.out[&lt;device&gt;,&lt;type&gt;]</span><br><span class="line">Swap out (f内存到磁盘) .数字</span><br><span class="line">device - swap设备 (默认all)</span><br><span class="line">type - count (number of swapouts), sectors(sectors swapped out), pages (pages swapped out). 示</span><br><span class="line">例key: system.swap.out[,pages]</span><br><span class="line">数据采集自: Linux 2.4: &#x2F;proc&#x2F;swaps, &#x2F;proc&#x2F;partitions, &#x2F;proc&#x2F;stat</span><br><span class="line">            Linux 2.6: &#x2F;proc&#x2F;swaps, &#x2F;proc&#x2F;diskstats, &#x2F;proc&#x2F;vmstat</span><br><span class="line"></span><br><span class="line">system.swap.size[&lt;device&gt;,&lt;type&gt;]</span><br><span class="line">交换分区大小字节或者百分比</span><br><span class="line">device - 交换分区 (默认值 all)</span><br><span class="line">type - free (free swap space, default), pfree (free swap space, in percent), pused (used swap space, in percent), total (total swap space), used (used swap space)</span><br><span class="line">示例 system.swap.size[,pfree] – 空闲swap百分比</span><br><span class="line"></span><br><span class="line">system.uname</span><br><span class="line">返回主机相信信息.字符串</span><br><span class="line"></span><br><span class="line">system.uptime</span><br><span class="line">系统运行时长(秒)多少秒使用s&#x2F;uptime来获取</span><br><span class="line"></span><br><span class="line">system.users.num</span><br><span class="line">登陆用户数量多少用户agent使用who命令获取</span><br><span class="line"></span><br><span class="line">vfs.dev.read[&lt;device&gt;,&lt;type&gt;,&lt;mode&gt;]</span><br><span class="line">磁盘读取状态整数，浮点数（如果type为如下）</span><br><span class="line">device - 磁盘设备 (默认值 “all”)  </span><br><span class="line">type - 可选值:sectors, operations, bytes, sps, ops, bps(必须指定, 不同操作系统下不同).  sps, ops, bps stand for: sectors, operations, bytes per second, respectively</span><br><span class="line">mode - 可选值: avg1, avg5, avg15.  </span><br><span class="line">备注: 只有type为sps, ops, bps的时候，第三个参数才被支持。</span><br><span class="line">不同操作系统的TYPE参数： FreeBSD – bps Linux – sps OpenBSD – operations Solaris – bytes</span><br><span class="line">示例key: vfs.dev.read[,operations]</span><br><span class="line"></span><br><span class="line">vfs.dev.write[&lt;device&gt;,&lt;type&gt;,&lt;mode&gt;]</span><br><span class="line">磁盘写入状态整数，</span><br><span class="line">device - 磁盘设备 (默认 all)  </span><br><span class="line">type - sectors, operations, bytes, sps, ops, bps</span><br><span class="line">mode - one of avg1 (default),avg5 , avg15.</span><br><span class="line">example: vfs.dev.write[,operations] Old naming: io</span><br><span class="line"></span><br><span class="line">vfs.file.cksum[file]</span><br><span class="line">计算文件校验 UNIX cksum.</span><br><span class="line">file - 文件完整路径</span><br><span class="line"></span><br><span class="line">vfs.file.contents[file,&lt;encoding&gt;]</span><br><span class="line">获取文本内容若为空，只返回 LF&#x2F;CR characters.</span><br><span class="line">file - 文件完整路径</span><br><span class="line">例如: vfs.file.contents[&#x2F;etc&#x2F;passwd] 文件不可以超过64KB.  </span><br><span class="line"></span><br><span class="line">vfs.file.exists[file]</span><br><span class="line">检测文件是否存在1 – 存在 0 – 不存在</span><br><span class="line">    file - 文件完整路径</span><br><span class="line"></span><br><span class="line">vfs.file.md5sum[file]</span><br><span class="line">文件MD5校验码文件MD5哈希值</span><br><span class="line">file - 完整路径</span><br><span class="line"></span><br><span class="line">vfs.file.regexp[file,regexp,&lt;encoding&gt;,&lt;start line&gt;,&lt;end line&gt;,&lt;output&gt;]</span><br><span class="line">文件中搜索字符串包含字符串的行，或者为空</span><br><span class="line">file - 文件完整路径</span><br><span class="line">regexp - GNU正则表达式</span><br><span class="line">encoding - 编码</span><br><span class="line">start line - 从哪一行开始，默认第一行</span><br><span class="line">end line - 从哪一行结束，默认最后一行</span><br><span class="line">如: vfs.file.regexp[&#x2F;etc&#x2F;passwd,zabbix]</span><br><span class="line">    vfs.file.regexp[&#x2F;path&#x2F;to&#x2F;some&#x2F;file,”([0-9]+)$”,,3,5,\1]</span><br><span class="line">    vfs.file.regexp[&#x2F;etc&#x2F;passwd,^zabbix:.:([0-9]+),,,,\1]</span><br><span class="line"></span><br><span class="line">vfs.file.regmatch[file,regexp,&lt;encoding&gt;,&lt;start line&gt;,&lt;end line&gt;]</span><br><span class="line">文件中搜索字符串0 – 未找到 1 – 找到</span><br><span class="line">file - 文件完整路径</span><br><span class="line">regexp - GNU 正则表达式</span><br><span class="line">encoding - 编码</span><br><span class="line">start line - 哪行开始，默认第一行</span><br><span class="line">end line - 哪行结束，默认最后一行</span><br><span class="line">例如: vfs.file.regmatch[&#x2F;var&#x2F;log&#x2F;app.log,error]</span><br><span class="line"></span><br><span class="line">vfs.file.size[file]</span><br><span class="line">文件大小字节fzabbix必须有可读此文件的权限</span><br><span class="line"></span><br><span class="line">vfs.file.time[file,&lt;mode&gt;]</span><br><span class="line">文件时间信息Unix 时间戳.</span><br><span class="line">mode -  modify (默认, 修改时间), access – 最后访问时间, change – 最后改变时间</span><br><span class="line">例如: vfs.file.time[&#x2F;etc&#x2F;passwd,modify] 备注：文件大小有限制</span><br><span class="line"></span><br><span class="line">vfs.fs.discovery</span><br><span class="line">列出挂载的文件系统 用于lld.JSON对象</span><br><span class="line"></span><br><span class="line">vfs.fs.inode[fs,&lt;mode&gt;]</span><br><span class="line">inodes数量数字</span><br><span class="line">fs - 文件系统</span><br><span class="line">mode - total (默认), free, used, pfree (空闲百分比), pused (使用百分比)</span><br><span class="line">例如: vfs.fs.inode[&#x2F;,pfree]</span><br><span class="line"></span><br><span class="line">vfs.fs.size[fs,&lt;mode&gt;]</span><br><span class="line">磁盘空间，返回本地文件系统的使用量字节</span><br><span class="line">fs - 文件系统</span><br><span class="line">mode -  total (默认), free, used, pfree (空闲百分比), pused (使用百分比).</span><br><span class="line">例如: vfs.fs.size[&#x2F;tmp,free]</span><br><span class="line"></span><br><span class="line">vm.memory.size[&lt;mode&gt;]</span><br><span class="line">内存大小字节或百分比</span><br><span class="line">mode - total (默认), active, anon, buffers, cached, exec, file, free, inactive, pinned, shared, wired, used, pused, available</span><br><span class="line">监控项vm.memory.size[] 允许三种类型的参数：</span><br><span class="line">第一类：包含total - 总内存</span><br><span class="line">第二类： 系统指定内存类型:active, anon, buffers, cached, exec, file, free, inactive,pinned, shared, wired. 第三类：用户级别，一共使用了多少内存，还有多少内存可用: used, pused, available,pavailable.</span><br><span class="line"></span><br><span class="line">web.page.get[host,&lt;path&gt;,&lt;port&gt;]</span><br><span class="line">获取网页内容网页源代码</span><br><span class="line">host - 主机名&#x2F;域名</span><br><span class="line">path - 文件地址，默认&#x2F;</span><br><span class="line">port - 端口，默认80返回空字符串表示失败. 例如: web.page.get[</span><br><span class="line"></span><br><span class="line">web.page.perf[host,&lt;path&gt;,&lt;port&gt;]</span><br><span class="line">获取完全加载网页消耗的时长秒，返回0表示失败</span><br><span class="line">host - 主机名&#x2F;域名</span><br><span class="line">path - html地址，默认是&#x2F;</span><br><span class="line">port - 端口,默认80</span><br><span class="line"></span><br><span class="line">web.page.regexp[host,&lt;path&gt;,&lt;port&gt;,&lt;regexp&gt;,&lt;length&gt;,&lt;output&gt;]</span><br><span class="line">在网页中搜索字符串  失败则返回空字符 (不匹配).</span><br><span class="line">host - 主机名</span><br><span class="line">path - html文件路径 (默认值 &#x2F;)</span><br><span class="line">port - 端口 (默认80)</span><br><span class="line">regexp - GNU正则表达式</span><br><span class="line">length - 返回的最大的字符串数量</span><br><span class="line">output - 输出格式模板可选项. </span><br></pre></td></tr></table></figure>
+<h3 id="参考博客"><a href="#参考博客" class="headerlink" title="参考博客"></a>参考博客</h3><blockquote>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/chuang3344/article/details/74081682">参考博客</a></p>
+</blockquote>
+
+      
+    </div>
+    
+  </div>
+  
+    
+    <div class="copyright">
+        <p><span>Title:</span><a href="/2018/12/29/zabbix%E7%9B%91%E6%8E%A7%E7%A3%81%E7%9B%98%E4%BD%BF%E7%94%A8%E7%8E%87/">zabbix监控磁盘使用率</a></p>
+        <p><span>Author:</span><a href="/" title="Back to Homepage"></a></p>
+        <p><span>Created:</span>2018-12-29, 03:38:48</p>
+        <p><span>Updated:</span>2020-12-21, 14:39:15</p>
+        <p>
+            <span>Full URL:</span><a class="post-url" href="/2018/12/29/zabbix%E7%9B%91%E6%8E%A7%E7%A3%81%E7%9B%98%E4%BD%BF%E7%94%A8%E7%8E%87/" title="zabbix监控磁盘使用率">https://spindriftks.github.io/2018/12/29/zabbix%E7%9B%91%E6%8E%A7%E7%A3%81%E7%9B%98%E4%BD%BF%E7%94%A8%E7%8E%87/</a>
+            <span class="copy-path" data-clipboard-text="From https://spindriftks.github.io/2018/12/29/zabbix%E7%9B%91%E6%8E%A7%E7%A3%81%E7%9B%98%E4%BD%BF%E7%94%A8%E7%8E%87/　　By " title="Copy Article&#39;s Link &amp; Author"><i class="fa fa-clipboard"></i></span>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>License:</span><i class="fa fa-creative-commons"></i> <a rel="license noopener" target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">"CC BY-NC-SA 4.0"</a> Keep Link &amp; Author if Distribute.
+        </p>
+    </div>
+
+
+
+    <nav id="article-nav">
+        
+            <div id="article-nav-newer" class="article-nav-title">
+                <a href="/2019/01/07/zabbix%E8%A7%A6%E5%8F%91%E5%99%A8%E5%87%BD%E6%95%B0%E4%BB%8B%E7%BB%8D/">
+                    zabbix触发器函数介绍
+                </a>
+            </div>
+        
+        
+            <div id="article-nav-older" class="article-nav-title">
+                <a href="/2018/12/25/MySQL%E5%90%AF%E7%94%A8%E5%BC%B1%E5%8F%A3%E4%BB%A4/">
+                    MySQL启用弱口令
+                </a>
+            </div>
+        
+    </nav>
+
+  
+</article>
+
+    <div id="toc" class="toc-article">
+        <strong class="toc-title">Contents</strong>
+        
+            <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%9B%91%E6%8E%A7%E7%A3%81%E7%9B%98"><span class="toc-number">1.</span> <span class="toc-text">监控磁盘</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%90%84%E9%94%AE%E5%80%BC"><span class="toc-number">2.</span> <span class="toc-text">各键值</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E5%8D%9A%E5%AE%A2"><span class="toc-number">3.</span> <span class="toc-text">参考博客</span></a></li></ol>
+        
+    </div>
+    <style>
+        .left-col .switch-btn,
+        .left-col .switch-area {
+            display: none;
+        }
+        .toc-level-3 i,
+        .toc-level-3 ol {
+            display: none !important;
+        }
+    </style>
+
+    <input type="button" id="tocButton" value="Hide"  title="Show or Hide Table of Contents">
+
+    <script>
+        yiliaConfig.toc = ["Hide", "Show", !!"false"];
+    </script>
+
+
+
+    
+<div class="share">
+    
+        <div class="bdsharebuttonbox">
+            <a href="#" class="fa fa-twitter bds_twi" data-cmd="twi" title="分享到推特"></a>
+            <a href="#" class="fa fa-weibo bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+            <a href="#" class="fa fa-qq bds_sqq" data-cmd="sqq" title="分享给 QQ 好友"></a>
+            <a href="#" class="fa fa-files-o bds_copy" data-cmd="copy" title="复制网址"></a>
+            <a href="#" class="fa fa fa-envelope-o bds_mail" data-cmd="mail" title="通过邮件分享"></a>
+            <a href="#" class="fa fa-weixin bds_weixin" data-cmd="weixin" title="生成文章二维码"></a>
+            <a href="#" class="fa fa-share-alt bds_more" data-cmd="more"></i></a>
+        </div>
+        <script>
+            window._bd_share_config={
+                "common":{"bdSnsKey":{},"bdText":"zabbix监控磁盘使用率　| 简洁的时光　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+        </script>
+    
+
+    
+</div>
+
+
+
+
+
+
+
+    
+    <section class="livere" id="comments">
+    <!-- 来必力City版安装代码 -->
+	<div id="lv-container" data-id="city" data-uid="MTAyMC80MzczNS8yMDI3NA==">
+	<script type="text/javascript">
+	(function(d, s) {
+		var j, e = d.getElementsByTagName(s)[0];
+	
+		if (typeof LivereTower === 'function') { return; }
+	
+		j = d.createElement(s);
+		j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+		j.async = true;
+	
+		e.parentNode.insertBefore(j, e);
+	})(document, 'script');
+	</script>
+	<noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+	</div>
+	<!-- City版安装代码已完成 -->
+</section>
+
+
+
+
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/2019/01/07/zabbix%E8%A7%A6%E5%8F%91%E5%99%A8%E5%87%BD%E6%95%B0%E4%BB%8B%E7%BB%8D/" title="Pre: zabbix触发器函数介绍">
+                <i class="fa fa-angle-left"></i>
+            </a>
+        
+
+        <a title="Mini Archives"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+
+        
+            <a href="/2018/12/25/MySQL%E5%90%AF%E7%94%A8%E5%BC%B1%E5%8F%A3%E4%BB%A4/" title="Next: MySQL启用弱口令">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2019/08/08/python%E7%94%9F%E6%88%90%E8%BA%AB%E4%BB%BD%E8%AF%81/">python生成身份证</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/08/08/%E4%BD%BF%E7%94%A8python%E9%80%A0%E6%95%B0%E6%8D%AE/">使用python造数据</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/08/02/Jmeter%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E6%8F%90%E5%8F%96%E5%99%A8/">Jmeter正则表达式提取器</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/08/01/%E8%BD%AC-Git-Cheat-Sheet%E4%B8%AD%E6%96%87%E7%89%88/">[转]Git Cheat Sheet中文版</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/07/30/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E5%85%A5%E9%97%A8/">正则表达式入门</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/07/25/Macaca%E8%AF%95%E7%94%A8/">Macaca试用</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/07/25/win10%E6%90%AD%E5%BB%BAMacaca%E7%8E%AF%E5%A2%83%E5%8F%8A%E7%AE%80%E5%8D%95%E8%AF%95%E7%94%A8/">win10搭建Macaca环境及简单试用</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/07/18/python%E6%93%8D%E4%BD%9Cexcel%E4%B8%80%E4%BA%9B%E5%AE%9E%E7%8E%B0/">python操作excel一些实现</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/07/16/Grafana%E9%9B%86%E6%88%90%E8%BF%9B%E8%87%AA%E5%B7%B1web%E9%A1%B9%E7%9B%AE/">Grafana集成进自己web项目</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/07/11/DES%E5%8A%A0%E8%A7%A3%E5%AF%86%EF%BC%88python3%E5%AE%9E%E7%8E%B0%EF%BC%89/">DES加解密（python3实现）</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/07/09/Python-Requests%E7%BB%83%E4%B9%A0%EF%BC%88%E4%B8%80%EF%BC%89/">Python-Requests练习（一）</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/07/09/NumPy%E4%B8%AD%E7%9A%84%E8%BD%B4-%E7%BB%B4%E5%BA%A6-%E7%A7%A9/">NumPy中的轴-维度-秩</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/07/05/python3-MD5%E5%8A%A0%E5%AF%86/">python3 MD5加密</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/07/04/%E4%B8%80%E4%BA%9B%E6%B5%8B%E8%AF%95%E6%9D%82%E8%AF%B4/">一些测试杂说</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/07/03/Centos7%E6%90%AD%E5%BB%BAwordpress%E5%8D%9A%E5%AE%A2/">Centos7搭建wordpress博客</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/07/02/Jmeter%E7%94%9F%E6%88%90Report-Dashboard/">Jmeter生成Report Dashboard</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/06/27/Jmeter%E4%BD%BF%E7%94%A8Grafana%E5%B1%95%E7%A4%BA/">Jmeter使用Grafana展示</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/06/26/Influxdb%E5%90%AF%E5%8A%A8%E5%A4%B1%E8%B4%A5%E6%97%A5%E5%BF%97%E5%AE%9A%E4%BD%8D/">Influxdb启动失败日志定位</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/06/26/Jmeter-ForEach%E6%8E%A7%E5%88%B6%E5%99%A8%E4%BD%BF%E7%94%A8/">Jmeter ForEach控制器使用</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/06/26/%E6%80%A7%E8%83%BD%E7%9B%91%E6%8E%A7%E7%AE%80%E5%8D%95%E5%B0%8F%E7%BB%93/">性能监控简单小结</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/06/25/%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95%E5%B7%A5%E5%85%B7nGrinder%E8%AF%95%E7%94%A8/">性能测试工具nGrinder试用</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/06/25/python%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%AE%9E%E8%B7%B5/">python字符串实践</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/06/23/%E6%95%8F%E6%8D%B7%E6%B5%8B%E8%AF%95%E4%B8%8E%E8%87%AA%E5%8A%A8%E5%8C%96/">敏捷测试与自动化</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/06/21/%E4%B8%80%E6%AC%A1Android%E5%AE%89%E5%85%A8%E9%97%AE%E9%A2%98%E5%AE%9A%E4%BD%8D/">一次Android安全问题定位</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/06/21/Service-Mesh%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/">Service Mesh基础知识</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/06/19/pytest%E5%AD%A6%E4%B9%A0%E5%AE%9E%E8%B7%B5%EF%BC%88%E4%BA%8C%EF%BC%89/">pytest学习实践（二）</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/06/19/pytest%E5%AD%A6%E4%B9%A0%E5%AE%9E%E8%B7%B5%EF%BC%88%E4%B8%80%EF%BC%89/">pytest学习实践（一）</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/06/14/docker%E7%AE%80%E5%8D%95%E4%BD%BF%E7%94%A8%EF%BC%88%E5%85%AD%EF%BC%89/">docker简单使用（六）</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/06/13/docker%E7%AE%80%E5%8D%95%E4%BD%BF%E7%94%A8%EF%BC%88%E4%BA%94%EF%BC%89/">docker简单使用（五）</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/06/13/docker%E7%AE%80%E5%8D%95%E4%BD%BF%E7%94%A8%EF%BC%88%E5%9B%9B%EF%BC%89/">docker简单使用（四）</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/06/12/docker%E7%AE%80%E5%8D%95%E4%BD%BF%E7%94%A8%EF%BC%88%E4%B8%89%EF%BC%89/">docker简单使用（三）</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/06/11/hexo%E5%8D%9A%E5%AE%A2%E9%85%8D%E7%BD%AEhttps/">hexo博客配置https</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/06/11/docker%E7%AE%80%E5%8D%95%E4%BD%BF%E7%94%A8%EF%BC%88%E4%BA%8C%EF%BC%89/">docker简单使用（二）</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/06/10/docker%E7%AE%80%E5%8D%95%E4%BD%BF%E7%94%A8%EF%BC%88%E4%B8%80%EF%BC%89/">docker简单使用（一）</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/05/29/%E5%87%A0%E4%B8%AA%E6%B5%8B%E8%AF%95%E9%97%AE%E9%A2%98%E6%80%9D%E8%80%83/">几个测试问题思考</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/05/28/%E9%97%B2%E8%B0%88%E6%B5%8B%E8%AF%95%E7%90%86%E8%AE%BA/">闲谈测试理论</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/05/27/%E6%89%80%E8%B0%93%E6%B5%8B%E8%AF%95%E6%96%B0%E6%97%B6%E4%BB%A3/">所谓测试新时代</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/05/27/%E6%B5%8B%E8%AF%95-%E6%9C%89%E6%83%91/">测试 有惑</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/05/23/excel%E9%9A%8F%E6%9C%BA%E5%87%BD%E6%95%B0/">excel随机函数</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/05/22/appium%E4%BD%BF%E7%94%A8uiautomator2%E6%97%A0%E6%B3%95%E5%90%AF%E5%8A%A8app%E9%97%AE%E9%A2%98/">appium使用uiautomator2无法启动app问题</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/05/21/jumpserver%E7%AE%80%E5%8D%95%E4%BD%BF%E7%94%A8/">jumpserver简单使用</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/05/20/centos7%E5%AE%89%E8%A3%85jumpserver%E5%A0%A1%E5%9E%92%E6%9C%BA/">centos7安装jumpserver堡垒机</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/05/15/%E5%87%A0%E4%B8%AAlinux%E5%91%BD%E4%BB%A4%E5%B0%8F%E6%8A%80%E5%B7%A7/">几个linux命令小技巧</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/05/14/centos7%E5%AE%89%E8%A3%85docker/">centos7安装docker</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/04/28/%E4%BF%AE%E6%94%B9Linux%E6%97%B6%E9%97%B4/">修改Linux时间</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/04/23/Jmeter%E8%B0%83%E7%94%A8python%E5%AE%8C%E6%88%90HmacSHA256%E5%8A%A0%E5%AF%86%E5%A4%84%E7%90%86/">Jmeter调用python完成HmacSHA256加密处理</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/04/18/Android%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95%E2%80%94%E2%80%94%E5%86%85%E5%AD%98/">Android性能测试——内存</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/04/18/%E8%AE%B0%E4%B8%80%E6%AC%A1Linux%E7%A3%81%E7%9B%98%E6%B8%85%E7%90%86/">记一次Linux磁盘清理</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/04/16/centos7%E6%90%AD%E5%BB%BAtestlink/">centos7搭建testlink</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/04/12/adb%E8%BF%9B%E9%98%B6%E5%9B%9B-%E2%80%94%E2%80%94-dumpsys/">adb进阶四 —— dumpsys</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/04/11/adb%E8%BF%9B%E9%98%B6%E4%B8%89-%E2%80%94%E2%80%94-Monkey-2/">adb进阶三 —— Monkey (2)</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/04/11/adb%E8%BF%9B%E9%98%B6%E4%B8%80-%E2%80%94%E2%80%94-Monkey-1/">adb进阶二 —— Monkey (1)</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/04/10/adb%E8%BF%9B%E9%98%B6%E4%B8%80-%E2%80%94%E2%80%94-logcat/">adb进阶一 —— logcat</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/04/10/Android%E8%B0%83%E8%AF%95%E5%B7%A5%E5%85%B7adb%E7%AE%80%E4%BB%8B/">Android调试工具adb简介</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/04/09/%E8%AE%B0cmder-git%E4%B8%80%E4%B8%AA%E6%8A%A5%E9%94%99%E8%A7%A3%E5%86%B3/">记cmder/git一个报错解决</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/04/08/%E7%BD%91%E7%AB%99%E6%80%A7%E8%83%BD%E6%9D%82%E8%B4%A7/">网站性能杂货</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/04/08/%E4%BC%AA%C2%B7influxdb%E5%88%A0%E9%99%A4%E6%95%B0%E6%8D%AE/">伪·influxdb删除数据</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/02/27/Linux%E5%9E%83%E5%9C%BE%E6%B8%85%E7%90%86/">Linux垃圾清理</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/01/29/Centos7%E5%AE%89%E8%A3%85pip3/">Centos7安装pip3</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/01/24/2019%E5%B9%B4%E5%85%B3%E5%B0%86%E8%87%B3%E6%9C%89%E6%84%9F/">2019年关将至有感</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/01/18/jmeter%E5%90%9E%E5%90%90%E9%87%8F%E5%87%A0%E4%B8%AA%E6%8F%92%E4%BB%B6%E4%BB%8B%E7%BB%8D/">jmeter吞吐量几个插件介绍</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/01/16/Jmeter%E5%8E%8B%E6%B5%8B%E5%85%B3%E8%81%94%E6%8E%A5%E5%8F%A3/">Jmeter压测关联接口</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/01/13/SqlServer%E6%B8%85%E7%90%86%E4%BA%8B%E5%8A%A1%E6%97%A5%E5%BF%97/">SqlServer清理事务日志</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/01/07/zabbix%E8%A7%A6%E5%8F%91%E5%99%A8%E5%87%BD%E6%95%B0%E4%BB%8B%E7%BB%8D/">zabbix触发器函数介绍</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/12/29/zabbix%E7%9B%91%E6%8E%A7%E7%A3%81%E7%9B%98%E4%BD%BF%E7%94%A8%E7%8E%87/">zabbix监控磁盘使用率</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/12/25/MySQL%E5%90%AF%E7%94%A8%E5%BC%B1%E5%8F%A3%E4%BB%A4/">MySQL启用弱口令</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/12/24/Linux%E5%87%A0%E4%B8%AA%E5%8F%98%E9%87%8F/">Linux几个变量</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/12/21/zabbix%E7%9B%91%E6%8E%A7%E7%A3%81%E7%9B%98IO/">zabbix监控磁盘IO</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/12/21/Linux%E7%A3%81%E7%9B%98IO%E7%9B%91%E6%8E%A7%E5%B7%A5%E5%85%B7-iostat/">Linux磁盘IO监控工具-iostat</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/12/14/loadrunner%E5%8E%8B%E6%B5%8Bexchange%E9%82%AE%E7%AE%B1/">loadrunner压测exchange邮箱</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/12/05/Linux%E5%B0%8F%E5%B7%A5%E5%85%B7%E6%8E%A8%E8%8D%90/">Linux小工具推荐</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/11/20/Nginx%E7%AE%80%E5%8D%95%E9%85%8D%E7%BD%AE/">Nginx简单配置</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/11/19/%E4%B8%80%E6%AC%A1%E7%B2%BE%E7%96%B2%E5%8A%9B%E5%B0%BD%E7%9A%84%E5%8E%8B%E6%B5%8B/">一次精疲力尽的压测</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/11/02/JVM%E5%86%85%E5%AD%98%E6%80%A7%E8%83%BD%E9%97%AE%E9%A2%98%E5%AE%9A%E4%BD%8D/">JVM内存性能问题定位</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/10/17/Linux%E5%AE%9A%E4%BD%8D%E6%9C%80%E8%80%97CPU%E7%9A%84%E7%BA%BF%E7%A8%8B/">Linux定位最耗CPU的线程</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/10/17/%E8%83%A1%E8%A8%80%E4%B9%B1%E8%AF%AD/">胡言乱语</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/10/17/Grafana%E4%B8%80%E7%82%B9%E7%AE%80%E5%8D%95%E4%BD%BF%E7%94%A8/">Grafana一点简单使用</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/10/12/Centos7%E6%90%AD%E5%BB%BAGrafana/">Centos7搭建Grafana</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/10/11/%E3%80%90%E8%BD%AC%E3%80%91linux%E7%B3%BB%E7%BB%9F%E5%86%85%E5%AD%98%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/">【转】linux系统内存基础知识</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/10/09/%E3%80%90%E8%BD%AC%E3%80%91%E8%81%8A%E4%B8%80%E8%81%8A%E8%81%8C%E4%B8%9A%E5%8F%91%E5%B1%95/">【转】聊一聊职业发展</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/09/27/%E4%BD%BF%E7%94%A8Grafana%E5%B1%95%E7%A4%BAJmeter%E6%95%B0%E6%8D%AE/">使用Grafana展示Jmeter数据</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/09/26/Centos7%E6%90%AD%E5%BB%BA%E5%8D%95%E6%9C%BARedis/">Centos7搭建单机Redis</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/09/20/Linux%E6%9F%A5%E7%9C%8B%E7%AB%AF%E5%8F%A3%E4%BD%BF%E7%94%A8%E6%83%85%E5%86%B5/">Linux查看端口使用情况</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/09/17/Jmeter%E5%88%86%E5%B8%83%E5%BC%8F%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/">Jmeter分布式环境搭建</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/09/13/Mysql%E5%BC%80%E5%90%AF%E5%85%A8SQL%E6%89%A7%E8%A1%8C%E8%AE%B0%E5%BD%95/">Mysql开启全SQL执行记录</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/09/12/Jmeter-Ant-Jenkins%E6%8E%A5%E5%8F%A3%E8%87%AA%E5%8A%A8%E5%8C%96%E6%90%AD%E5%BB%BA/">Jmeter+Ant+Jenkins接口自动化搭建</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/08/29/%E3%80%90%E8%BD%AC%E3%80%91Linux%E6%80%A7%E8%83%BD%E7%9B%91%E6%8E%A7%E4%B8%8E%E5%88%86%E6%9E%90/">【转】Linux性能监控与分析</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/08/23/Centos7%E6%90%AD%E5%BB%BASonarQube/">Centos7搭建SonarQube</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/08/20/Centos7%E6%90%AD%E5%BB%BAinfluxdb-chronograf/">Centos7搭建influxdb+chronograf</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/08/15/%E4%B8%80%E4%BA%9B%E5%B8%B8%E7%94%A8%E7%BD%91%E7%AB%99/">一些常用网站</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/08/15/Centos7%E5%BC%80%E5%90%AFnginx-status/">Centos7开启nginx status</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/08/09/ELK%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%E5%8F%8A%E6%B5%8B%E8%AF%95%E6%95%B0%E6%8D%AE%E5%AF%BC%E5%85%A5/">ELK环境搭建及测试数据导入</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/08/01/elasticsearch-6%E5%8F%98%E6%9B%B4%E8%AE%B0%E5%BD%95/">elasticsearch 6变更记录</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/08/01/Centos-7%E5%AE%89%E8%A3%85elasticsearch-head/">Centos 7安装elasticsearch head</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/07/31/Centos%E4%B8%8B%E6%90%AD%E5%BB%BAElasticSearch/">Centos下搭建ElasticSearch</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/07/19/%E6%B5%B7%E8%B4%BC%E7%8E%8BTV%E7%89%88%E7%9B%AE%E5%BD%95/">海贼王TV版目录</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/07/11/loadrunner%E5%88%A4%E6%96%AD%E6%8E%A5%E5%8F%A3%E8%BF%94%E5%9B%9E/">loadrunner判断接口返回</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/07/06/Jmeter%E5%8E%8B%E6%B5%8Bsocket-close%E5%BC%82%E5%B8%B8/">Jmeter压测socket close异常</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/07/05/Vultr%E5%AE%89%E8%A3%85%E9%94%90%E9%80%9F/">Vultr安装锐速</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/06/28/zabbix3-4%E9%85%8D%E7%BD%AE%E9%82%AE%E4%BB%B6%E5%91%8A%E8%AD%A6/">zabbix3.4配置邮件告警</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/06/27/zabbix3-4%E7%9B%91%E6%8E%A7linux%E5%86%85%E5%AD%98/">zabbix3.4监控linux内存</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/06/27/zabbix3-4%E7%9B%91%E6%8E%A7mysql5-7/">zabbix3.4监控mysql5.7</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/06/26/zabbix%E9%85%8D%E7%BD%AE/">zabbix配置</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/06/19/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E7%B3%BB%E5%88%97%EF%BC%88%E4%B8%80%EF%BC%89/">计算机基础知识系列（一）</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/06/12/Centos%E4%B8%8B%E5%88%87%E6%8D%A2MySQL%E6%95%B0%E6%8D%AE%E5%88%B0%E6%95%B0%E6%8D%AE%E7%9B%98/">Centos下切换MySQL数据到数据盘</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/06/07/%E4%BD%BF%E7%94%A8fiddler%E6%8A%93iphone%E5%8C%85/">使用fiddler抓iphone包</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/06/01/python3-6%E5%AE%89%E8%A3%85basemap/">python3.6安装basemap</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/05/22/%E3%80%90%E8%BD%AC%E3%80%91loadrunner%E8%AF%B7%E6%B1%82%E4%B8%89%E7%A7%8D%E6%A0%BC%E5%BC%8FAPI/">【转】loadrunner请求三种格式API</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/05/16/%E3%80%90%E8%BD%AC%E3%80%91windows%E6%80%A7%E8%83%BD%E7%9B%91%E6%8E%A7%E6%8C%87%E6%A0%87/">【转】windows性能监控指标</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/05/11/centos7%E6%90%AD%E5%BB%BAzabbix/">centos7搭建zabbix</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/05/10/centos%E9%83%A8%E7%BD%B2-net-core/">centos部署.net core</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/05/08/%E4%BD%BF%E7%94%A8webpagetest%E6%B5%8B%E8%AF%95%E4%B8%8D%E5%90%8C%E5%9B%BD%E5%AE%B6%E7%99%BB%E5%BD%95%E5%93%8D%E5%BA%94/">使用webpagetest测试不同国家登录响应</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/04/22/Centos7%E6%90%AD%E5%BB%BANitrate/">Centos7搭建Nitrate</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/04/20/Centos%E4%B8%8B%E5%8D%87%E7%BA%A7python2-7%E5%88%B03-6/">Centos下升级python2.7到3.6</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/04/19/%E5%88%87%E6%8D%A2163yum%E6%BA%90/">切换163yum源</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/04/18/MySQL%E4%B9%8BSQL%E4%BC%98%E5%8C%96%E7%B3%BB%E5%88%97%EF%BC%88%E4%B8%89%EF%BC%89/">MySQL之SQL优化系列（三）</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/04/18/loadruner%E6%97%A5%E5%B8%B8%E6%80%BB%E7%BB%93/">loadruner日常总结</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/04/04/CentOs7%E5%BC%BA%E5%88%B6%E4%BF%AE%E6%94%B9MySQL%E4%B8%ADroot%E5%AF%86%E7%A0%81/">CentOs7强制修改MySQL中root密码</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/04/04/yum%E5%AE%89%E8%A3%85%E8%BD%AF%E4%BB%B6%E5%A4%B1%E8%B4%A5/">yum安装软件失败</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/04/03/MySQL%E4%B9%8BSQL%E4%BC%98%E5%8C%96%E7%B3%BB%E5%88%97%EF%BC%88%E4%BA%8C%EF%BC%89/">MySQL之SQL优化系列（二）</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/03/30/python%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95%E6%A1%86%E6%9E%B6locust%EF%BC%88%E4%B8%80%EF%BC%89/">python性能测试框架locust（一）</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/03/30/loadrunner%E7%9B%91%E6%8E%A7Mysql/">loadrunner监控Mysql</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/03/09/MySQL%E4%B9%8BSQL%E4%BC%98%E5%8C%96%E7%B3%BB%E5%88%97%EF%BC%88%E4%B8%80%EF%BC%89/">MySQL之SQL优化系列（一）</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/03/08/python%E5%9F%BA%E7%A1%80%E4%B9%8B-args%E4%B8%8E-kwargs/">python基础之*args与**kwargs</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/03/05/docker%E4%BD%BF%E7%94%A8%E7%AE%80%E4%BB%8B/">docker使用简介</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/02/28/%E6%96%B0%E5%B9%B4%E4%BC%8A%E5%A7%8B-%E5%BC%80%E5%B9%B4%E8%AE%B0/">新年伊始-开年记</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/02/12/%E5%86%99%E5%9C%A82018%E6%96%B0%E5%B9%B4%E6%9D%A5%E4%B8%B4/">写在2018新年来临</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/02/11/python3%E5%AE%8C%E6%88%90mysql%E6%93%8D%E4%BD%9C/">python3完成mysql操作</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/02/09/%E5%9F%BA%E4%BA%8Epython3%E7%9A%84UI%E8%87%AA%E5%8A%A8%E5%8C%96%E6%B5%8B%E8%AF%95%E6%A1%86%E6%9E%B6%E6%90%AD%E5%BB%BA%E7%B3%BB%E5%88%97%EF%BC%88%E4%BA%8C%EF%BC%89/">基于python3的UI自动化框架搭建系列（二）</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/02/09/windows%E5%AE%89%E8%A3%85mysql5-7/">windows安装mysql5.7</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/02/09/python3%E6%93%8D%E4%BD%9Cexcel/">python3操作excel</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/02/08/%E8%87%AA%E5%AE%9A%E4%B9%89%E6%B5%8B%E8%AF%95%E6%8A%A5%E5%91%8A/">自定义测试报告</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/02/08/%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95%E5%BC%82%E5%B8%B8%E6%8D%95%E8%8E%B7/">单元测试异常捕获</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/02/07/nose%E6%89%A7%E8%A1%8C%E9%A1%BA%E5%BA%8F/">nose执行顺序</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/02/07/%E5%9F%BA%E4%BA%8Epython3%E7%9A%84UI%E8%87%AA%E5%8A%A8%E5%8C%96%E6%B5%8B%E8%AF%95%E6%A1%86%E6%9E%B6%E6%90%AD%E5%BB%BA%E7%B3%BB%E5%88%97%EF%BC%88%E4%B8%80%EF%BC%89/">基于python3的UI自动化框架搭建系列（一）</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/02/06/%E3%80%90%E8%BD%AC%E3%80%91python%E5%AE%9E%E7%8E%B0chrome%E4%BC%AA%E8%A3%85%E6%88%90M%E7%AB%99/">【转】python实现chrome伪装成M站</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/02/02/logging%E6%A8%A1%E5%9D%97%E4%BD%BF%E7%94%A8%E7%AE%80%E4%BB%8B/">logging模块使用简介</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/02/02/%E5%AD%97%E7%AC%A6%E7%BC%96%E7%A0%81%E7%AE%80%E5%8D%95%E6%80%BB%E7%BB%93/">字符编码简单总结</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/02/02/%E5%AE%9E%E7%8E%B0%E6%96%AD%E8%A8%80%E5%A4%B1%E8%B4%A5%E6%88%AA%E5%9B%BE/">实现断言失败截图</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/02/01/%E5%AE%9E%E7%8E%B0%E8%87%AA%E5%8A%A8%E5%8C%96%E6%B5%8B%E8%AF%95%E6%95%B0%E6%8D%AE%E5%88%86%E7%A6%BB/">实现自动化测试数据分离</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/01/31/%E3%80%90%E8%BD%AC%E3%80%91python%E5%85%83%E7%B1%BB%E4%BB%8B%E7%BB%8D/">【转】python元类介绍</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/01/24/VPS%E9%87%8D%E5%BB%BA%E8%AE%B0/">VPS重建记</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/01/23/python%E5%AE%9E%E7%8E%B0%E8%87%AA%E5%8A%A8%E5%8C%96%E6%B5%8B%E8%AF%95%E6%8A%A5%E5%91%8A%E9%82%AE%E4%BB%B6%E5%AE%9E%E6%97%B6%E5%8F%91%E9%80%81/">python实现自动化测试报告邮件实时发送</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/01/20/python%E6%95%B0%E6%8D%AE%E5%88%86%E7%A6%BB/">python数据分离</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/01/20/%E8%87%AA%E5%A8%B1%E8%87%AA%E4%B9%90%E4%B8%80/">自娱自乐一</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/01/19/appium%E5%BA%94%E7%94%A8%E7%AE%80%E4%BB%8B/">appium应用简介</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/01/18/python%E9%A1%B9%E7%9B%AE%E4%BE%9D%E8%B5%96%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7-pipenv/">python项目依赖管理工具-pipenv</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/01/18/cmder%E7%AE%80%E4%BB%8B/">cmder简介</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/01/17/appium%E9%94%AE%E7%9B%98%E4%BA%8B%E4%BB%B6/">appium键盘事件</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/01/17/appium%E5%AE%9A%E4%BD%8D/">appium定位</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/01/17/app%E5%AE%89%E8%A3%85%E5%8D%B8%E8%BD%BD/">app安装卸载</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/01/16/appium%E5%85%A5%E9%97%A8%E7%AF%87/">appium入门篇</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/01/12/smtp%E5%8F%91%E9%82%AE%E4%BB%B6/">smtp发邮件</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/01/10/selenium%E6%97%A0%E5%B9%B2%E9%A2%84%E4%B8%8B%E8%BD%BD/">selenium无干预下载</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/01/10/12306%E4%BD%99%E7%A5%A8%E7%9B%91%E6%8E%A7/">12306余票监控</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/01/05/%E7%99%BB%E5%BD%95%E7%BD%91%E6%98%93%E9%82%AE%E7%AE%B1/">登录网易邮箱</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/01/04/nose%E8%B7%B3%E8%BF%87%E6%B5%8B%E8%AF%95/">nose跳过测试</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/01/03/python%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95%E6%A1%86%E6%9E%B6-nose/">python单元测试框架-nose</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/01/02/win32api-VK-CODE/">win32api_VK_CODE</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/12/28/python3-6%E5%AE%89%E8%A3%85pywin32/">python3.6安装pywin32</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/12/27/python3-map-%E5%87%BD%E6%95%B0/">python3_map()函数</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/12/26/html%E6%8A%A5%E5%91%8A%E4%B9%B1%E7%A0%81/">html报告乱码</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/12/25/pycharm%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95/">pycharm单元测试</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/12/25/selenium3-python3-6%E6%90%AD%E5%BB%BA%E6%B5%8B%E8%AF%95/">selenium3+python3.6搭建测试</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/12/21/world-map/">world_map</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/12/20/%E7%BB%98%E5%88%B6%E9%9A%8F%E6%9C%BA%E6%BC%AB%E6%AD%A5%E5%9B%BE/">绘制随机漫步图</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/12/20/matplotlib%E7%BB%98%E5%88%B6%E6%B8%90%E5%8F%98%E5%9B%BE/">matplotlib绘制渐变图</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/12/19/Django2-0%E6%9B%B4%E6%96%B0%E5%86%85%E5%AE%B9%E8%AE%B0%E5%BD%95/">Django2.0更新内容记录</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/12/15/%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95-%E7%90%86%E5%8F%91%E5%B8%88%E6%A8%A1%E5%9E%8B/">性能测试-理发师模型</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/12/15/Jmeter%E7%B3%BB%E7%BB%9F%E7%9B%91%E6%8E%A7%E9%85%8D%E7%BD%AE/">Jmeter系统监控配置</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/12/14/Hexo%E5%8D%9A%E5%AE%A2%E4%B8%AD%E5%8A%A0%E5%85%A5%E5%9B%BE%E7%89%87/">Hexo博客中加入图片</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/12/13/python%E7%BC%96%E7%A0%81/">python编码</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/12/13/Django%E8%8E%B7%E5%8F%96%E4%B8%8D%E5%88%B0%E7%89%B9%E5%AE%9A%E9%93%BE%E6%8E%A5/">Django获取不到特定链接</a></li></ul>
+
+
+
+
+    <script>
+        
+    </script>
+
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                <i class="fa fa-copyright"></i> 
+                2018-2020 Kyle
+            </div>
+            <div class="footer-right">
+                <a href="http://hexo.io/" target="_blank" title="A fast, simple &amp; powerful blog framework">Hexo</a>  Theme <a href="https://github.com/MOxFIVE/hexo-theme-yelee" target="_blank" title="Another simple and elegant theme for Hexo  v3.5">Yelee</a> by MOxFIVE <i class="fa fa-heart animated infinite pulse"></i>
+            </div>
+        </div>
+        
+            <div class="visit">
+                
+                    <span id="busuanzi_container_site_pv" style='display:none'>
+                        <span id="site-visit" title="Site Visitors"><i class="fa fa-user" aria-hidden="true"></i><span id="busuanzi_value_site_uv"></span>
+                        </span>
+                    </span>
+                
+                
+                    <span>| </span>
+                
+                
+                    <span id="busuanzi_container_page_pv" style='display:none'>
+                        <span id="page-visit"  title="Page Hits"><i class="fa fa-eye animated infinite pulse" aria-hidden="true"></i><span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    </span>
+                
+            </div>
+        
+    </div>
+</footer>
+    </div>
+    
+<script data-main="/js/main.js" src="//cdn.bootcss.com/require.js/2.2.0/require.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            var iPad = window.navigator.userAgent.indexOf('iPad');
+            if (iPad > -1 || $(".left-col").css("display") === "none") {
+                var bgColorList = ["#9db3f4", "#414141", "#e5a859", "#f5dfc6", "#c084a0", "#847e72", "#cd8390", "#996731"];
+                var bgColor = Math.ceil(Math.random() * (bgColorList.length - 1));
+                $("body").css({"background-color": bgColorList[bgColor], "background-size": "cover"});
+            }
+            else {
+                var backgroundnum = 4;
+                var backgroundimg = "url(/background/bg-x.jpg)".replace(/x/gi, Math.ceil(Math.random() * backgroundnum));
+                $("body").css({"background": backgroundimg, "background-attachment": "fixed", "background-size": "cover"});
+            }
+        })
+    </script>
+
+
+
+
+
+<div class="scroll" id="scroll">
+    <a href="#" title="Back to Top"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments" onclick="load$hide();" title="Comments"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer" title="Go to Bottom"><i class="fa fa-arrow-down"></i></a>
+</div>
+<script>
+    // Open in New Window
+    
+        var oOpenInNew = {
+            
+            
+            
+            
+             categories: ".article-category a, a.tag-list-link", 
+             articleNav: "#article-nav a, #post-nav-button a", 
+             archives: ".archive-article-title", 
+             miniArchives: "a.post-list-link", 
+            
+             friends: "#js-friends a", 
+             socail: ".social a" 
+        }
+        for (var x in oOpenInNew) {
+            $(oOpenInNew[x]).attr("target", "_blank");
+        }
+    
+</script>
+
+    <script>
+        var originTitle = document.title;
+        var titleTime;
+        document.addEventListener("visibilitychange", function() {
+            if (document.hidden) {
+                document.title = "~^(*￣(oo)￣)^ 瞅啥瞅" + originTitle;
+                clearTimeout(titleTime);
+            }
+            else {
+                document.title = "(*´∇｀*)  瞅你咋地" + originTitle;
+                titleTime = setTimeout(function() {
+                    document.title = originTitle;
+                }, 2000);
+            }
+        })
+    </script>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+
+<script type="text/javascript" src="/resources/float.js"></script>
+<script type="text/javascript" src="/resources/love.js"></script>
+<script type="text/javascript" color=0,104,183 opacity=1 zindex=-1 count=50 src="/resources/particle.js"></script>
+<script type="text/javascript" src="/resources/typewriter.js"></script>
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <!--[if lt IE 9]>
+        <style>body {display: none; background: none !important} </style>
+        <meta http-equiv="Refresh" Content="0; url=//outdatedbrowser.com/" />
+    <![endif]-->
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="format-detection" content="telephone=no" />
+<meta name="author" content="Kyle" />
+
+
+
+<meta name="description" content="python元类 转自stackoverflow 神级人物e-satis的神级回复，以及国内翻译组汉化结果：">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【转】python元类介绍">
+<meta property="og:url" content="https://spindriftks.github.io/2018/01/31/%E3%80%90%E8%BD%AC%E3%80%91python%E5%85%83%E7%B1%BB%E4%BB%8B%E7%BB%8D/index.html">
+<meta property="og:site_name" content="简洁的时光">
+<meta property="og:description" content="python元类 转自stackoverflow 神级人物e-satis的神级回复，以及国内翻译组汉化结果：">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2018-01-30T23:26:59.000Z">
+<meta property="article:modified_time" content="2020-12-21T06:39:16.243Z">
+<meta property="article:author" content="Kyle">
+<meta property="article:tag" content="python">
+<meta name="twitter:card" content="summary">
+
+<link rel="apple-touch-icon" href= "/apple-touch-icon.png">
+
+
+    <link rel="alternate" href="/atom.xml" title="简洁的时光" type="application/atom+xml">
+
+
+
+    <link rel="shortcut icon" href="/Snow.png">
+
+
+
+    <link href="//cdn.bootcss.com/animate.css/3.5.1/animate.min.css" rel="stylesheet">
+
+
+
+    <link href="//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.css" rel="stylesheet">
+
+
+
+    <script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+    <link href="//cdn.bootcss.com/pace/1.0.2/themes/blue/pace-theme-minimal.css" rel="stylesheet">
+
+
+
+<link rel="stylesheet" href="/css/style.css">
+
+
+
+
+<link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+
+
+<title>【转】python元类介绍 | 简洁的时光</title>
+
+<script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+
+<script>
+    var yiliaConfig = {
+        fancybox: true,
+        animate: true,
+        isHome: false,
+        isPost: true,
+        isArchive: false,
+        isTag: false,
+        isCategory: false,
+        fancybox_js: "//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.js",
+        scrollreveal: "//cdn.bootcss.com/scrollReveal.js/3.1.4/scrollreveal.min.js",
+        search: true
+    }
+</script>
+
+
+    <script> yiliaConfig.jquery_ui = [false]; </script>
+
+
+
+    <script> yiliaConfig.rootUrl = "\/";</script>
+
+
+
+
+
+
+<meta name="generator" content="Hexo 5.3.0"></head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+            <img src="/img/cats.png" class="animated zoomIn">
+        </a>
+        <hgroup>
+          <h1 class="header-author"><a href="/"></a></h1>
+        </hgroup>
+
+        
+
+        
+            <form id="search-form">
+            <input type="text" id="local-search-input" name="q" placeholder="search..." class="search form-control" autocomplete="off" autocorrect="off" searchonload="false" />
+            <i class="fa fa-times" onclick="resetSearch()"></i>
+            </form>
+            <div id="local-search-result"></div>
+            <p class='no-result'>No results found <i class='fa fa-spinner fa-pulse'></i></p>
+        
+
+
+        
+            <div id="switch-btn" class="switch-btn">
+                <div class="icon">
+                    <div class="icon-ctn">
+                        <div class="icon-wrap icon-house" data-idx="0">
+                            <div class="birdhouse"></div>
+                            <div class="birdhouse_holes"></div>
+                        </div>
+                        <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                            <div class="ribbon"></div>
+                        </div>
+                        
+                        <div class="icon-wrap icon-link hide" data-idx="2">
+                            <div class="loopback_l"></div>
+                            <div class="loopback_r"></div>
+                        </div>
+                        
+                        
+                        <div class="icon-wrap icon-me hide" data-idx="3">
+                            <div class="user"></div>
+                            <div class="shoulder"></div>
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+                <div class="tips-box hide">
+                    <div class="tips-arrow"></div>
+                    <ul class="tips-inner">
+                        <li>Menu</li>
+                        <li>Tags</li>
+                        
+                        <li>Friends</li>
+                        
+                        
+                        <li>About Me</li>
+                        
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a href="/">主页</a></li>
+                        
+                            <li><a href="/archives/">所有文章</a></li>
+                        
+                            <li><a href="/tags/">标签云</a></li>
+                        
+                            <li><a href="/about/">关于我</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" href="mailto:&#115;&#104;&#105;&#104;&#117;&#97;&#110;&#50;&#52;&#64;&#49;&#54;&#51;&#46;&#99;&#111;&#109;" title="Email"></a>
+                            
+                                <a class="fa GitHub" target="_blank" rel="noopener" href="https://github.com/Spindriftks" title="GitHub"></a>
+                            
+                                <a class="fa RSS" href="/atom.xml" title="RSS"></a>
+                            
+                        </ul>
+                    </nav>
+                </section>
+                
+                
+                <section class="switch-part switch-part2">
+                    <div class="widget tagcloud" id="js-tagcloud">
+                        <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/net-core/" rel="tag">.net core</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android/" rel="tag">Android</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Ant/" rel="tag">Ant</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CPU/" rel="tag">CPU</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Centos7/" rel="tag">Centos7</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Chronograf/" rel="tag">Chronograf</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DES/" rel="tag">DES</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Django/" rel="tag">Django</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hexo/" rel="tag">Hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HmacSHA256/" rel="tag">HmacSHA256</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IO/" rel="tag">IO</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Influxdb/" rel="tag">Influxdb</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Istio/" rel="tag">Istio</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JVM/" rel="tag">JVM</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Jmeter/" rel="tag">Jmeter</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Jumpserver/" rel="tag">Jumpserver</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/" rel="tag">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Locust/" rel="tag">Locust</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MD5/" rel="tag">MD5</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Macaca/" rel="tag">Macaca</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Monkey/" rel="tag">Monkey</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Nginx/" rel="tag">Nginx</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Nitrate/" rel="tag">Nitrate</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NumPy/" rel="tag">NumPy</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/One-Piece/" rel="tag">One Piece</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Redis/" rel="tag">Redis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Requests/" rel="tag">Requests</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Service-Mesh/" rel="tag">Service Mesh</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SiteScope/" rel="tag">SiteScope</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SonarQube/" rel="tag">SonarQube</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SqlServer/" rel="tag">SqlServer</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Vultr/" rel="tag">Vultr</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/adb/" rel="tag">adb</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/android/" rel="tag">android</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/appium/" rel="tag">appium</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/buff-cache/" rel="tag">buff/cache</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cmder/" rel="tag">cmder</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ddt/" rel="tag">ddt</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/" rel="tag">docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/elasticsearch/" rel="tag">elasticsearch</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/elasticsearch-head/" rel="tag">elasticsearch head</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/excel/" rel="tag">excel</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/exchange/" rel="tag">exchange</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/explain/" rel="tag">explain</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/faker/" rel="tag">faker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/fiddler/" rel="tag">fiddler</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/" rel="tag">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/grafana/" rel="tag">grafana</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/https/" rel="tag">https</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iostat/" rel="tag">iostat</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iphone/" rel="tag">iphone</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/journalctl/" rel="tag">journalctl</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/k8s/" rel="tag">k8s</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kibana/" rel="tag">kibana</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/lives/" rel="tag">lives</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/loadrunner/" rel="tag">loadrunner</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/logging/" rel="tag">logging</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/logstash/" rel="tag">logstash</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/matplotlib/" rel="tag">matplotlib</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/memory/" rel="tag">memory</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/" rel="tag">mysql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nGrinder/" rel="tag">nGrinder</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/netstat/" rel="tag">netstat</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nose/" rel="tag">nose</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/openpyxl/" rel="tag">openpyxl</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pip3/" rel="tag">pip3</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pipenv/" rel="tag">pipenv</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/profiler/" rel="tag">profiler</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pycharm/" rel="tag">pycharm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pygal/" rel="tag">pygal</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pymysql/" rel="tag">pymysql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pytest/" rel="tag">pytest</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python3/" rel="tag">python3</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pywin32/" rel="tag">pywin32</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/regex/" rel="tag">regex</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/response-time/" rel="tag">response time</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/selenium/" rel="tag">selenium</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/smtplib/" rel="tag">smtplib</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/systemd/" rel="tag">systemd</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/testlink/" rel="tag">testlink</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/uiautomator2/" rel="tag">uiautomator2</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/unittest/" rel="tag">unittest</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/webpagetest/" rel="tag">webpagetest</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/win32api/" rel="tag">win32api</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/windows/" rel="tag">windows</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/wordpress/" rel="tag">wordpress</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/yum/" rel="tag">yum</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/zabbix3-4/" rel="tag">zabbix3.4</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95/" rel="tag">单元测试</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%80%A7%E8%83%BD/" rel="tag">性能</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E6%8D%AE%E5%88%86%E7%A6%BB/" rel="tag">数据分离</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BA%BF%E7%A8%8B/" rel="tag">线程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%87%AA%E5%8A%A8%E5%8C%96%E6%B5%8B%E8%AF%95/" rel="tag">自动化测试</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%BF%9B%E7%A8%8B/" rel="tag">进程</a></li></ul>
+                    </div>
+                </section>
+                
+                
+                
+                <section class="switch-part switch-part3">
+                    <div id="js-friends">
+                    
+                      <a class="main-nav-link switch-friends-link" target="_blank" rel="noopener" href="https://stackoverflow.com/">StackOverflow</a>
+                    
+                      <a class="main-nav-link switch-friends-link" target="_blank" rel="noopener" href="https://pixabay.com/">pixabay</a>
+                    
+                      <a class="main-nav-link switch-friends-link" target="_blank" rel="noopener" href="https://testerhome.com/topics/popular">testerhome</a>
+                    
+                    </div>
+                </section>
+                
+
+                
+                
+                <section class="switch-part switch-part4">
+                
+                    <div id="js-aboutme">kyle(时欢)</div>
+                </section>
+                
+            </div>
+        </div>
+    </header>                
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="回到主页"></a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                <img src="/img/cats.png" class="animated zoomIn">
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="回到主页"></a></h1>
+            </hgroup>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/">主页</a></li>
+                
+                    <li><a href="/archives/">所有文章</a></li>
+                
+                    <li><a href="/tags/">标签云</a></li>
+                
+                    <li><a href="/about/">关于我</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" target="_blank" href="mailto:&#115;&#104;&#105;&#104;&#117;&#97;&#110;&#50;&#52;&#64;&#49;&#54;&#51;&#46;&#99;&#111;&#109;" title="Email"></a>
+                            
+                                <a class="fa GitHub" target="_blank" href="https://github.com/Spindriftks" title="GitHub"></a>
+                            
+                                <a class="fa RSS" target="_blank" href="/atom.xml" title="RSS"></a>
+                            
+                        </ul>
+            </nav>
+        </header>                
+    </div>
+    <link class="menu-list" tags="Tags" friends="Friends" about="About Me"/>
+</nav>
+      <div class="body-wrap"><article id="post-【转】python元类介绍" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2018/01/31/%E3%80%90%E8%BD%AC%E3%80%91python%E5%85%83%E7%B1%BB%E4%BB%8B%E7%BB%8D/" class="article-date">
+      <time datetime="2018-01-30T23:26:59.000Z" itemprop="datePublished">2018-01-31</time>
+</a>
+
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      【转】python元类介绍
+    </h1>
+  
+
+	
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/categories/python%E9%BB%91%E7%A7%91%E6%8A%80/">python黑科技</a>
+    </div>
+
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/" rel="tag">python</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <p>python元类</p>
+<p>转自<code>stackoverflow</code> 神级人物<strong>e-satis</strong>的神级回复，以及国内翻译组汉化结果：</p>
+<a id="more"></a>
+
+<h2 id="写在前面："><a href="#写在前面：" class="headerlink" title="写在前面："></a>写在前面：</h2><p>经常在<code>stackoverflow</code>上看见一些神一般的回答，也看到过很多次创建<code>Foo</code>类，特意上<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/Foobar">维基百科</a>搜了，解释如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">foobar是计算机程序领域里的术语炒作，并无实际用途和参考意义。 在计算机程序设计与计算机技术的相关文档中，术语foobar是一个常见的无名氏化名，常被作为“伪变量”使用。单词“foobar”或分离的“foo”与“bar”常出现于程序设计的案例中，如同Hello World程序一样，它们常被用于向学习者介绍某种程序语言。</span><br><span class="line"></span><br><span class="line">“foo”常被作为函数／方法的名称，而“bar”则常被用作变量名。</span><br></pre></td></tr></table></figure>
+<h2 id="正题"><a href="#正题" class="headerlink" title="正题"></a>正题</h2><h3 id="类也是对象（Classes-as-objects）"><a href="#类也是对象（Classes-as-objects）" class="headerlink" title="类也是对象（Classes as objects）"></a>类也是对象（Classes as objects）</h3><p>在理解元类之前，需要先掌握Python中的类。Python中类的概念借鉴于Smalltalk，这显得有些奇特。在大多数编程语言中，类就是一组用来描述如何生成一个对象的代码段。在Python中这一点仍然成立：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">class ObjectCreator(object):</span><br><span class="line">    pass</span><br><span class="line">my_object &#x3D; ObjectCreator()</span><br><span class="line">print(my_object)</span><br><span class="line"></span><br><span class="line">&lt;__main__.ObjectCreator object at 0x000001899B36E550&gt;</span><br></pre></td></tr></table></figure>
+<p>但是python中的类远不止如此。类同样也是一种对象 <strong>这个对象（类）自身用创建对象（类实例）的能力，而这就是为什么它是一个类的原因</strong>。但是，它本质上仍然是一个对象，所以，你可以对它进行如下操作：<br>1、将它赋值给一个变量<br>2、拷贝它<br>3、为它增加属性<br>4、将它作为函数参数进行传递</p>
+<p>示例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">class ObjectCreator(object):</span><br><span class="line">    pass</span><br><span class="line"># 打印一个类，因为它其实也是一个对象</span><br><span class="line">print(ObjectCreator)</span><br><span class="line">&lt;class &#39;__main__.ObjectCreator&#39;&gt;</span><br><span class="line"># 将类作为参数传给函数</span><br><span class="line">def echo(o):</span><br><span class="line">    print(o)</span><br><span class="line">echo(ObjectCreator)</span><br><span class="line">&lt;class &#39;__main__.ObjectCreator&#39;&gt;</span><br><span class="line"># 为类增加属性</span><br><span class="line">print(hasattr(ObjectCreator, &#39;new_attribute&#39;))</span><br><span class="line">ObjectCreator.new_attribute &#x3D; &#39;foo&#39;</span><br><span class="line">print(hasattr(ObjectCreator, &#39;new_attribute&#39;))</span><br><span class="line">print(ObjectCreator.new_attribute)</span><br><span class="line">False</span><br><span class="line">True</span><br><span class="line">foo</span><br><span class="line"># 将类赋值给一个变量</span><br><span class="line">ObjectCreatorMirror &#x3D; ObjectCreator</span><br><span class="line">print(ObjectCreatorMirror())</span><br><span class="line">&lt;__main__.ObjectCreator object at 0x000002C21DF1E550&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="动态地创建类"><a href="#动态地创建类" class="headerlink" title="动态地创建类"></a>动态地创建类</h3><p>因为类也是对象，你可以在运行时动态地创建它们，就想其他任何时候一样。首先，你可以在函数中创建类，使用class关键字即可。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">def choose_class(name):</span><br><span class="line">    if name &#x3D;&#x3D; &#39;foo&#39;:</span><br><span class="line">        class Foo(object):</span><br><span class="line">            pass</span><br><span class="line">        return Foo</span><br><span class="line">    else:</span><br><span class="line">        class Bar(object):</span><br><span class="line">            pass</span><br><span class="line">        return Bar</span><br><span class="line">MyClass &#x3D; choose_class(&#39;foo&#39;)</span><br><span class="line">print(MyClass)</span><br><span class="line">print(MyClass())</span><br><span class="line">&lt;class &#39;__main__.choose_class.&lt;locals&gt;.Foo&#39;&gt;</span><br><span class="line">&lt;__main__.choose_class.&lt;locals&gt;.Foo object at 0x000002B57928B518&gt;</span><br></pre></td></tr></table></figure>
+<p>但这还不够动态，因为你仍然需要自己编写整个类的代码。由于类也是对象，所以它们必须是用过什么东西来生成的才对。当你使用class关键字时，Python解释器自动创建这个对象，但就和python中的大多数事情一样，python仍然提供给你手动处理的方法。內建函数type，可以让你知道一个对象的类型是什么：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">print(type(1))</span><br><span class="line">print(type(&quot;1&quot;))</span><br><span class="line">print(type(ObjectCreator))</span><br><span class="line">print(type(ObjectCreator()))</span><br><span class="line">&lt;class &#39;int&#39;&gt;</span><br><span class="line">&lt;class &#39;str&#39;&gt;</span><br><span class="line">&lt;class &#39;type&#39;&gt;</span><br><span class="line">&lt;class &#39;__main__.ObjectCreator&#39;&gt;</span><br></pre></td></tr></table></figure>
+<p>这里，type有一种完全不同的能力，它也能动态的创建类。type可以接受一个类的描述作为参数，然后返回一个类（同一个函数拥有两种完全不同的用法是一件很傻的事情，但这在Python中是为了保持向后的兼容性）</p>
+<p>type可以像这样工作：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">type(类名, 父类的元组（针对继承的情况，可以为空），包含属性的字典（名称知道）)</span><br></pre></td></tr></table></figure>
+<p>比如如下的代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">class MyShinyClass(object):</span><br><span class="line">    pass</span><br></pre></td></tr></table></figure>
+<p>可以手动像这样创建：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># 返回一个对象</span><br><span class="line">MyShinyClass &#x3D; type(&#39;MyShinyClASS&#39;, (), &#123;&#125;)</span><br><span class="line">print(MyShinyClass)</span><br><span class="line">print(MyShinyClass())</span><br><span class="line">&lt;class &#39;__main__.MyShinyClASS&#39;&gt;</span><br><span class="line">&lt;__main__.MyShinyClASS object at 0x00000214ED6FE5F8&gt;</span><br></pre></td></tr></table></figure>
+<p>type接受一个字典来为类定义属性，因此</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">class Foo(object):</span><br><span class="line">    bar &#x3D; True</span><br></pre></td></tr></table></figure>
+<p>可以翻译为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Foo &#x3D; type(&#39;Foo&#39;, (), &#123;&#39;bar&#39;:True&#125;)</span><br></pre></td></tr></table></figure>
+<p>并且可以将Foo当做一个普通的类一样使用：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">print(Foo)</span><br><span class="line">print(Foo.bar)</span><br><span class="line">f &#x3D; Foo()</span><br><span class="line">print(f)</span><br><span class="line">print(f.bar)</span><br><span class="line">&lt;class &#39;__main__.Foo&#39;&gt;</span><br><span class="line">True</span><br><span class="line">&lt;__main__.Foo object at 0x000002C77F0FD4E0&gt;</span><br><span class="line">True</span><br></pre></td></tr></table></figure>
+<p>当然，你可以向这个类继承，所以，如下的代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">class FooChild(Foo):</span><br><span class="line">    pass</span><br></pre></td></tr></table></figure>
+<p>就可以写成：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">FooChild &#x3D; type(&#39;FooChild&#39;, (Foo,), &#123;&#125;)</span><br><span class="line">print(FooChild)</span><br><span class="line">print(FooChild.bar)</span><br></pre></td></tr></table></figure>
+<h3 id="到底什么是元类"><a href="#到底什么是元类" class="headerlink" title="到底什么是元类"></a>到底什么是元类</h3><p>元类就是用来创建类的“东西”，你创建类就是为了创建类的实例对象，但是我们知道python中的类也是对象，而元类就是用来创建这些类（对象）的，所以，元类就是类的类，可以这样理解：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">MyClass &#x3D; MetaClass()</span><br><span class="line">MyObject &#x3D; MyClass()</span><br></pre></td></tr></table></figure>
+<p>你可以看到了type可以让你像这样做：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">MyClass &#x3D; type(&#39;MyClass&#39;, (), &#123;&#125;)</span><br></pre></td></tr></table></figure>
+<p>这是因为函数type实际上是一个元类，type就是python背后用来创建所有类的元类，所以type为什么不写成Type也就知道了吧，或许就是为了和str保持一致性，str是用来创建字符串对象的类，而int是用来创建整数对象的类。type即使创建类对象的类。你可以通过__class__属性来看到这一点。Python中的所有的东西，注意，所有的东西——都是对象。这包含整数、字符串、函数和类。它们都是对象，而且它们都是从一个类创建来的。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">age &#x3D; 24</span><br><span class="line">print(age.__class__)</span><br><span class="line">name &#x3D; &#39;bob&#39;</span><br><span class="line">print(name.__class__)</span><br><span class="line">def foo():</span><br><span class="line">    pass</span><br><span class="line">print(foo.__class__)</span><br><span class="line">&lt;class &#39;int&#39;&gt;</span><br><span class="line">&lt;class &#39;str&#39;&gt;</span><br><span class="line">&lt;class &#39;function&#39;&gt;</span><br></pre></td></tr></table></figure>
+<p>现在，对于任何一个__class__的__class__属性又是什么呢？</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">print(age.__class__.__class__)</span><br><span class="line">print(name.__class__.__class__)</span><br><span class="line">print(foo.__class__.__class__)</span><br><span class="line">&lt;class &#39;type&#39;&gt;</span><br><span class="line">&lt;class &#39;type&#39;&gt;</span><br><span class="line">&lt;class &#39;type&#39;&gt;</span><br></pre></td></tr></table></figure>
+<p>因此，元类就是窗累类这种对象的东西，如果你喜欢的话，可以把元类称谓”类工厂”（不是工厂类）,<code>type</code>就是python內建的元类，当然了，你也可以创建自己的元类。</p>
+<h3 id="metaclass-属性"><a href="#metaclass-属性" class="headerlink" title="__metaclass__属性"></a><code>__metaclass__</code>属性</h3><p>你可以在写一个类的时候为其添加__metaclass__属性。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">class Foo(object):</span><br><span class="line">    __metaclass__ &#x3D; somethind,.,</span><br><span class="line">[...]</span><br></pre></td></tr></table></figure>
+<p>如果你这么做了，python就会用元类来创建类Foo。这里面有技巧，你首先写下class Foo(object)，但是类对象Foo还没有在内存中创建。Python会在类的定义中寻找<code>__metaclass__</code>属性，如果找到了，Python就会用它创建类Foo，如果没找到，就会用內建的type来创建这个类。</p>
+<p>当你写下如下代码时：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">class Foo(Bar):</span><br><span class="line">	pass</span><br></pre></td></tr></table></figure>
+<p>Python做了如下的操作：</p>
+<p>Foo中有<code>__metaclass__</code>这个属性吗？如果有，python会在内存中通过<code>__metaclass__</code>创建一个名字为Foo的类对象（注意是类对象）。如果python没有找到<code>__metaclass__</code>，它会继续在Bar（父类）中寻找<code>__metaclass__</code>属性，并尝试做和前面同样的操作。如果python在任何父类中都找不到<code>__metaclass__</code>，它就会在模块层面中去寻找<code>__metaclass__</code>，并尝试做同样的操作。如果还是找不到<code>__metaclass__</code>，python就会用内置的type来创建这个类对象。</p>
+<p>现在的问题就是，你可以在<code>__metaclass__</code>中放置些什么代码呢？答案是：可以是可以创建一个类的东西。那什么可以用来创建一个类呢？<strong>type</strong>，或者任何使用到type或者子类化type的东西都可以。</p>
+<h3 id="自定义元类"><a href="#自定义元类" class="headerlink" title="自定义元类"></a>自定义元类</h3><p>元类的主要目的就是为了<strong>当创建类时能够自动地改变类</strong>。通常，你会为API做这样的事情，你希望可以创建符合当前上下文的类。假想一个很傻的例子，你决定你的模块里所有的类的属性都应该是大写形式，有好几种方法可以实现，单其中一种就是通过在模块级别设定<code>__metaclass__</code>，采用这种方法，这个模块中的所有类都会通过这个元类来创建，我们只需要告诉元类把所有的属性都改写成大写形式就解决了。</p>
+<p>幸运的是，<code>__metaclass__</code>实际上可以被任意调用，它并不需要是一个正式的类（我们都知道，名字里面带’class’的东西，并不一定是个class）</p>
+<p>我们这里先以一个简单的函数作为例子开始：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"># 元类会自动将你通常传给&#39;type&#39;的参数作为自己的参数传入</span><br><span class="line">def upper_attr(future_class_name, future_class_parents, future_class_attr):</span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line">    返回一个类对象，将属性都转为大写形式</span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line">    # 识别所有不以&#39;__&#39;开头的属性，将它转换为大写</span><br><span class="line">    uppercase_attr &#x3D; &#123;&#125;</span><br><span class="line">    for name, val in future_class_attr.items():</span><br><span class="line">        if not name.startswith(&#39;__&#39;):</span><br><span class="line">            uppercase_attr[name.upper()] &#x3D; val</span><br><span class="line">        else:</span><br><span class="line">            uppercase_attr[name] &#x3D; val</span><br><span class="line"></span><br><span class="line">    # type创建这个类</span><br><span class="line">    return type(future_class_name, future_class_parents, uppercase_attr)</span><br><span class="line"></span><br><span class="line"># 这行会影响模块中的所有类</span><br><span class="line">__metaclass__ &#x3D; upper_attr</span><br><span class="line"></span><br><span class="line">class Foo():</span><br><span class="line">    # 全局 __metaclass__不会和&#39;object&#39;一起生效，但是我们可以在这里定义__metaclass__来只对这个类生效</span><br><span class="line">    bar &#x3D; &#39;bip&#39;</span><br><span class="line"></span><br><span class="line">print(hasattr(Foo, &#39;bar&#39;))</span><br><span class="line">print(hasattr(Foo, &#39;BAR&#39;))</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>现在让我们再做一次，这一次用一个真正的class来当元类</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"># 请记住，&#39;type&#39;实际上是一个类，就像&#39;str&#39;和&#39;int&#39;一样</span><br><span class="line"># 所以，你可以从type继承</span><br><span class="line">class UpperAttrMetaclass(type):</span><br><span class="line">    # __new__ 是在 __init__之前被调用的特殊方法</span><br><span class="line">    # __new__是用来创建对象并返回的方法</span><br><span class="line">    # __init__只是用来把传入的参数初始化给对象</span><br><span class="line">    # 你很少用到__new__，除非你希望能够控制对象的创建</span><br><span class="line">    # 这里，创建的对象是类，我们希望能够自定义它，所以我们这里改写__new__</span><br><span class="line">    # 如果你希望的话，你也可以在__init__中做些事情</span><br><span class="line">    # 还有一些高级的用法会涉及到改写__call__特殊方法，但是我们这里不用</span><br><span class="line">    def __new__(upperattr_metaclass, future_class_name,</span><br><span class="line">                future_class_parents, future_class_attr):</span><br><span class="line"></span><br><span class="line">        uppercase_attr &#x3D; &#123;&#125;</span><br><span class="line">        for name, val in future_class_attr.items():</span><br><span class="line">            if not name.startswith(&#39;__&#39;):</span><br><span class="line">                uppercase_attr[name.upper()] &#x3D; val</span><br><span class="line">            else:</span><br><span class="line">                uppercase_attr[name] &#x3D; val</span><br><span class="line"></span><br><span class="line">        return type(future_class_name, future_class_parents, uppercase_at</span><br></pre></td></tr></table></figure>
+<p>但是这不是OOP（Object-oriented programming，面向对象编程）。我们直接调用了type，而且我们没有改写父类的__new__方法。现在，我们这样去处理：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">class UpperAttrMetaclass(type): </span><br><span class="line"></span><br><span class="line">    def __new__(upperattr_metaclass, future_class_name, </span><br><span class="line">                future_class_parents, future_class_attr):</span><br><span class="line"></span><br><span class="line">        uppercase_attr &#x3D; &#123;&#125;</span><br><span class="line">        for name, val in future_class_attr.items():</span><br><span class="line">            if not name.startswith(&#39;__&#39;):</span><br><span class="line">                uppercase_attr[name.upper()] &#x3D; val</span><br><span class="line">            else:</span><br><span class="line">                uppercase_attr[name] &#x3D; val</span><br><span class="line"></span><br><span class="line">        # 复用type.__new__方法</span><br><span class="line">        # 这就是基本的OOP编程，没什么魔法</span><br><span class="line">        return type.__new__(upperattr_metaclass, future_class_name, </span><br><span class="line">                            future_class_parents, uppercase_attr)</span><br></pre></td></tr></table></figure>
+<p>你可以已经注意到了有个额外的参数uppersttr_metaclass，这并没有什么特别的。类方法的第一个参数总是表示当前的实例，就想在普通的类方法中的self参数一样。当然了，为了清晰起见，这边将名字起的比较长。但是就想self一样，所有的参数都有它们的传统名称。因此，在真是的产品代码中一个元类应该像这样：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">class UpperAttrMetaclass(type): </span><br><span class="line"></span><br><span class="line">    def __new__(cls, clsname, bases, dct):</span><br><span class="line"></span><br><span class="line">        uppercase_attr &#x3D; &#123;&#125;</span><br><span class="line">        for name, val in dct.items():</span><br><span class="line">            if not name.startswith(&#39;__&#39;):</span><br><span class="line">                uppercase_attr[name.upper()] &#x3D; val</span><br><span class="line">            else:</span><br><span class="line">                uppercase_attr[name] &#x3D; val</span><br><span class="line"></span><br><span class="line">        return type.__new__(cls, clsname, bases, uppercase_attr)</span><br></pre></td></tr></table></figure>
+<p>如果使用super方法的话，我们还可以使它变得更清晰一些，这会缓解继承（是的，你可以拥有元类，从元类继承，从type继承）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">class UpperAttrMetaclass(type): </span><br><span class="line"></span><br><span class="line">    def __new__(cls, clsname, bases, dct):</span><br><span class="line"></span><br><span class="line">        uppercase_attr &#x3D; &#123;&#125;</span><br><span class="line">        for name, val in dct.items():</span><br><span class="line">            if not name.startswith(&#39;__&#39;):</span><br><span class="line">                uppercase_attr[name.upper()] &#x3D; val</span><br><span class="line">            else:</span><br><span class="line">                uppercase_attr[name] &#x3D; val</span><br><span class="line"></span><br><span class="line">        return super(UpperAttrMetaclass, cls).__new__(cls, clsname, bases, uppercase_attr)</span><br></pre></td></tr></table></figure>
+<p>就是这样，除此之外，关于元类真的没有别的可说的了。使用到元类的代码比较复杂，这背后的原因倒不是因为元类本身，二十因为你通常会使用元类去做一些晦涩的事情，依赖于自省，控制继承等等。确实，用元类来搞些“黑魔法”是特别有用的，因而会搞出些复杂的东西来。但是元类本身而言，它们其实是很简单的：</p>
+<p>1，拦截类的创建<br>2，修改类<br>3，返回修改之后的类</p>
+<h3 id="为什么要用metaclass类而不是函数"><a href="#为什么要用metaclass类而不是函数" class="headerlink" title="为什么要用metaclass类而不是函数"></a>为什么要用metaclass类而不是函数</h3><p>由于<code>__metaclass__</code>可以接受任何可调用的对象，那为什么还要使用类呢，因为很显然使用类会更加复杂，这里有好几个原因：</p>
+<p>1，意图会更加清晰，当你读到UpperAttrMetaclass(type)时，你知道接下来要发生什么<br>2，你可以使用OOP编程。元类可以从元类中继承，改写父类方法，甚至可以使用元类<br>3，你可以把代码组织的更好，当你使用元类的时候肯定不会像上述的简单场景，通常都是针对比较复杂的问题。将多个方法归总到一个类中会很有帮助，也会使得代码更容易阅读。<br>4，你可以使用<code>__new__</code>，<code>__init__</code>以及<code>__call__</code>这样的特殊方法。它们能帮你处理不同的任务。就算通常你可以把所有的东西都在<code>__new__</code>里处理掉，有些人还是觉得用<code>__init__</code>更舒服点。</p>
+<h3 id="究竟为什么要使用元类"><a href="#究竟为什么要使用元类" class="headerlink" title="究竟为什么要使用元类"></a>究竟为什么要使用元类</h3><p>现在回到我们的大主题上来，究竟是为什么你会去使用这样一种容易出错且晦涩的特性？好吧，一般来说，根本用不上它：</p>
+<p>“元类就是深度的魔法，99%的用户根本不必为此操心。如果你想搞清楚究竟是否需要用来元类，那么你就不需要它。那么实际用到元类的人都非常清楚地知道他们需要做什么，而且根本不需要解释为什么要用元类”  ——Python界的领袖Tim Peters</p>
+<p>元类的主要用途是创建API，一个典型的例子是Django ORM。它允许你像这样定义：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">class Person(models.Model):</span><br><span class="line">  name &#x3D; models.CharField(max_length&#x3D;30)</span><br><span class="line">  age &#x3D; models.IntegerField()</span><br></pre></td></tr></table></figure>
+<p>但是如果你像这样做的话：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">guy  &#x3D; Person(name&#x3D;&#39;bob&#39;, age&#x3D;&#39;35&#39;)</span><br><span class="line">print guy.age</span><br></pre></td></tr></table></figure>
+<p>这并不会返回一个IntegerFied对象，而是会放回一个int，甚至可以直接从数据库中取出数据。这是有可能的，因为models.Model定义了<code>__metaclass__</code>，并且使用了一些魔法能够将你刚刚定义的简单的Person类转变成对数据库的一个复杂hook。Django框架将这些看起来很复杂的东西通过暴露出一个简单的使用元类的API将其化简，通过这个API重新创建代码，在背后完成真正的工作。</p>
+<h3 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h3><p>首先，你知道了类其实是能够创建出类实例的对象。事实上，类本身也是实例，当然，它们是元类的实例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">class Foo(object):</span><br><span class="line">    pass</span><br><span class="line">print(id(Foo))</span><br><span class="line">1973075749880</span><br></pre></td></tr></table></figure>
+<p>Python中的一切都是对象，它们要么是类的实例，要么是元类的实例，除了type。type实际上是它自己的元类，在纯python环境中这可不是你能够做到的，这是通过在实现层面耍一些小手段做到的。其次，元类是很复杂的。对于非常简单的类，你可能不希望通过使用元类来对类做修改。你可以通过其他两种技术来修改类：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Monkey patching</span><br><span class="line">class decorators</span><br></pre></td></tr></table></figure>
+<p>当你需要动态修改类时，99%的时间里你最好使用上面这两种技术。当然，其实在99%的时间里你根本就不需要动态修改类。</p>
+<h3 id="原链接"><a href="#原链接" class="headerlink" title="原链接"></a>原链接</h3><blockquote>
+<p><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/100003/what-are-metaclasses-in-python">stackoverflow原链接</a><br><a target="_blank" rel="noopener" href="http://blog.jobbole.com/21351/">国内翻译站</a></p>
+</blockquote>
+
+      
+    </div>
+    
+  </div>
+  
+    
+    <div class="copyright">
+        <p><span>Title:</span><a href="/2018/01/31/%E3%80%90%E8%BD%AC%E3%80%91python%E5%85%83%E7%B1%BB%E4%BB%8B%E7%BB%8D/">【转】python元类介绍</a></p>
+        <p><span>Author:</span><a href="/" title="Back to Homepage"></a></p>
+        <p><span>Created:</span>2018-01-31, 07:26:59</p>
+        <p><span>Updated:</span>2020-12-21, 14:39:16</p>
+        <p>
+            <span>Full URL:</span><a class="post-url" href="/2018/01/31/%E3%80%90%E8%BD%AC%E3%80%91python%E5%85%83%E7%B1%BB%E4%BB%8B%E7%BB%8D/" title="【转】python元类介绍">https://spindriftks.github.io/2018/01/31/%E3%80%90%E8%BD%AC%E3%80%91python%E5%85%83%E7%B1%BB%E4%BB%8B%E7%BB%8D/</a>
+            <span class="copy-path" data-clipboard-text="From https://spindriftks.github.io/2018/01/31/%E3%80%90%E8%BD%AC%E3%80%91python%E5%85%83%E7%B1%BB%E4%BB%8B%E7%BB%8D/　　By " title="Copy Article&#39;s Link &amp; Author"><i class="fa fa-clipboard"></i></span>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>License:</span><i class="fa fa-creative-commons"></i> <a rel="license noopener" target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">"CC BY-NC-SA 4.0"</a> Keep Link &amp; Author if Distribute.
+        </p>
+    </div>
+
+
+
+    <nav id="article-nav">
+        
+            <div id="article-nav-newer" class="article-nav-title">
+                <a href="/2018/02/01/%E5%AE%9E%E7%8E%B0%E8%87%AA%E5%8A%A8%E5%8C%96%E6%B5%8B%E8%AF%95%E6%95%B0%E6%8D%AE%E5%88%86%E7%A6%BB/">
+                    实现自动化测试数据分离
+                </a>
+            </div>
+        
+        
+            <div id="article-nav-older" class="article-nav-title">
+                <a href="/2018/01/24/VPS%E9%87%8D%E5%BB%BA%E8%AE%B0/">
+                    VPS重建记
+                </a>
+            </div>
+        
+    </nav>
+
+  
+</article>
+
+    <div id="toc" class="toc-article">
+        <strong class="toc-title">Contents</strong>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%86%99%E5%9C%A8%E5%89%8D%E9%9D%A2%EF%BC%9A"><span class="toc-number">1.</span> <span class="toc-text">写在前面：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%AD%A3%E9%A2%98"><span class="toc-number">2.</span> <span class="toc-text">正题</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%B1%BB%E4%B9%9F%E6%98%AF%E5%AF%B9%E8%B1%A1%EF%BC%88Classes-as-objects%EF%BC%89"><span class="toc-number">2.1.</span> <span class="toc-text">类也是对象（Classes as objects）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8A%A8%E6%80%81%E5%9C%B0%E5%88%9B%E5%BB%BA%E7%B1%BB"><span class="toc-number">2.2.</span> <span class="toc-text">动态地创建类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%B0%E5%BA%95%E4%BB%80%E4%B9%88%E6%98%AF%E5%85%83%E7%B1%BB"><span class="toc-number">2.3.</span> <span class="toc-text">到底什么是元类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#metaclass-%E5%B1%9E%E6%80%A7"><span class="toc-number">2.4.</span> <span class="toc-text">__metaclass__属性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89%E5%85%83%E7%B1%BB"><span class="toc-number">2.5.</span> <span class="toc-text">自定义元类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E7%94%A8metaclass%E7%B1%BB%E8%80%8C%E4%B8%8D%E6%98%AF%E5%87%BD%E6%95%B0"><span class="toc-number">2.6.</span> <span class="toc-text">为什么要用metaclass类而不是函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%A9%B6%E7%AB%9F%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E4%BD%BF%E7%94%A8%E5%85%83%E7%B1%BB"><span class="toc-number">2.7.</span> <span class="toc-text">究竟为什么要使用元类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BB%93%E8%AF%AD"><span class="toc-number">2.8.</span> <span class="toc-text">结语</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8E%9F%E9%93%BE%E6%8E%A5"><span class="toc-number">2.9.</span> <span class="toc-text">原链接</span></a></li></ol></li></ol>
+        
+    </div>
+    <style>
+        .left-col .switch-btn,
+        .left-col .switch-area {
+            display: none;
+        }
+        .toc-level-3 i,
+        .toc-level-3 ol {
+            display: none !important;
+        }
+    </style>
+
+    <input type="button" id="tocButton" value="Hide"  title="Show or Hide Table of Contents">
+
+    <script>
+        yiliaConfig.toc = ["Hide", "Show", !!"false"];
+    </script>
+
+
+
+    
+<div class="share">
+    
+        <div class="bdsharebuttonbox">
+            <a href="#" class="fa fa-twitter bds_twi" data-cmd="twi" title="分享到推特"></a>
+            <a href="#" class="fa fa-weibo bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+            <a href="#" class="fa fa-qq bds_sqq" data-cmd="sqq" title="分享给 QQ 好友"></a>
+            <a href="#" class="fa fa-files-o bds_copy" data-cmd="copy" title="复制网址"></a>
+            <a href="#" class="fa fa fa-envelope-o bds_mail" data-cmd="mail" title="通过邮件分享"></a>
+            <a href="#" class="fa fa-weixin bds_weixin" data-cmd="weixin" title="生成文章二维码"></a>
+            <a href="#" class="fa fa-share-alt bds_more" data-cmd="more"></i></a>
+        </div>
+        <script>
+            window._bd_share_config={
+                "common":{"bdSnsKey":{},"bdText":"【转】python元类介绍　| 简洁的时光　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+        </script>
+    
+
+    
+</div>
+
+
+
+
+
+
+
+    
+    <section class="livere" id="comments">
+    <!-- 来必力City版安装代码 -->
+	<div id="lv-container" data-id="city" data-uid="MTAyMC80MzczNS8yMDI3NA==">
+	<script type="text/javascript">
+	(function(d, s) {
+		var j, e = d.getElementsByTagName(s)[0];
+	
+		if (typeof LivereTower === 'function') { return; }
+	
+		j = d.createElement(s);
+		j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+		j.async = true;
+	
+		e.parentNode.insertBefore(j, e);
+	})(document, 'script');
+	</script>
+	<noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+	</div>
+	<!-- City版安装代码已完成 -->
+</section>
+
+
+
+
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/2018/02/01/%E5%AE%9E%E7%8E%B0%E8%87%AA%E5%8A%A8%E5%8C%96%E6%B5%8B%E8%AF%95%E6%95%B0%E6%8D%AE%E5%88%86%E7%A6%BB/" title="Pre: 实现自动化测试数据分离">
+                <i class="fa fa-angle-left"></i>
+            </a>
+        
+
+        <a title="Mini Archives"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+
+        
+            <a href="/2018/01/24/VPS%E9%87%8D%E5%BB%BA%E8%AE%B0/" title="Next: VPS重建记">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2019/08/08/python%E7%94%9F%E6%88%90%E8%BA%AB%E4%BB%BD%E8%AF%81/">python生成身份证</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/08/08/%E4%BD%BF%E7%94%A8python%E9%80%A0%E6%95%B0%E6%8D%AE/">使用python造数据</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/08/02/Jmeter%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E6%8F%90%E5%8F%96%E5%99%A8/">Jmeter正则表达式提取器</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/08/01/%E8%BD%AC-Git-Cheat-Sheet%E4%B8%AD%E6%96%87%E7%89%88/">[转]Git Cheat Sheet中文版</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/07/30/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E5%85%A5%E9%97%A8/">正则表达式入门</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/07/25/Macaca%E8%AF%95%E7%94%A8/">Macaca试用</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/07/25/win10%E6%90%AD%E5%BB%BAMacaca%E7%8E%AF%E5%A2%83%E5%8F%8A%E7%AE%80%E5%8D%95%E8%AF%95%E7%94%A8/">win10搭建Macaca环境及简单试用</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/07/18/python%E6%93%8D%E4%BD%9Cexcel%E4%B8%80%E4%BA%9B%E5%AE%9E%E7%8E%B0/">python操作excel一些实现</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/07/16/Grafana%E9%9B%86%E6%88%90%E8%BF%9B%E8%87%AA%E5%B7%B1web%E9%A1%B9%E7%9B%AE/">Grafana集成进自己web项目</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/07/11/DES%E5%8A%A0%E8%A7%A3%E5%AF%86%EF%BC%88python3%E5%AE%9E%E7%8E%B0%EF%BC%89/">DES加解密（python3实现）</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/07/09/Python-Requests%E7%BB%83%E4%B9%A0%EF%BC%88%E4%B8%80%EF%BC%89/">Python-Requests练习（一）</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/07/09/NumPy%E4%B8%AD%E7%9A%84%E8%BD%B4-%E7%BB%B4%E5%BA%A6-%E7%A7%A9/">NumPy中的轴-维度-秩</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/07/05/python3-MD5%E5%8A%A0%E5%AF%86/">python3 MD5加密</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/07/04/%E4%B8%80%E4%BA%9B%E6%B5%8B%E8%AF%95%E6%9D%82%E8%AF%B4/">一些测试杂说</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/07/03/Centos7%E6%90%AD%E5%BB%BAwordpress%E5%8D%9A%E5%AE%A2/">Centos7搭建wordpress博客</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/07/02/Jmeter%E7%94%9F%E6%88%90Report-Dashboard/">Jmeter生成Report Dashboard</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/06/27/Jmeter%E4%BD%BF%E7%94%A8Grafana%E5%B1%95%E7%A4%BA/">Jmeter使用Grafana展示</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/06/26/Influxdb%E5%90%AF%E5%8A%A8%E5%A4%B1%E8%B4%A5%E6%97%A5%E5%BF%97%E5%AE%9A%E4%BD%8D/">Influxdb启动失败日志定位</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/06/26/Jmeter-ForEach%E6%8E%A7%E5%88%B6%E5%99%A8%E4%BD%BF%E7%94%A8/">Jmeter ForEach控制器使用</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/06/26/%E6%80%A7%E8%83%BD%E7%9B%91%E6%8E%A7%E7%AE%80%E5%8D%95%E5%B0%8F%E7%BB%93/">性能监控简单小结</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/06/25/%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95%E5%B7%A5%E5%85%B7nGrinder%E8%AF%95%E7%94%A8/">性能测试工具nGrinder试用</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/06/25/python%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%AE%9E%E8%B7%B5/">python字符串实践</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/06/23/%E6%95%8F%E6%8D%B7%E6%B5%8B%E8%AF%95%E4%B8%8E%E8%87%AA%E5%8A%A8%E5%8C%96/">敏捷测试与自动化</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/06/21/%E4%B8%80%E6%AC%A1Android%E5%AE%89%E5%85%A8%E9%97%AE%E9%A2%98%E5%AE%9A%E4%BD%8D/">一次Android安全问题定位</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/06/21/Service-Mesh%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/">Service Mesh基础知识</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/06/19/pytest%E5%AD%A6%E4%B9%A0%E5%AE%9E%E8%B7%B5%EF%BC%88%E4%BA%8C%EF%BC%89/">pytest学习实践（二）</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/06/19/pytest%E5%AD%A6%E4%B9%A0%E5%AE%9E%E8%B7%B5%EF%BC%88%E4%B8%80%EF%BC%89/">pytest学习实践（一）</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/06/14/docker%E7%AE%80%E5%8D%95%E4%BD%BF%E7%94%A8%EF%BC%88%E5%85%AD%EF%BC%89/">docker简单使用（六）</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/06/13/docker%E7%AE%80%E5%8D%95%E4%BD%BF%E7%94%A8%EF%BC%88%E4%BA%94%EF%BC%89/">docker简单使用（五）</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/06/13/docker%E7%AE%80%E5%8D%95%E4%BD%BF%E7%94%A8%EF%BC%88%E5%9B%9B%EF%BC%89/">docker简单使用（四）</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/06/12/docker%E7%AE%80%E5%8D%95%E4%BD%BF%E7%94%A8%EF%BC%88%E4%B8%89%EF%BC%89/">docker简单使用（三）</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/06/11/hexo%E5%8D%9A%E5%AE%A2%E9%85%8D%E7%BD%AEhttps/">hexo博客配置https</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/06/11/docker%E7%AE%80%E5%8D%95%E4%BD%BF%E7%94%A8%EF%BC%88%E4%BA%8C%EF%BC%89/">docker简单使用（二）</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/06/10/docker%E7%AE%80%E5%8D%95%E4%BD%BF%E7%94%A8%EF%BC%88%E4%B8%80%EF%BC%89/">docker简单使用（一）</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/05/29/%E5%87%A0%E4%B8%AA%E6%B5%8B%E8%AF%95%E9%97%AE%E9%A2%98%E6%80%9D%E8%80%83/">几个测试问题思考</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/05/28/%E9%97%B2%E8%B0%88%E6%B5%8B%E8%AF%95%E7%90%86%E8%AE%BA/">闲谈测试理论</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/05/27/%E6%89%80%E8%B0%93%E6%B5%8B%E8%AF%95%E6%96%B0%E6%97%B6%E4%BB%A3/">所谓测试新时代</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/05/27/%E6%B5%8B%E8%AF%95-%E6%9C%89%E6%83%91/">测试 有惑</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/05/23/excel%E9%9A%8F%E6%9C%BA%E5%87%BD%E6%95%B0/">excel随机函数</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/05/22/appium%E4%BD%BF%E7%94%A8uiautomator2%E6%97%A0%E6%B3%95%E5%90%AF%E5%8A%A8app%E9%97%AE%E9%A2%98/">appium使用uiautomator2无法启动app问题</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/05/21/jumpserver%E7%AE%80%E5%8D%95%E4%BD%BF%E7%94%A8/">jumpserver简单使用</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/05/20/centos7%E5%AE%89%E8%A3%85jumpserver%E5%A0%A1%E5%9E%92%E6%9C%BA/">centos7安装jumpserver堡垒机</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/05/15/%E5%87%A0%E4%B8%AAlinux%E5%91%BD%E4%BB%A4%E5%B0%8F%E6%8A%80%E5%B7%A7/">几个linux命令小技巧</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/05/14/centos7%E5%AE%89%E8%A3%85docker/">centos7安装docker</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/04/28/%E4%BF%AE%E6%94%B9Linux%E6%97%B6%E9%97%B4/">修改Linux时间</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/04/23/Jmeter%E8%B0%83%E7%94%A8python%E5%AE%8C%E6%88%90HmacSHA256%E5%8A%A0%E5%AF%86%E5%A4%84%E7%90%86/">Jmeter调用python完成HmacSHA256加密处理</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/04/18/Android%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95%E2%80%94%E2%80%94%E5%86%85%E5%AD%98/">Android性能测试——内存</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/04/18/%E8%AE%B0%E4%B8%80%E6%AC%A1Linux%E7%A3%81%E7%9B%98%E6%B8%85%E7%90%86/">记一次Linux磁盘清理</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/04/16/centos7%E6%90%AD%E5%BB%BAtestlink/">centos7搭建testlink</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/04/12/adb%E8%BF%9B%E9%98%B6%E5%9B%9B-%E2%80%94%E2%80%94-dumpsys/">adb进阶四 —— dumpsys</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/04/11/adb%E8%BF%9B%E9%98%B6%E4%B8%89-%E2%80%94%E2%80%94-Monkey-2/">adb进阶三 —— Monkey (2)</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/04/11/adb%E8%BF%9B%E9%98%B6%E4%B8%80-%E2%80%94%E2%80%94-Monkey-1/">adb进阶二 —— Monkey (1)</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/04/10/adb%E8%BF%9B%E9%98%B6%E4%B8%80-%E2%80%94%E2%80%94-logcat/">adb进阶一 —— logcat</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/04/10/Android%E8%B0%83%E8%AF%95%E5%B7%A5%E5%85%B7adb%E7%AE%80%E4%BB%8B/">Android调试工具adb简介</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/04/09/%E8%AE%B0cmder-git%E4%B8%80%E4%B8%AA%E6%8A%A5%E9%94%99%E8%A7%A3%E5%86%B3/">记cmder/git一个报错解决</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/04/08/%E7%BD%91%E7%AB%99%E6%80%A7%E8%83%BD%E6%9D%82%E8%B4%A7/">网站性能杂货</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/04/08/%E4%BC%AA%C2%B7influxdb%E5%88%A0%E9%99%A4%E6%95%B0%E6%8D%AE/">伪·influxdb删除数据</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/02/27/Linux%E5%9E%83%E5%9C%BE%E6%B8%85%E7%90%86/">Linux垃圾清理</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/01/29/Centos7%E5%AE%89%E8%A3%85pip3/">Centos7安装pip3</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/01/24/2019%E5%B9%B4%E5%85%B3%E5%B0%86%E8%87%B3%E6%9C%89%E6%84%9F/">2019年关将至有感</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/01/18/jmeter%E5%90%9E%E5%90%90%E9%87%8F%E5%87%A0%E4%B8%AA%E6%8F%92%E4%BB%B6%E4%BB%8B%E7%BB%8D/">jmeter吞吐量几个插件介绍</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/01/16/Jmeter%E5%8E%8B%E6%B5%8B%E5%85%B3%E8%81%94%E6%8E%A5%E5%8F%A3/">Jmeter压测关联接口</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/01/13/SqlServer%E6%B8%85%E7%90%86%E4%BA%8B%E5%8A%A1%E6%97%A5%E5%BF%97/">SqlServer清理事务日志</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/01/07/zabbix%E8%A7%A6%E5%8F%91%E5%99%A8%E5%87%BD%E6%95%B0%E4%BB%8B%E7%BB%8D/">zabbix触发器函数介绍</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/12/29/zabbix%E7%9B%91%E6%8E%A7%E7%A3%81%E7%9B%98%E4%BD%BF%E7%94%A8%E7%8E%87/">zabbix监控磁盘使用率</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/12/25/MySQL%E5%90%AF%E7%94%A8%E5%BC%B1%E5%8F%A3%E4%BB%A4/">MySQL启用弱口令</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/12/24/Linux%E5%87%A0%E4%B8%AA%E5%8F%98%E9%87%8F/">Linux几个变量</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/12/21/zabbix%E7%9B%91%E6%8E%A7%E7%A3%81%E7%9B%98IO/">zabbix监控磁盘IO</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/12/21/Linux%E7%A3%81%E7%9B%98IO%E7%9B%91%E6%8E%A7%E5%B7%A5%E5%85%B7-iostat/">Linux磁盘IO监控工具-iostat</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/12/14/loadrunner%E5%8E%8B%E6%B5%8Bexchange%E9%82%AE%E7%AE%B1/">loadrunner压测exchange邮箱</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/12/05/Linux%E5%B0%8F%E5%B7%A5%E5%85%B7%E6%8E%A8%E8%8D%90/">Linux小工具推荐</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/11/20/Nginx%E7%AE%80%E5%8D%95%E9%85%8D%E7%BD%AE/">Nginx简单配置</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/11/19/%E4%B8%80%E6%AC%A1%E7%B2%BE%E7%96%B2%E5%8A%9B%E5%B0%BD%E7%9A%84%E5%8E%8B%E6%B5%8B/">一次精疲力尽的压测</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/11/02/JVM%E5%86%85%E5%AD%98%E6%80%A7%E8%83%BD%E9%97%AE%E9%A2%98%E5%AE%9A%E4%BD%8D/">JVM内存性能问题定位</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/10/17/Linux%E5%AE%9A%E4%BD%8D%E6%9C%80%E8%80%97CPU%E7%9A%84%E7%BA%BF%E7%A8%8B/">Linux定位最耗CPU的线程</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/10/17/%E8%83%A1%E8%A8%80%E4%B9%B1%E8%AF%AD/">胡言乱语</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/10/17/Grafana%E4%B8%80%E7%82%B9%E7%AE%80%E5%8D%95%E4%BD%BF%E7%94%A8/">Grafana一点简单使用</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/10/12/Centos7%E6%90%AD%E5%BB%BAGrafana/">Centos7搭建Grafana</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/10/11/%E3%80%90%E8%BD%AC%E3%80%91linux%E7%B3%BB%E7%BB%9F%E5%86%85%E5%AD%98%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/">【转】linux系统内存基础知识</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/10/09/%E3%80%90%E8%BD%AC%E3%80%91%E8%81%8A%E4%B8%80%E8%81%8A%E8%81%8C%E4%B8%9A%E5%8F%91%E5%B1%95/">【转】聊一聊职业发展</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/09/27/%E4%BD%BF%E7%94%A8Grafana%E5%B1%95%E7%A4%BAJmeter%E6%95%B0%E6%8D%AE/">使用Grafana展示Jmeter数据</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/09/26/Centos7%E6%90%AD%E5%BB%BA%E5%8D%95%E6%9C%BARedis/">Centos7搭建单机Redis</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/09/20/Linux%E6%9F%A5%E7%9C%8B%E7%AB%AF%E5%8F%A3%E4%BD%BF%E7%94%A8%E6%83%85%E5%86%B5/">Linux查看端口使用情况</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/09/17/Jmeter%E5%88%86%E5%B8%83%E5%BC%8F%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/">Jmeter分布式环境搭建</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/09/13/Mysql%E5%BC%80%E5%90%AF%E5%85%A8SQL%E6%89%A7%E8%A1%8C%E8%AE%B0%E5%BD%95/">Mysql开启全SQL执行记录</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/09/12/Jmeter-Ant-Jenkins%E6%8E%A5%E5%8F%A3%E8%87%AA%E5%8A%A8%E5%8C%96%E6%90%AD%E5%BB%BA/">Jmeter+Ant+Jenkins接口自动化搭建</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/08/29/%E3%80%90%E8%BD%AC%E3%80%91Linux%E6%80%A7%E8%83%BD%E7%9B%91%E6%8E%A7%E4%B8%8E%E5%88%86%E6%9E%90/">【转】Linux性能监控与分析</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/08/23/Centos7%E6%90%AD%E5%BB%BASonarQube/">Centos7搭建SonarQube</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/08/20/Centos7%E6%90%AD%E5%BB%BAinfluxdb-chronograf/">Centos7搭建influxdb+chronograf</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/08/15/%E4%B8%80%E4%BA%9B%E5%B8%B8%E7%94%A8%E7%BD%91%E7%AB%99/">一些常用网站</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/08/15/Centos7%E5%BC%80%E5%90%AFnginx-status/">Centos7开启nginx status</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/08/09/ELK%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%E5%8F%8A%E6%B5%8B%E8%AF%95%E6%95%B0%E6%8D%AE%E5%AF%BC%E5%85%A5/">ELK环境搭建及测试数据导入</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/08/01/elasticsearch-6%E5%8F%98%E6%9B%B4%E8%AE%B0%E5%BD%95/">elasticsearch 6变更记录</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/08/01/Centos-7%E5%AE%89%E8%A3%85elasticsearch-head/">Centos 7安装elasticsearch head</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/07/31/Centos%E4%B8%8B%E6%90%AD%E5%BB%BAElasticSearch/">Centos下搭建ElasticSearch</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/07/19/%E6%B5%B7%E8%B4%BC%E7%8E%8BTV%E7%89%88%E7%9B%AE%E5%BD%95/">海贼王TV版目录</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/07/11/loadrunner%E5%88%A4%E6%96%AD%E6%8E%A5%E5%8F%A3%E8%BF%94%E5%9B%9E/">loadrunner判断接口返回</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/07/06/Jmeter%E5%8E%8B%E6%B5%8Bsocket-close%E5%BC%82%E5%B8%B8/">Jmeter压测socket close异常</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/07/05/Vultr%E5%AE%89%E8%A3%85%E9%94%90%E9%80%9F/">Vultr安装锐速</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/06/28/zabbix3-4%E9%85%8D%E7%BD%AE%E9%82%AE%E4%BB%B6%E5%91%8A%E8%AD%A6/">zabbix3.4配置邮件告警</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/06/27/zabbix3-4%E7%9B%91%E6%8E%A7linux%E5%86%85%E5%AD%98/">zabbix3.4监控linux内存</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/06/27/zabbix3-4%E7%9B%91%E6%8E%A7mysql5-7/">zabbix3.4监控mysql5.7</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/06/26/zabbix%E9%85%8D%E7%BD%AE/">zabbix配置</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/06/19/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E7%B3%BB%E5%88%97%EF%BC%88%E4%B8%80%EF%BC%89/">计算机基础知识系列（一）</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/06/12/Centos%E4%B8%8B%E5%88%87%E6%8D%A2MySQL%E6%95%B0%E6%8D%AE%E5%88%B0%E6%95%B0%E6%8D%AE%E7%9B%98/">Centos下切换MySQL数据到数据盘</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/06/07/%E4%BD%BF%E7%94%A8fiddler%E6%8A%93iphone%E5%8C%85/">使用fiddler抓iphone包</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/06/01/python3-6%E5%AE%89%E8%A3%85basemap/">python3.6安装basemap</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/05/22/%E3%80%90%E8%BD%AC%E3%80%91loadrunner%E8%AF%B7%E6%B1%82%E4%B8%89%E7%A7%8D%E6%A0%BC%E5%BC%8FAPI/">【转】loadrunner请求三种格式API</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/05/16/%E3%80%90%E8%BD%AC%E3%80%91windows%E6%80%A7%E8%83%BD%E7%9B%91%E6%8E%A7%E6%8C%87%E6%A0%87/">【转】windows性能监控指标</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/05/11/centos7%E6%90%AD%E5%BB%BAzabbix/">centos7搭建zabbix</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/05/10/centos%E9%83%A8%E7%BD%B2-net-core/">centos部署.net core</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/05/08/%E4%BD%BF%E7%94%A8webpagetest%E6%B5%8B%E8%AF%95%E4%B8%8D%E5%90%8C%E5%9B%BD%E5%AE%B6%E7%99%BB%E5%BD%95%E5%93%8D%E5%BA%94/">使用webpagetest测试不同国家登录响应</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/04/22/Centos7%E6%90%AD%E5%BB%BANitrate/">Centos7搭建Nitrate</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/04/20/Centos%E4%B8%8B%E5%8D%87%E7%BA%A7python2-7%E5%88%B03-6/">Centos下升级python2.7到3.6</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/04/19/%E5%88%87%E6%8D%A2163yum%E6%BA%90/">切换163yum源</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/04/18/MySQL%E4%B9%8BSQL%E4%BC%98%E5%8C%96%E7%B3%BB%E5%88%97%EF%BC%88%E4%B8%89%EF%BC%89/">MySQL之SQL优化系列（三）</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/04/18/loadruner%E6%97%A5%E5%B8%B8%E6%80%BB%E7%BB%93/">loadruner日常总结</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/04/04/CentOs7%E5%BC%BA%E5%88%B6%E4%BF%AE%E6%94%B9MySQL%E4%B8%ADroot%E5%AF%86%E7%A0%81/">CentOs7强制修改MySQL中root密码</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/04/04/yum%E5%AE%89%E8%A3%85%E8%BD%AF%E4%BB%B6%E5%A4%B1%E8%B4%A5/">yum安装软件失败</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/04/03/MySQL%E4%B9%8BSQL%E4%BC%98%E5%8C%96%E7%B3%BB%E5%88%97%EF%BC%88%E4%BA%8C%EF%BC%89/">MySQL之SQL优化系列（二）</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/03/30/python%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95%E6%A1%86%E6%9E%B6locust%EF%BC%88%E4%B8%80%EF%BC%89/">python性能测试框架locust（一）</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/03/30/loadrunner%E7%9B%91%E6%8E%A7Mysql/">loadrunner监控Mysql</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/03/09/MySQL%E4%B9%8BSQL%E4%BC%98%E5%8C%96%E7%B3%BB%E5%88%97%EF%BC%88%E4%B8%80%EF%BC%89/">MySQL之SQL优化系列（一）</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/03/08/python%E5%9F%BA%E7%A1%80%E4%B9%8B-args%E4%B8%8E-kwargs/">python基础之*args与**kwargs</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/03/05/docker%E4%BD%BF%E7%94%A8%E7%AE%80%E4%BB%8B/">docker使用简介</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/02/28/%E6%96%B0%E5%B9%B4%E4%BC%8A%E5%A7%8B-%E5%BC%80%E5%B9%B4%E8%AE%B0/">新年伊始-开年记</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/02/12/%E5%86%99%E5%9C%A82018%E6%96%B0%E5%B9%B4%E6%9D%A5%E4%B8%B4/">写在2018新年来临</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/02/11/python3%E5%AE%8C%E6%88%90mysql%E6%93%8D%E4%BD%9C/">python3完成mysql操作</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/02/09/%E5%9F%BA%E4%BA%8Epython3%E7%9A%84UI%E8%87%AA%E5%8A%A8%E5%8C%96%E6%B5%8B%E8%AF%95%E6%A1%86%E6%9E%B6%E6%90%AD%E5%BB%BA%E7%B3%BB%E5%88%97%EF%BC%88%E4%BA%8C%EF%BC%89/">基于python3的UI自动化框架搭建系列（二）</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/02/09/windows%E5%AE%89%E8%A3%85mysql5-7/">windows安装mysql5.7</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/02/09/python3%E6%93%8D%E4%BD%9Cexcel/">python3操作excel</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/02/08/%E8%87%AA%E5%AE%9A%E4%B9%89%E6%B5%8B%E8%AF%95%E6%8A%A5%E5%91%8A/">自定义测试报告</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/02/08/%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95%E5%BC%82%E5%B8%B8%E6%8D%95%E8%8E%B7/">单元测试异常捕获</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/02/07/nose%E6%89%A7%E8%A1%8C%E9%A1%BA%E5%BA%8F/">nose执行顺序</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/02/07/%E5%9F%BA%E4%BA%8Epython3%E7%9A%84UI%E8%87%AA%E5%8A%A8%E5%8C%96%E6%B5%8B%E8%AF%95%E6%A1%86%E6%9E%B6%E6%90%AD%E5%BB%BA%E7%B3%BB%E5%88%97%EF%BC%88%E4%B8%80%EF%BC%89/">基于python3的UI自动化框架搭建系列（一）</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/02/06/%E3%80%90%E8%BD%AC%E3%80%91python%E5%AE%9E%E7%8E%B0chrome%E4%BC%AA%E8%A3%85%E6%88%90M%E7%AB%99/">【转】python实现chrome伪装成M站</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/02/02/logging%E6%A8%A1%E5%9D%97%E4%BD%BF%E7%94%A8%E7%AE%80%E4%BB%8B/">logging模块使用简介</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/02/02/%E5%AD%97%E7%AC%A6%E7%BC%96%E7%A0%81%E7%AE%80%E5%8D%95%E6%80%BB%E7%BB%93/">字符编码简单总结</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/02/02/%E5%AE%9E%E7%8E%B0%E6%96%AD%E8%A8%80%E5%A4%B1%E8%B4%A5%E6%88%AA%E5%9B%BE/">实现断言失败截图</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/02/01/%E5%AE%9E%E7%8E%B0%E8%87%AA%E5%8A%A8%E5%8C%96%E6%B5%8B%E8%AF%95%E6%95%B0%E6%8D%AE%E5%88%86%E7%A6%BB/">实现自动化测试数据分离</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/01/31/%E3%80%90%E8%BD%AC%E3%80%91python%E5%85%83%E7%B1%BB%E4%BB%8B%E7%BB%8D/">【转】python元类介绍</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/01/24/VPS%E9%87%8D%E5%BB%BA%E8%AE%B0/">VPS重建记</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/01/23/python%E5%AE%9E%E7%8E%B0%E8%87%AA%E5%8A%A8%E5%8C%96%E6%B5%8B%E8%AF%95%E6%8A%A5%E5%91%8A%E9%82%AE%E4%BB%B6%E5%AE%9E%E6%97%B6%E5%8F%91%E9%80%81/">python实现自动化测试报告邮件实时发送</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/01/20/python%E6%95%B0%E6%8D%AE%E5%88%86%E7%A6%BB/">python数据分离</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/01/20/%E8%87%AA%E5%A8%B1%E8%87%AA%E4%B9%90%E4%B8%80/">自娱自乐一</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/01/19/appium%E5%BA%94%E7%94%A8%E7%AE%80%E4%BB%8B/">appium应用简介</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/01/18/python%E9%A1%B9%E7%9B%AE%E4%BE%9D%E8%B5%96%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7-pipenv/">python项目依赖管理工具-pipenv</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/01/18/cmder%E7%AE%80%E4%BB%8B/">cmder简介</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/01/17/appium%E9%94%AE%E7%9B%98%E4%BA%8B%E4%BB%B6/">appium键盘事件</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/01/17/appium%E5%AE%9A%E4%BD%8D/">appium定位</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/01/17/app%E5%AE%89%E8%A3%85%E5%8D%B8%E8%BD%BD/">app安装卸载</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/01/16/appium%E5%85%A5%E9%97%A8%E7%AF%87/">appium入门篇</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/01/12/smtp%E5%8F%91%E9%82%AE%E4%BB%B6/">smtp发邮件</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/01/10/selenium%E6%97%A0%E5%B9%B2%E9%A2%84%E4%B8%8B%E8%BD%BD/">selenium无干预下载</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/01/10/12306%E4%BD%99%E7%A5%A8%E7%9B%91%E6%8E%A7/">12306余票监控</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/01/05/%E7%99%BB%E5%BD%95%E7%BD%91%E6%98%93%E9%82%AE%E7%AE%B1/">登录网易邮箱</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/01/04/nose%E8%B7%B3%E8%BF%87%E6%B5%8B%E8%AF%95/">nose跳过测试</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/01/03/python%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95%E6%A1%86%E6%9E%B6-nose/">python单元测试框架-nose</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/01/02/win32api-VK-CODE/">win32api_VK_CODE</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/12/28/python3-6%E5%AE%89%E8%A3%85pywin32/">python3.6安装pywin32</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/12/27/python3-map-%E5%87%BD%E6%95%B0/">python3_map()函数</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/12/26/html%E6%8A%A5%E5%91%8A%E4%B9%B1%E7%A0%81/">html报告乱码</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/12/25/pycharm%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95/">pycharm单元测试</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/12/25/selenium3-python3-6%E6%90%AD%E5%BB%BA%E6%B5%8B%E8%AF%95/">selenium3+python3.6搭建测试</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/12/21/world-map/">world_map</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/12/20/%E7%BB%98%E5%88%B6%E9%9A%8F%E6%9C%BA%E6%BC%AB%E6%AD%A5%E5%9B%BE/">绘制随机漫步图</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/12/20/matplotlib%E7%BB%98%E5%88%B6%E6%B8%90%E5%8F%98%E5%9B%BE/">matplotlib绘制渐变图</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/12/19/Django2-0%E6%9B%B4%E6%96%B0%E5%86%85%E5%AE%B9%E8%AE%B0%E5%BD%95/">Django2.0更新内容记录</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/12/15/%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95-%E7%90%86%E5%8F%91%E5%B8%88%E6%A8%A1%E5%9E%8B/">性能测试-理发师模型</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/12/15/Jmeter%E7%B3%BB%E7%BB%9F%E7%9B%91%E6%8E%A7%E9%85%8D%E7%BD%AE/">Jmeter系统监控配置</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/12/14/Hexo%E5%8D%9A%E5%AE%A2%E4%B8%AD%E5%8A%A0%E5%85%A5%E5%9B%BE%E7%89%87/">Hexo博客中加入图片</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/12/13/python%E7%BC%96%E7%A0%81/">python编码</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/12/13/Django%E8%8E%B7%E5%8F%96%E4%B8%8D%E5%88%B0%E7%89%B9%E5%AE%9A%E9%93%BE%E6%8E%A5/">Django获取不到特定链接</a></li></ul>
+
+
+
+
+    <script>
+        
+    </script>
+
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                <i class="fa fa-copyright"></i> 
+                2018-2020 Kyle
+            </div>
+            <div class="footer-right">
+                <a href="http://hexo.io/" target="_blank" title="A fast, simple &amp; powerful blog framework">Hexo</a>  Theme <a href="https://github.com/MOxFIVE/hexo-theme-yelee" target="_blank" title="Another simple and elegant theme for Hexo  v3.5">Yelee</a> by MOxFIVE <i class="fa fa-heart animated infinite pulse"></i>
+            </div>
+        </div>
+        
+            <div class="visit">
+                
+                    <span id="busuanzi_container_site_pv" style='display:none'>
+                        <span id="site-visit" title="Site Visitors"><i class="fa fa-user" aria-hidden="true"></i><span id="busuanzi_value_site_uv"></span>
+                        </span>
+                    </span>
+                
+                
+                    <span>| </span>
+                
+                
+                    <span id="busuanzi_container_page_pv" style='display:none'>
+                        <span id="page-visit"  title="Page Hits"><i class="fa fa-eye animated infinite pulse" aria-hidden="true"></i><span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    </span>
+                
+            </div>
+        
+    </div>
+</footer>
+    </div>
+    
+<script data-main="/js/main.js" src="//cdn.bootcss.com/require.js/2.2.0/require.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            var iPad = window.navigator.userAgent.indexOf('iPad');
+            if (iPad > -1 || $(".left-col").css("display") === "none") {
+                var bgColorList = ["#9db3f4", "#414141", "#e5a859", "#f5dfc6", "#c084a0", "#847e72", "#cd8390", "#996731"];
+                var bgColor = Math.ceil(Math.random() * (bgColorList.length - 1));
+                $("body").css({"background-color": bgColorList[bgColor], "background-size": "cover"});
+            }
+            else {
+                var backgroundnum = 4;
+                var backgroundimg = "url(/background/bg-x.jpg)".replace(/x/gi, Math.ceil(Math.random() * backgroundnum));
+                $("body").css({"background": backgroundimg, "background-attachment": "fixed", "background-size": "cover"});
+            }
+        })
+    </script>
+
+
+
+
+
+<div class="scroll" id="scroll">
+    <a href="#" title="Back to Top"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments" onclick="load$hide();" title="Comments"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer" title="Go to Bottom"><i class="fa fa-arrow-down"></i></a>
+</div>
+<script>
+    // Open in New Window
+    
+        var oOpenInNew = {
+            
+            
+            
+            
+             categories: ".article-category a, a.tag-list-link", 
+             articleNav: "#article-nav a, #post-nav-button a", 
+             archives: ".archive-article-title", 
+             miniArchives: "a.post-list-link", 
+            
+             friends: "#js-friends a", 
+             socail: ".social a" 
+        }
+        for (var x in oOpenInNew) {
+            $(oOpenInNew[x]).attr("target", "_blank");
+        }
+    
+</script>
+
+    <script>
+        var originTitle = document.title;
+        var titleTime;
+        document.addEventListener("visibilitychange", function() {
+            if (document.hidden) {
+                document.title = "~^(*￣(oo)￣)^ 瞅啥瞅" + originTitle;
+                clearTimeout(titleTime);
+            }
+            else {
+                document.title = "(*´∇｀*)  瞅你咋地" + originTitle;
+                titleTime = setTimeout(function() {
+                    document.title = originTitle;
+                }, 2000);
+            }
+        })
+    </script>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+
+<script type="text/javascript" src="/resources/float.js"></script>
+<script type="text/javascript" src="/resources/love.js"></script>
+<script type="text/javascript" color=0,104,183 opacity=1 zindex=-1 count=50 src="/resources/particle.js"></script>
+<script type="text/javascript" src="/resources/typewriter.js"></script>
+
+  </div>
+</body>
+</html>
