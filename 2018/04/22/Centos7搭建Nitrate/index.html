@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-Hans">
 <head>
 
     <!--[if lt IE 9]>
@@ -19,9 +19,9 @@
 <meta property="og:type" content="article">
 <meta property="og:title" content="Centos7搭建Nitrate">
 <meta property="og:url" content="https://spindriftks.github.io/2018/04/22/Centos7%E6%90%AD%E5%BB%BANitrate/index.html">
-<meta property="og:site_name" content="简洁的时光">
+<meta property="og:site_name" content="它夏了夏天">
 <meta property="og:description" content="基于python+Django，测试用例管理平台Nitrate搭建">
-<meta property="og:locale" content="en_US">
+<meta property="og:locale">
 <meta property="article:published_time" content="2018-04-22T02:27:49.000Z">
 <meta property="article:modified_time" content="2020-12-21T06:39:10.318Z">
 <meta property="article:author" content="Kyle">
@@ -32,7 +32,7 @@
 <link rel="apple-touch-icon" href= "/apple-touch-icon.png">
 
 
-    <link rel="alternate" href="/atom.xml" title="简洁的时光" type="application/atom+xml">
+    <link rel="alternate" href="/atom.xml" title="它夏了夏天" type="application/atom+xml">
 
 
 
@@ -61,7 +61,7 @@
 <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
 
 
-<title>Centos7搭建Nitrate | 简洁的时光</title>
+<title>Centos7搭建Nitrate | 它夏了夏天</title>
 
 <script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
 <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
@@ -77,7 +77,7 @@
         isCategory: false,
         fancybox_js: "//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.js",
         scrollreveal: "//cdn.bootcss.com/scrollReveal.js/3.1.4/scrollreveal.min.js",
-        search: true
+        search: false
     }
 </script>
 
@@ -110,13 +110,6 @@
         
 
         
-            <form id="search-form">
-            <input type="text" id="local-search-input" name="q" placeholder="search..." class="search form-control" autocomplete="off" autocorrect="off" searchonload="false" />
-            <i class="fa fa-times" onclick="resetSearch()"></i>
-            </form>
-            <div id="local-search-result"></div>
-            <p class='no-result'>No results found <i class='fa fa-spinner fa-pulse'></i></p>
-        
 
 
         
@@ -148,13 +141,13 @@
                 <div class="tips-box hide">
                     <div class="tips-arrow"></div>
                     <ul class="tips-inner">
-                        <li>Menu</li>
-                        <li>Tags</li>
+                        <li>菜单</li>
+                        <li>标签</li>
                         
-                        <li>Friends</li>
+                        <li>友情链接</li>
                         
                         
-                        <li>About Me</li>
+                        <li>关于我</li>
                         
                     </ul>
                 </div>
@@ -266,7 +259,7 @@
             </nav>
         </header>                
     </div>
-    <link class="menu-list" tags="Tags" friends="Friends" about="About Me"/>
+    <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
 </nav>
       <div class="body-wrap"><article id="post-Centos7搭建Nitrate" class="article article-type-post" itemscope itemprop="blogPost">
   
@@ -559,17 +552,17 @@ Nitrate把传统意义上的`setting.py`分成了两个文件（其实是一个�
   
     
     <div class="copyright">
-        <p><span>Title:</span><a href="/2018/04/22/Centos7%E6%90%AD%E5%BB%BANitrate/">Centos7搭建Nitrate</a></p>
-        <p><span>Author:</span><a href="/" title="Back to Homepage"></a></p>
-        <p><span>Created:</span>2018-04-22, 10:27:49</p>
-        <p><span>Updated:</span>2020-12-21, 14:39:10</p>
+        <p><span>本文标题:</span><a href="/2018/04/22/Centos7%E6%90%AD%E5%BB%BANitrate/">Centos7搭建Nitrate</a></p>
+        <p><span>文章作者:</span><a href="/" title="回到主页"></a></p>
+        <p><span>发布时间:</span>2018-04-22, 10:27:49</p>
+        <p><span>最后更新:</span>2020-12-21, 14:39:10</p>
         <p>
-            <span>Full URL:</span><a class="post-url" href="/2018/04/22/Centos7%E6%90%AD%E5%BB%BANitrate/" title="Centos7搭建Nitrate">https://spindriftks.github.io/2018/04/22/Centos7%E6%90%AD%E5%BB%BANitrate/</a>
-            <span class="copy-path" data-clipboard-text="From https://spindriftks.github.io/2018/04/22/Centos7%E6%90%AD%E5%BB%BANitrate/　　By " title="Copy Article&#39;s Link &amp; Author"><i class="fa fa-clipboard"></i></span>
+            <span>原始链接:</span><a class="post-url" href="/2018/04/22/Centos7%E6%90%AD%E5%BB%BANitrate/" title="Centos7搭建Nitrate">https://spindriftks.github.io/2018/04/22/Centos7%E6%90%AD%E5%BB%BANitrate/</a>
+            <span class="copy-path" data-clipboard-text="原文: https://spindriftks.github.io/2018/04/22/Centos7%E6%90%AD%E5%BB%BANitrate/　　作者: " title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
             <script> var clipboard = new Clipboard('.copy-path'); </script>
         </p>
         <p>
-            <span>License:</span><i class="fa fa-creative-commons"></i> <a rel="license noopener" target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">"CC BY-NC-SA 4.0"</a> Keep Link &amp; Author if Distribute.
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license noopener" target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">"署名-非商用-相同方式共享 4.0"</a> 转载请保留原文链接及作者。
         </p>
     </div>
 
@@ -596,7 +589,7 @@ Nitrate把传统意义上的`setting.py`分成了两个文件（其实是一个�
 </article>
 
     <div id="toc" class="toc-article">
-        <strong class="toc-title">Contents</strong>
+        <strong class="toc-title">文章目录</strong>
         
             <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%80%E7%AF%87"><span class="toc-number">2.</span> <span class="toc-text">开篇</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9D%8E%E5%9D%B7%E7%9A%84%E7%B3%BB%E7%BB%9F%E6%90%AD%E5%BB%BA"><span class="toc-number">3.</span> <span class="toc-text">坎坷的系统搭建</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%8E%AF%E5%A2%83%E5%87%86%E5%A4%87"><span class="toc-number">3.1.</span> <span class="toc-text">环境准备</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Git"><span class="toc-number">3.1.1.</span> <span class="toc-text">Git</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Django"><span class="toc-number">3.1.2.</span> <span class="toc-text">Django</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#pip"><span class="toc-number">3.1.2.1.</span> <span class="toc-text">pip</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#setuptools"><span class="toc-number">3.1.2.2.</span> <span class="toc-text">setuptools</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%BA%90%E7%A0%81%E5%AE%89%E8%A3%85"><span class="toc-number">3.1.2.3.</span> <span class="toc-text">源码安装</span></a></li></ol></li></ol></li></ol></li></ol>
         
@@ -612,10 +605,10 @@ Nitrate把传统意义上的`setting.py`分成了两个文件（其实是一个�
         }
     </style>
 
-    <input type="button" id="tocButton" value="Hide"  title="Show or Hide Table of Contents">
+    <input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
 
     <script>
-        yiliaConfig.toc = ["Hide", "Show", !!"false"];
+        yiliaConfig.toc = ["隐藏目录", "显示目录", !!"false"];
     </script>
 
 
@@ -634,7 +627,7 @@ Nitrate把传统意义上的`setting.py`分成了两个文件（其实是一个�
         </div>
         <script>
             window._bd_share_config={
-                "common":{"bdSnsKey":{},"bdText":"Centos7搭建Nitrate　| 简洁的时光　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+                "common":{"bdSnsKey":{},"bdText":"Centos7搭建Nitrate　| 它夏了夏天　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
         </script>
     
 
@@ -677,15 +670,15 @@ Nitrate把传统意义上的`setting.py`分成了两个文件（其实是一个�
 
     <div class="scroll" id="post-nav-button">
         
-            <a href="/2018/05/08/%E4%BD%BF%E7%94%A8webpagetest%E6%B5%8B%E8%AF%95%E4%B8%8D%E5%90%8C%E5%9B%BD%E5%AE%B6%E7%99%BB%E5%BD%95%E5%93%8D%E5%BA%94/" title="Pre: 使用webpagetest测试不同国家登录响应">
+            <a href="/2018/05/08/%E4%BD%BF%E7%94%A8webpagetest%E6%B5%8B%E8%AF%95%E4%B8%8D%E5%90%8C%E5%9B%BD%E5%AE%B6%E7%99%BB%E5%BD%95%E5%93%8D%E5%BA%94/" title="上一篇: 使用webpagetest测试不同国家登录响应">
                 <i class="fa fa-angle-left"></i>
             </a>
         
 
-        <a title="Mini Archives"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
 
         
-            <a href="/2018/04/20/Centos%E4%B8%8B%E5%8D%87%E7%BA%A7python2-7%E5%88%B03-6/" title="Next: Centos下升级python2.7到3.6">
+            <a href="/2018/04/20/Centos%E4%B8%8B%E5%8D%87%E7%BA%A7python2-7%E5%88%B03-6/" title="下一篇: Centos下升级python2.7到3.6">
                 <i class="fa fa-angle-right"></i>
             </a>
         
@@ -709,14 +702,14 @@ Nitrate把传统意义上的`setting.py`分成了两个文件（其实是一个�
                 2018-2021 Kyle
             </div>
             <div class="footer-right">
-                <a href="http://hexo.io/" target="_blank" title="A fast, simple &amp; powerful blog framework">Hexo</a>  Theme <a href="https://github.com/MOxFIVE/hexo-theme-yelee" target="_blank" title="Another simple and elegant theme for Hexo  v3.5">Yelee</a> by MOxFIVE <i class="fa fa-heart animated infinite pulse"></i>
+                <a href="http://hexo.io/" target="_blank" title="快速、简洁且高效的博客框架">Hexo</a>  Theme <a href="https://github.com/MOxFIVE/hexo-theme-yelee" target="_blank" title="简而不减 Hexo 双栏博客主题  v3.5">Yelee</a> by MOxFIVE <i class="fa fa-heart animated infinite pulse"></i>
             </div>
         </div>
         
             <div class="visit">
                 
                     <span id="busuanzi_container_site_pv" style='display:none'>
-                        <span id="site-visit" title="Site Visitors"><i class="fa fa-user" aria-hidden="true"></i><span id="busuanzi_value_site_uv"></span>
+                        <span id="site-visit" title="本站到访数"><i class="fa fa-user" aria-hidden="true"></i><span id="busuanzi_value_site_uv"></span>
                         </span>
                     </span>
                 
@@ -725,7 +718,7 @@ Nitrate把传统意义上的`setting.py`分成了两个文件（其实是一个�
                 
                 
                     <span id="busuanzi_container_page_pv" style='display:none'>
-                        <span id="page-visit"  title="Page Hits"><i class="fa fa-eye animated infinite pulse" aria-hidden="true"></i><span id="busuanzi_value_page_pv"></span>
+                        <span id="page-visit"  title="本页阅读量"><i class="fa fa-eye animated infinite pulse" aria-hidden="true"></i><span id="busuanzi_value_page_pv"></span>
                         </span>
                     </span>
                 
@@ -758,9 +751,9 @@ Nitrate把传统意义上的`setting.py`分成了两个文件（其实是一个�
 
 
 <div class="scroll" id="scroll">
-    <a href="#" title="Back to Top"><i class="fa fa-arrow-up"></i></a>
-    <a href="#comments" onclick="load$hide();" title="Comments"><i class="fa fa-comments-o"></i></a>
-    <a href="#footer" title="Go to Bottom"><i class="fa fa-arrow-down"></i></a>
+    <a href="#" title="返回顶部"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments" onclick="load$hide();" title="查看评论"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer" title="转到底部"><i class="fa fa-arrow-down"></i></a>
 </div>
 <script>
     // Open in New Window
