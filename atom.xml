@@ -6,32 +6,15 @@
   <link href="https://spindriftks.github.io/atom.xml" rel="self"/>
   
   <link href="https://spindriftks.github.io/"/>
-  <updated>2021-01-07T02:13:59.849Z</updated>
+  <updated>2021-01-07T01:31:25.606Z</updated>
   <id>https://spindriftks.github.io/</id>
   
   <author>
-    <name>John Doe</name>
+    <name>Kyle</name>
     
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
-  
-  <entry>
-    <title>部署测试</title>
-    <link href="https://spindriftks.github.io/2021/01/07/%E9%83%A8%E7%BD%B2%E6%B5%8B%E8%AF%95/"/>
-    <id>https://spindriftks.github.io/2021/01/07/%E9%83%A8%E7%BD%B2%E6%B5%8B%E8%AF%95/</id>
-    <published>2021-01-07T02:13:24.000Z</published>
-    <updated>2021-01-07T02:13:59.849Z</updated>
-    
-    <content type="html"><![CDATA[<p>测试测试</p><a id="more"></a><p>ceshi madjisajdpsajdsajdaj</p>]]></content>
-    
-    
-    <summary type="html">&lt;p&gt;测试测试&lt;/p&gt;</summary>
-    
-    
-    
-    
-  </entry>
   
   <entry>
     <title>Linux一些小技能</title>
@@ -452,6 +435,27 @@
     <category term="python3" scheme="https://spindriftks.github.io/tags/python3/"/>
     
     <category term="MD5" scheme="https://spindriftks.github.io/tags/MD5/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>一些测试杂说</title>
+    <link href="https://spindriftks.github.io/2019/07/04/%E4%B8%80%E4%BA%9B%E6%B5%8B%E8%AF%95%E6%9D%82%E8%AF%B4/"/>
+    <id>https://spindriftks.github.io/2019/07/04/%E4%B8%80%E4%BA%9B%E6%B5%8B%E8%AF%95%E6%9D%82%E8%AF%B4/</id>
+    <published>2019-07-03T19:00:09.000Z</published>
+    <updated>2020-12-21T06:39:17.238Z</updated>
+    
+    <content type="html"><![CDATA[<p>一些测试杂说</p><a id="more"></a><h3 id="序-软件质量模型"><a href="#序-软件质量模型" class="headerlink" title="序.软件质量模型"></a>序.软件质量模型</h3><p>这段时间越来越不安定，越来越不理解自己当前的工作到底是为了什么，测试人员的产出只是作为一个参考，完全不是准出条件之一，越来越乱和浮躁的环境，充斥着无奈。</p><p>不谈现在的环境，想想测试本身，看看外面的测试现状。</p><p>首先，插个或许觉得不相关的：<code>软件产品质量模型</code>：</p><p>软件产品质量模型六大属性：</p><table><thead><tr><th>Item</th><th>子属性</th></tr></thead><tbody><tr><td>功能性</td><td>适合性、准确性、安全性、功能性的顺从性等</td></tr><tr><td>可靠性</td><td>成熟性、容错性、可恢复性、可靠性的顺从性等</td></tr><tr><td>易用性</td><td>易理解性、易学性、易操作性、易用性的依从性等</td></tr><tr><td>效率</td><td>时间特性、资源利用率、效率的依从性</td></tr><tr><td>可维护性</td><td>可分析性、可修改性、稳定性、可测试性、可维护性的依从性</td></tr><tr><td>可移植性</td><td>适应性、可安装性、共存性、易替换性、可移植性的依从性</td></tr></tbody></table><p>功能性的顺从性（Functionality Compliance）：软件产品符合和该功能相关的标准、规范、规则或特定的能力（如对于一款计算器，计算规则要和数学中相关规则保持一致）</p><p>可靠性的顺从性（Reliability Compliance）：软件产品遵循与可靠性相关的标准、约定或规定的能力（如对于通信类产品，系统的故障率不能高干多少、故障恢复时间不能长于多少等）</p><p>易用性的依从性(Usability Compliance)：软件产品遵循与易用性相关的标准、约定、风格指南（style guide）或法规的能力（如对Windows的计算器来说，在界面设计上模仿实体计算器是易用性依从性的一个体现）</p><p>效率依从性（Efficiency Compliance）： 软件产品遵循与效率相关的标准或约定的能力（如对系统资源的占有率又不能高于多少）</p><p>可维护性的依从性(Maintainability Compliance)：软件产品遵循与维护相关的标准或约定的能力（如软件出现故障时会弹出“XXX遇到问题要关闭”之类的提示）</p><p>可移植性的依从性（Portability Compliance）： 软件产品遵循与可移植性相关的标准或约定的能力（如产品不是针对某款特定的操作系统开发的，需要支持Windows所有操作系统）</p><h3 id="软件测试初衷"><a href="#软件测试初衷" class="headerlink" title="软件测试初衷"></a>软件测试初衷</h3><p>回想软件测试这个活动存在的理由和意义是什么。最简单粗暴的，测试是为了发现bug，人都有思维定式，自己写的逻辑，自己去发现问题，不是很容易，同时，人精力也有限，让开发人员既负责产品研发，又负责质量控制，不是很切实际，因此，测试人员的最重要使命就是把关，产品质量关，确保最终交付给客户的是相对满意的产品（关于质量，不是单纯的靠测试人员就可以保证的，理性的应该知道，产品质量是需要整个团队，整个软件生命周期共同设计，保证）</p><p>关于bug，很明显，bug不是测试人员造成的，很多开发不知道怎么的，就觉得，bug是测试人员造成的，怕不是失了智，这样的开发，建议转行，遇到这样开发的测试，建议深呼吸，抑制住锤人的冲动。bug可能是程序员写出来的，不符合需求的实现。也可能是产品经理错误的想法或者错误概念造成和客户期望不符的需求。当然，是人就都可能犯错误，测试需要关注的，是怎么预防错误的发生，针对需求开始就可能出现的质量问题，最简单的，现在已经盛行的，测试左移，全流程测试，从需求层面就开始介入测试，这也是测试的最佳实践之一，很不幸，国内当前，至少在苏州的大多数，很难。</p><p>同样的，就按我现在所在公司来说，听到的很多抱怨都是测不下去，原因是需求变来变去，产品无法准确把握和设计需求，造成开发过程甚至已经提测之后，进行不停的“需求变更”，美其名曰敏捷开发提倡拥抱变化，变更是正常的，实际上变化的自始至终都不是客户的需求，而是产品经理自己的需求，这可能是产品经理自身能力不够，也可能是没有对需求本身进行质量控制，大家都知道的，变更越往后，成本越高，作为质量控制人员，要防止最终的不可控，我们更应该从需求就开始接入，控制质量，控制成本。</p><h3 id="当前测试现状"><a href="#当前测试现状" class="headerlink" title="当前测试现状"></a>当前测试现状</h3><p>只从“术”的角度看当前软件测试技术发展<br>当前测试大环境下：</p><ul><li>大量公司关注自动化，提倡自动化实施</li><li>大力开展CI/CD、Devops</li><li>多数公司都建立有自己的测试平台</li><li>关注APM，链路监控</li><li>使用大量开源工具辅助测试</li><li>… …</li></ul><p>同时，可能存在的问题：</p><ul><li>公司并没有质量文化，没有关注质量的基因</li><li>公司没有自己的质量标准，也没有缺陷预防</li><li>过于追求“术”，对于测试行为本身的思考几乎没有</li><li>面对新的软件开发模式，敏捷、微服务、Service Mesh、Serverless手足无措</li><li>热衷于招聘测试开发和所谓资深测试，重复造轮子，和市场脱节（苏州oracle的部分资深）</li><li>… …<br>（提个搞笑的，招了一堆资深人员，做手工测试）</li></ul><h3 id="可能的未来"><a href="#可能的未来" class="headerlink" title="可能的未来"></a>可能的未来</h3><p>对于现状，说说可能的未来，首先，当前市场上，去翻的看看，招聘的职位，基本都是“测试开发”，说实话，很多时候，花大代价招进来的测试开发，做的是不是就是维护已有自动化框架的事情，或者是一些小的团队，招测试开发是为了开展自动化，我还是那句话，是不是有考虑好真的需要开展自动化了。自动化做到什么程序是自己满意的。单纯的开发自动化框架，不接触业务的测试开发，最终的产出真的是可以解决当前问题的。其实，是可以先冷静的想想的。毕竟，自动化，说到底，也是在已知测试结果的情况下进行的自动验证，现实中很多情况，是自动化做不到的，在没有能力做到自动生成测试用例，自动生成测试数据情况下，还是不用过于追求它。当然，当前已经有AI在测试上的实施，AI可以帮助我们自动生成测试用例、测试数据，模拟用户操作，帮助我们提高测试效率和测试覆盖率，但是AI基础是大数据，这边的数据，还是需要人工进行探索式测试得到。未来可能会出现这样的场景，首先人工进行业务分析，需求评审，功能拆分，探索式测试，产出数据供AI进行模型训练，然后AI会帮助进行以前的自动化部分，甚至是自动化没有涉及到的，AI会自动帮你扩充，自动化没有覆盖的，AI会帮助覆盖。</p><p>看过一个关于测试的公式：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">测试 &#x3D; 检测 + 试验</span><br><span class="line"></span><br><span class="line">测试 &#x3D; 已知的检测 + 未知的试验</span><br><span class="line"></span><br><span class="line">测试 &#x3D; 基于确定性模型&#x2F;明确的预言（test oracle）的自动化测试 + 基于AI搜索&#x2F;基于工具随机&#x2F;模糊模型&#x2F;人工的探索式测试</span><br></pre></td></tr></table></figure><p>理想情况下，人工负责分析，建模性工作，其他交给AI和自动化进行机械重复性劳动</p><p>以上基本都是关于测试“术”的未来，关于测试“道”，说到底，其实自始至终都是一样的，软件测试人员，存在的原因是保障产品质量，最终提交客户的是客户满意的产品，你所要负责的，是产品的质量保障，不是测试代码，不是测试工具，不是你的领导布置的任务你有了框架产出，所有的一切“旁门”的努力，根本原因是为了保障质量，提高效率的保障质量。</p><p>最后，希望自己能在技术挣扎中，不忘了，自己做测试的原因。</p><p>通篇胡言乱语，完~</p>]]></content>
+    
+    
+    <summary type="html">&lt;p&gt;一些测试杂说&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="测试之道" scheme="https://spindriftks.github.io/categories/%E6%B5%8B%E8%AF%95%E4%B9%8B%E9%81%93/"/>
+    
+    
+    <category term="lives" scheme="https://spindriftks.github.io/tags/lives/"/>
     
   </entry>
   
