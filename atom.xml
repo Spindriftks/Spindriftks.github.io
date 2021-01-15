@@ -6,7 +6,7 @@
   <link href="https://spindriftks.github.io/atom.xml" rel="self"/>
   
   <link href="https://spindriftks.github.io/"/>
-  <updated>2021-01-12T08:24:23.645Z</updated>
+  <updated>2021-01-15T02:47:20.803Z</updated>
   <id>https://spindriftks.github.io/</id>
   
   <author>
@@ -15,6 +15,27 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>修改docker数据目录</title>
+    <link href="https://spindriftks.github.io/2021/01/15/%E4%BF%AE%E6%94%B9docker%E6%95%B0%E6%8D%AE%E7%9B%AE%E5%BD%95/"/>
+    <id>https://spindriftks.github.io/2021/01/15/%E4%BF%AE%E6%94%B9docker%E6%95%B0%E6%8D%AE%E7%9B%AE%E5%BD%95/</id>
+    <published>2021-01-15T02:23:07.000Z</published>
+    <updated>2021-01-15T02:47:20.803Z</updated>
+    
+    <content type="html"><![CDATA[<p>修改docker默认数据目录（镜像和启动容器过多造成磁盘满载情况）</p><a id="more"></a><p>版本：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Centos 7</span><br><span class="line">Docker</span><br><span class="line">Server Version: 20.10.2</span><br><span class="line">Storage Driver: overlay2</span><br></pre></td></tr></table></figure><ol><li>停服务 <code>systemctl stop docker</code></li><li>挂载数据盘，建数据文件夹  <code>/home/docker_data</code></li><li>备份     <code>tar -zcvf /home/docker_data/docker_bak.tar.gz /var/lib/docker/</code></li><li>建立软链接 <code>ln -s /home/docker_data /var/lib/docker</code></li><li>修改（新增）配置 <strong>/etc/docker/daemon</strong> ,<code>vim /etc/docker/daemon.json</code></li></ol><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;registry-mirrors&quot;: [&quot;http:&#x2F;&#x2F;hub-mirror.c.163.com&quot;],</span><br><span class="line">  &quot;data-root&quot;: &quot;&#x2F;home&#x2F;docker_data&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><ol start="6"><li>重新加载配置，重启<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">systemctl daemon-reload</span><br><span class="line"></span><br><span class="line">systemctl restart docker</span><br></pre></td></tr></table></figure></li><li>查看修改  <code>docker info</code><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Docker Root Dir: &#x2F;home&#x2F;docker_data</span><br><span class="line">Registry Mirrors:</span><br><span class="line"> http:&#x2F;&#x2F;hub-mirror.c.163.com&#x2F;</span><br></pre></td></tr></table></figure>以上，完~</li></ol>]]></content>
+    
+    
+    <summary type="html">&lt;p&gt;修改docker默认数据目录（镜像和启动容器过多造成磁盘满载情况）&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="容器化" scheme="https://spindriftks.github.io/categories/%E5%AE%B9%E5%99%A8%E5%8C%96/"/>
+    
+    
+    <category term="docker" scheme="https://spindriftks.github.io/tags/docker/"/>
+    
+  </entry>
   
   <entry>
     <title>sed和awk记录</title>
@@ -433,31 +454,6 @@
     
     
     <category term="NumPy" scheme="https://spindriftks.github.io/tags/NumPy/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>python3 MD5加密</title>
-    <link href="https://spindriftks.github.io/2019/07/05/python3-MD5%E5%8A%A0%E5%AF%86/"/>
-    <id>https://spindriftks.github.io/2019/07/05/python3-MD5%E5%8A%A0%E5%AF%86/</id>
-    <published>2019-07-04T18:11:31.000Z</published>
-    <updated>2020-12-21T06:39:11.743Z</updated>
-    
-    <content type="html"><![CDATA[<p>python3 MD5加密</p><a id="more"></a><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">#!&#x2F;usr&#x2F;bin&#x2F;env python3</span><br><span class="line"># -*-coding: utf-8 -*-</span><br><span class="line">&quot;&quot;&quot;</span><br><span class="line">@author: kyle</span><br><span class="line">@time: 2019&#x2F;7&#x2F;5 13:09</span><br><span class="line">&quot;&quot;&quot;</span><br><span class="line"></span><br><span class="line">import time</span><br><span class="line">import hashlib</span><br><span class="line"></span><br><span class="line"># ZHTTest_f9768ce9e3acd3a743724c8128692d5d_1561529340474_&#123;&quot;searchText&quot;:&quot;吴凯&quot;&#125;</span><br><span class="line"># cd63c0e512a99aeabc73d1e6b9f26cbe</span><br><span class="line"></span><br><span class="line"># m &#x3D; hashlib.md5(&#39;ZHTTest_f9768ce9e3acd3a743724c8128692d5d_1561529340474_&#123;&quot;searchText&quot;:&quot;吴凯&quot;&#125;&#39;.</span><br><span class="line">#                 encode(encoding&#x3D;&#39;utf-8&#39;)).hexdigest()</span><br><span class="line"></span><br><span class="line"># 生成13位时间戳</span><br><span class="line">timestamp &#x3D; int(time.time()*1000)</span><br><span class="line">strs&#x3D; &#39;ZHTTest_f9768ce9e3acd3a743724c8128692d5d_&#39;</span><br><span class="line"></span><br><span class="line">md5str &#x3D; strs + str(timestamp) + &#39;_&#123;&quot;searchText&quot;:&quot;吴凯&quot;&#125;&#39;</span><br><span class="line"># print(md5str)</span><br><span class="line"></span><br><span class="line"># 加密</span><br><span class="line">m &#x3D; hashlib.md5(md5str.encode(encoding&#x3D;&#39;utf-8&#39;)).hexdigest()</span><br><span class="line"></span><br><span class="line">print(&quot;md5sss:&quot; + m +&quot;&lt;&gt;&quot;)</span><br><span class="line"></span><br></pre></td></tr></table></figure><p>在windows下放在英文文件路径下，再创建一个.bat脚本：<code>python xxx.python</code><br>配合Jmeter的<code>OS Process Sampler</code>完成jmeter调用python实现MD5加密，之前写过HmacSHA256加密的</p><blockquote><p><a href="https://tokyle.com/2019/04/23/Jmeter%E8%B0%83%E7%94%A8python%E5%AE%8C%E6%88%90HmacSHA256%E5%8A%A0%E5%AF%86%E5%A4%84%E7%90%86/">Jmeter调用python完成HmacSHA256加密处理</a></p></blockquote><p>附上loadrunner MD5实现（C语言真一窍不通）</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">Action()</span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line">char* va1;</span><br><span class="line">char* va2;</span><br><span class="line">char* va3;</span><br><span class="line">char sign[500];</span><br><span class="line"></span><br><span class="line">web_save_timestamp_param(&quot;tStamp&quot;, LAST);</span><br><span class="line"></span><br><span class="line">va1&#x3D;&quot;ZHTTest_f9768ce9e3acd3a743724c8128692d5d_&quot;;</span><br><span class="line">va2&#x3D;&quot;&#123;tStamp&#125;&quot;;</span><br><span class="line">&#x2F;&#x2F;va2&#x3D;&quot;1561529340474&quot;;</span><br><span class="line">va3&#x3D;&quot;_&#123;\&quot;searchText\&quot;:\&quot;鍚村嚡\&quot;&#125;&quot;;</span><br><span class="line"> </span><br><span class="line">strcat(sign,va1);</span><br><span class="line">strcat(sign,va2);</span><br><span class="line">strcat(sign,va3);</span><br><span class="line"></span><br><span class="line">lr_output_message(&quot;%s&quot;,CMd5(sign));</span><br><span class="line"></span><br><span class="line">return 0;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>]]></content>
-    
-    
-    <summary type="html">&lt;p&gt;python3 MD5加密&lt;/p&gt;</summary>
-    
-    
-    
-    <category term="性能测试" scheme="https://spindriftks.github.io/categories/%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95/"/>
-    
-    
-    <category term="Jmeter" scheme="https://spindriftks.github.io/tags/Jmeter/"/>
-    
-    <category term="python3" scheme="https://spindriftks.github.io/tags/python3/"/>
-    
-    <category term="MD5" scheme="https://spindriftks.github.io/tags/MD5/"/>
     
   </entry>
   

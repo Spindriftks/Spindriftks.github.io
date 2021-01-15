@@ -15,17 +15,17 @@
 
 
 
-<meta name="description" content="python数据分离——读取配置文件">
+<meta name="description" content="修改docker默认数据目录（镜像和启动容器过多造成磁盘满载情况）">
 <meta property="og:type" content="article">
-<meta property="og:title" content="python数据分离">
-<meta property="og:url" content="https://spindriftks.github.io/2018/01/20/python%E6%95%B0%E6%8D%AE%E5%88%86%E7%A6%BB/index.html">
+<meta property="og:title" content="修改docker数据目录">
+<meta property="og:url" content="https://spindriftks.github.io/2021/01/15/%E4%BF%AE%E6%94%B9docker%E6%95%B0%E6%8D%AE%E7%9B%AE%E5%BD%95/index.html">
 <meta property="og:site_name" content="它夏了夏天">
-<meta property="og:description" content="python数据分离——读取配置文件">
+<meta property="og:description" content="修改docker默认数据目录（镜像和启动容器过多造成磁盘满载情况）">
 <meta property="og:locale">
-<meta property="article:published_time" content="2018-01-20T00:10:58.000Z">
-<meta property="article:modified_time" content="2020-12-21T06:39:14.679Z">
+<meta property="article:published_time" content="2021-01-15T02:23:07.000Z">
+<meta property="article:modified_time" content="2021-01-15T02:47:20.803Z">
 <meta property="article:author" content="Kyle">
-<meta property="article:tag" content="python3">
+<meta property="article:tag" content="docker">
 <meta name="twitter:card" content="summary">
 
 <link rel="apple-touch-icon" href= "/apple-touch-icon.png">
@@ -60,7 +60,7 @@
 <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
 
 
-<title>python数据分离 | 它夏了夏天</title>
+<title>修改docker数据目录 | 它夏了夏天</title>
 
 <script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
 <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
@@ -247,11 +247,11 @@
     </div>
     <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
 </nav>
-      <div class="body-wrap"><article id="post-python数据分离" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-修改docker数据目录" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2018/01/20/python%E6%95%B0%E6%8D%AE%E5%88%86%E7%A6%BB/" class="article-date">
-      <time datetime="2018-01-20T00:10:58.000Z" itemprop="datePublished">2018-01-20</time>
+      <a href="/2021/01/15/%E4%BF%AE%E6%94%B9docker%E6%95%B0%E6%8D%AE%E7%9B%AE%E5%BD%95/" class="article-date">
+      <time datetime="2021-01-15T02:23:07.000Z" itemprop="datePublished">2021-01-15</time>
 </a>
 
 
@@ -266,7 +266,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      python数据分离
+      修改docker数据目录
     </h1>
   
 
@@ -276,13 +276,13 @@
       <div class="article-info article-info-post">
         
     <div class="article-category tagcloud">
-    <a class="article-category-link" href="/categories/python%E5%9F%BA%E7%A1%80/">python基础</a>
+    <a class="article-category-link" href="/categories/%E5%AE%B9%E5%99%A8%E5%8C%96/">容器化</a>
     </div>
 
 
         
     <div class="article-tag tagcloud">
-        <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python3/" rel="tag">python3</a></li></ul>
+        <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/docker/" rel="tag">docker</a></li></ul>
     </div>
 
         <div class="clearfix"></div>
@@ -292,32 +292,24 @@
     <div class="article-entry" itemprop="articleBody">
       
           
-        <p>python数据分离——读取配置文件</p>
+        <p>修改docker默认数据目录（镜像和启动容器过多造成磁盘满载情况）</p>
 <a id="more"></a>
 
-<p>版本：<br><code>python 3.6</code></p>
-<p>进行数据/配置和代码分离时，python3.6 可以使用<code>configparser</code>进行配置信息读取或创建。可以实现程序和数据的分离，便于后期维护程序，也能在一定程序上满足不会编码的人进行自动化测试（只需改配置文件。）</p>
-<p>以创建/读取<code>ini</code>格式配置文件为例：</p>
-<h3 id="创建配置文件："><a href="#创建配置文件：" class="headerlink" title="创建配置文件："></a>创建配置文件：</h3><p>每个ini文件都是有n个<code>sections</code>组成（可以理解为组成部分或者是段落。。我是这么理解的），每个<code>sections</code>包含若干个键值对（keys:values），所以某种程度上，你可以把每个section看成是个字典（dictionary），虽然这俩意义上完全无关。<br>python3.6创建ini配置文件代码示例：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">#!&#x2F;usr&#x2F;bin&#x2F;env python3</span><br><span class="line"># -*- coding: utf-8 -*-</span><br><span class="line"></span><br><span class="line">import configparser</span><br><span class="line"></span><br><span class="line">cf &#x3D; configparser.ConfigParser()</span><br><span class="line">cf[&#39;DEFAULT&#39;] &#x3D; &#123;&quot;browser&quot; : &quot;Chrome&quot;,</span><br><span class="line">                 &quot;version&quot; : &quot;63.0.3239.132&quot;,</span><br><span class="line">                 &quot;driver&quot; : &quot;chromedriver.exe&quot;,</span><br><span class="line">                 &#125;</span><br><span class="line"></span><br><span class="line">cf[&#39;tokyle.com&#39;] &#x3D; &#123;&#125;</span><br><span class="line">cf[&#39;tokyle.com&#39;][&#39;Author&#39;] &#x3D; &#39;kyle&#39;</span><br><span class="line"></span><br><span class="line">cf[&#39;baidu.com&#39;] &#x3D; &#123;&#125;</span><br><span class="line">baiduSearch &#x3D; cf[&#39;baidu.com&#39;]</span><br><span class="line">baiduSearch[&#39;searchBox&#39;] &#x3D; &#39;id &gt; kw&#39;</span><br><span class="line">baiduSearch[&#39;searchButton&#39;] &#x3D; &#39;id &gt; su&#39;</span><br><span class="line"></span><br><span class="line">cf[&#39;DEFAULT&#39;][&#39;noRetry&#39;] &#x3D; &#39;yes&#39;</span><br><span class="line"></span><br><span class="line">with open(&#39;test.ini&#39;, &#39;w&#39;) as configfile:</span><br><span class="line">    cf.write(configfile)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>上述代码执行完成之后会在该.py文件所在目录下创建一个<code>test.ini</code>的配置文件，内容如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">[DEFAULT]</span><br><span class="line">browser &#x3D; Chrome</span><br><span class="line">version &#x3D; 63.0.3239.132</span><br><span class="line">driver &#x3D; chromedriver.exe</span><br><span class="line">noretry &#x3D; yes</span><br><span class="line"></span><br><span class="line">[tokyle.com]</span><br><span class="line">author &#x3D; kyle</span><br><span class="line"></span><br><span class="line">[baidu.com]</span><br><span class="line">searchbox &#x3D; id &gt; kw</span><br><span class="line">searchbutton &#x3D; id &gt; su</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>每个ini文件可以包含一个<code>[&#39;DEFAULT&#39;]</code> section，也可以没有，<code>[&#39;DEFAULT&#39;]</code>部分定义了默认设置，例如默认使用的浏览器，浏览器版本等。</p>
-<h3 id="读取配置信息"><a href="#读取配置信息" class="headerlink" title="读取配置信息"></a>读取配置信息</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">import configparser</span><br><span class="line"></span><br><span class="line">cf &#x3D; configparser.ConfigParser()</span><br><span class="line">cf.read(&#39;test.ini&#39;)</span><br></pre></td></tr></table></figure>
-<p>获取所有<code>sections</code>使用</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cf.sections()</span><br></pre></td></tr></table></figure>
-<p>即可，需要注意的是，这样，是默认不会获取都[‘DEFAULT’]的，可以实验一下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">section &#x3D; cf.sections()</span><br><span class="line">print(section)</span><br></pre></td></tr></table></figure>
-<p>打印出的结果：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[&#39;tokyle.com&#39;, &#39;baidu.com&#39;]</span><br></pre></td></tr></table></figure>
-<p>可以看见默认不包含[‘DEFAULT’]。</p>
-<p>其实读取配置信息就和读取字典里的数据做法一样，使用for循环就可以打印出全部信息，例如进行自动化测试时想获取[‘baidu.com’]里存的<code>百度搜索输入框</code>以及<code>百度一下按键</code>，可以：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">baidu_msg &#x3D; cf[&#39;baidu.com&#39;]</span><br><span class="line">for key,value in baidu_msg.items():</span><br><span class="line">    print(key + &#39; : &#39; + value)</span><br></pre></td></tr></table></figure>
-<p>打印出的信息：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">searchbox : id &gt; kw</span><br><span class="line">searchbutton : id &gt; su</span><br><span class="line">browser : Chrome</span><br><span class="line">version : 63.0.3239.132</span><br><span class="line">driver : chromedriver.exe</span><br><span class="line">noretry : yes</span><br></pre></td></tr></table></figure>
-<p>可以看见，这样不仅会把[‘baidu.com’]模块的信息全部打印，[‘DEFAULT’]模块的信息也会被打印出来。</p>
-<h3 id="使用配置文件实例-简单的数据分离-："><a href="#使用配置文件实例-简单的数据分离-：" class="headerlink" title="使用配置文件实例(简单的数据分离)："></a>使用配置文件实例(简单的数据分离)：</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line">#!&#x2F;usr&#x2F;bin&#x2F;env python3</span><br><span class="line"># -*- coding: utf-8 -*-</span><br><span class="line"></span><br><span class="line">import configparser</span><br><span class="line">import traceback,time</span><br><span class="line">from selenium import webdriver</span><br><span class="line">from selenium.webdriver.support.ui import WebDriverWait</span><br><span class="line">from nose.tools import assert_true</span><br><span class="line"></span><br><span class="line">class ElementId():</span><br><span class="line"></span><br><span class="line">    def __init__(self):</span><br><span class="line">        #读取配置文件</span><br><span class="line">        self.cf &#x3D; configparser.ConfigParser()</span><br><span class="line">        self.cf.read(&#39;test.ini&#39;)</span><br><span class="line">        self.cf.sections()</span><br><span class="line"></span><br><span class="line">    def get_elementId(self, driver, webSiteName, webelement):</span><br><span class="line">        try:</span><br><span class="line">            #获取配置文件中的定位方法以及定位元素</span><br><span class="line">            webElemnt &#x3D; self.cf.get(webSiteName, webelement).split(&#39;&gt;&#39;)</span><br><span class="line">            webelement_method &#x3D; webElemnt[0].strip()</span><br><span class="line">            webelement_expression &#x3D; webElemnt[1].strip()</span><br><span class="line">            element &#x3D; WebDriverWait(driver, 10).until\</span><br><span class="line">                (lambda x: x.find_element(webelement_method, webelement_expression))</span><br><span class="line">        except Exception as e:</span><br><span class="line">            print(traceback.print_exc(), e)</span><br><span class="line">        else:</span><br><span class="line">            return element</span><br><span class="line"></span><br><span class="line">if __name__ &#x3D;&#x3D; &#39;__main__&#39;:</span><br><span class="line">    &quot;&quot;&quot;测试百度搜索&quot;&quot;&quot;</span><br><span class="line">    #打开百度首页</span><br><span class="line">    browser &#x3D; webdriver.Chrome()</span><br><span class="line">    browser.get(&quot;https:&#x2F;&#x2F;www.baidu.com&quot;)</span><br><span class="line">    #获取定位元素</span><br><span class="line">    elementid &#x3D; ElementId()</span><br><span class="line">    searchBox &#x3D; elementid.get_elementId(browser, &#39;baidu.com&#39;, &#39;searchbox&#39;)</span><br><span class="line">    searchBox.send_keys(&#39;selenium&#39;)</span><br><span class="line">    searchButton &#x3D; elementid.get_elementId(browser, &#39;baidu.com&#39;, &#39;searchbutton&#39;)</span><br><span class="line">    searchButton.click()</span><br><span class="line">    time.sleep(3)</span><br><span class="line">    #断言完成百度搜索&quot;selenium&quot;</span><br><span class="line">    assert_true(u&quot;Selenium - Web Browser Automation&quot; in browser.page_source)</span><br><span class="line">    browser.quit()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>（我在执行上述示例之前，把<code>test.ini</code>中的[‘DEFAULT’]注释掉了，此例不需要[‘DEFAULT’]中的信息）</p>
+<p>版本：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Centos 7</span><br><span class="line">Docker</span><br><span class="line">	Server Version: 20.10.2</span><br><span class="line">	Storage Driver: overlay2</span><br></pre></td></tr></table></figure>
+<ol>
+<li>停服务 <code>systemctl stop docker</code></li>
+<li>挂载数据盘，建数据文件夹  <code>/home/docker_data</code></li>
+<li>备份     <code>tar -zcvf /home/docker_data/docker_bak.tar.gz /var/lib/docker/</code></li>
+<li>建立软链接 <code>ln -s /home/docker_data /var/lib/docker</code></li>
+<li>修改（新增）配置 <strong>/etc/docker/daemon</strong> ,<code>vim /etc/docker/daemon.json</code></li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;registry-mirrors&quot;: [&quot;http:&#x2F;&#x2F;hub-mirror.c.163.com&quot;],</span><br><span class="line">  &quot;data-root&quot;: &quot;&#x2F;home&#x2F;docker_data&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ol start="6">
+<li>重新加载配置，重启<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">systemctl daemon-reload</span><br><span class="line"></span><br><span class="line">systemctl restart docker</span><br></pre></td></tr></table></figure></li>
+<li>查看修改  <code>docker info</code><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Docker Root Dir: &#x2F;home&#x2F;docker_data</span><br><span class="line">Registry Mirrors:</span><br><span class="line"> http:&#x2F;&#x2F;hub-mirror.c.163.com&#x2F;</span><br></pre></td></tr></table></figure>
+以上，完~</li>
+</ol>
 
       
     </div>
@@ -326,13 +318,13 @@
   
     
     <div class="copyright">
-        <p><span>本文标题:</span><a href="/2018/01/20/python%E6%95%B0%E6%8D%AE%E5%88%86%E7%A6%BB/">python数据分离</a></p>
+        <p><span>本文标题:</span><a href="/2021/01/15/%E4%BF%AE%E6%94%B9docker%E6%95%B0%E6%8D%AE%E7%9B%AE%E5%BD%95/">修改docker数据目录</a></p>
         <p><span>文章作者:</span><a href="/" title="回到主页">Kyle</a></p>
-        <p><span>发布时间:</span>2018-01-20, 08:10:58</p>
-        <p><span>最后更新:</span>2020-12-21, 14:39:14</p>
+        <p><span>发布时间:</span>2021-01-15, 10:23:07</p>
+        <p><span>最后更新:</span>2021-01-15, 10:47:20</p>
         <p>
-            <span>原始链接:</span><a class="post-url" href="/2018/01/20/python%E6%95%B0%E6%8D%AE%E5%88%86%E7%A6%BB/" title="python数据分离">https://spindriftks.github.io/2018/01/20/python%E6%95%B0%E6%8D%AE%E5%88%86%E7%A6%BB/</a>
-            <span class="copy-path" data-clipboard-text="原文: https://spindriftks.github.io/2018/01/20/python%E6%95%B0%E6%8D%AE%E5%88%86%E7%A6%BB/　　作者: Kyle" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <span>原始链接:</span><a class="post-url" href="/2021/01/15/%E4%BF%AE%E6%94%B9docker%E6%95%B0%E6%8D%AE%E7%9B%AE%E5%BD%95/" title="修改docker数据目录">https://spindriftks.github.io/2021/01/15/%E4%BF%AE%E6%94%B9docker%E6%95%B0%E6%8D%AE%E7%9B%AE%E5%BD%95/</a>
+            <span class="copy-path" data-clipboard-text="原文: https://spindriftks.github.io/2021/01/15/%E4%BF%AE%E6%94%B9docker%E6%95%B0%E6%8D%AE%E7%9B%AE%E5%BD%95/　　作者: Kyle" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
             <script> var clipboard = new Clipboard('.copy-path'); </script>
         </p>
         <p>
@@ -344,16 +336,10 @@
 
     <nav id="article-nav">
         
-            <div id="article-nav-newer" class="article-nav-title">
-                <a href="/2018/01/23/python%E5%AE%9E%E7%8E%B0%E8%87%AA%E5%8A%A8%E5%8C%96%E6%B5%8B%E8%AF%95%E6%8A%A5%E5%91%8A%E9%82%AE%E4%BB%B6%E5%AE%9E%E6%97%B6%E5%8F%91%E9%80%81/">
-                    python实现自动化测试报告邮件实时发送
-                </a>
-            </div>
-        
         
             <div id="article-nav-older" class="article-nav-title">
-                <a href="/2018/01/20/%E8%87%AA%E5%A8%B1%E8%87%AA%E4%B9%90%E4%B8%80/">
-                    自娱自乐一
+                <a href="/2021/01/12/sed%E5%92%8Cawk%E8%AE%B0%E5%BD%95/">
+                    sed和awk记录
                 </a>
             </div>
         
@@ -365,7 +351,7 @@
     <div id="toc" class="toc-article">
         <strong class="toc-title">文章目录</strong>
         
-            <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%EF%BC%9A"><span class="toc-text">创建配置文件：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AF%BB%E5%8F%96%E9%85%8D%E7%BD%AE%E4%BF%A1%E6%81%AF"><span class="toc-text">读取配置信息</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E5%AE%9E%E4%BE%8B-%E7%AE%80%E5%8D%95%E7%9A%84%E6%95%B0%E6%8D%AE%E5%88%86%E7%A6%BB-%EF%BC%9A"><span class="toc-text">使用配置文件实例(简单的数据分离)：</span></a></li></ol>
+            
         
     </div>
     <style>
@@ -400,7 +386,7 @@
         </div>
         <script>
             window._bd_share_config={
-                "common":{"bdSnsKey":{},"bdText":"python数据分离　| 它夏了夏天　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+                "common":{"bdSnsKey":{},"bdText":"修改docker数据目录　| 它夏了夏天　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
         </script>
     
 
@@ -443,15 +429,13 @@
 
     <div class="scroll" id="post-nav-button">
         
-            <a href="/2018/01/23/python%E5%AE%9E%E7%8E%B0%E8%87%AA%E5%8A%A8%E5%8C%96%E6%B5%8B%E8%AF%95%E6%8A%A5%E5%91%8A%E9%82%AE%E4%BB%B6%E5%AE%9E%E6%97%B6%E5%8F%91%E9%80%81/" title="上一篇: python实现自动化测试报告邮件实时发送">
-                <i class="fa fa-angle-left"></i>
-            </a>
+            <a href="/" title="回到主页"><i class="fa fa-home"></i></a>
         
 
         <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
 
         
-            <a href="/2018/01/20/%E8%87%AA%E5%A8%B1%E8%87%AA%E4%B9%90%E4%B8%80/" title="下一篇: 自娱自乐一">
+            <a href="/2021/01/12/sed%E5%92%8Cawk%E8%AE%B0%E5%BD%95/" title="下一篇: sed和awk记录">
                 <i class="fa fa-angle-right"></i>
             </a>
         

@@ -4,6 +4,31 @@
   
     
     <entry>
+      <title>修改docker数据目录</title>
+      <link href="2021/01/15/%E4%BF%AE%E6%94%B9docker%E6%95%B0%E6%8D%AE%E7%9B%AE%E5%BD%95/"/>
+      <url>2021/01/15/%E4%BF%AE%E6%94%B9docker%E6%95%B0%E6%8D%AE%E7%9B%AE%E5%BD%95/</url>
+      
+        <content type="html"><![CDATA[<p>修改docker默认数据目录（镜像和启动容器过多造成磁盘满载情况）</p><a id="more"></a><p>版本：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Centos 7</span><br><span class="line">Docker</span><br><span class="line">Server Version: 20.10.2</span><br><span class="line">Storage Driver: overlay2</span><br></pre></td></tr></table></figure><ol><li>停服务 <code>systemctl stop docker</code></li><li>挂载数据盘，建数据文件夹  <code>/home/docker_data</code></li><li>备份     <code>tar -zcvf /home/docker_data/docker_bak.tar.gz /var/lib/docker/</code></li><li>建立软链接 <code>ln -s /home/docker_data /var/lib/docker</code></li><li>修改（新增）配置 <strong>/etc/docker/daemon</strong> ,<code>vim /etc/docker/daemon.json</code></li></ol><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;registry-mirrors&quot;: [&quot;http:&#x2F;&#x2F;hub-mirror.c.163.com&quot;],</span><br><span class="line">  &quot;data-root&quot;: &quot;&#x2F;home&#x2F;docker_data&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><ol start="6"><li>重新加载配置，重启<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">systemctl daemon-reload</span><br><span class="line"></span><br><span class="line">systemctl restart docker</span><br></pre></td></tr></table></figure></li><li>查看修改  <code>docker info</code><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Docker Root Dir: &#x2F;home&#x2F;docker_data</span><br><span class="line">Registry Mirrors:</span><br><span class="line"> http:&#x2F;&#x2F;hub-mirror.c.163.com&#x2F;</span><br></pre></td></tr></table></figure>以上，完~</li></ol>]]></content>
+      
+      
+      <categories>
+          
+          <category> 容器化 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> docker </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>sed和awk记录</title>
       <link href="2021/01/12/sed%E5%92%8Cawk%E8%AE%B0%E5%BD%95/"/>
       <url>2021/01/12/sed%E5%92%8Cawk%E8%AE%B0%E5%BD%95/</url>
