@@ -251,6 +251,85 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-切换163yum源" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2018/04/19/%E5%88%87%E6%8D%A2163yum%E6%BA%90/" class="article-date">
+      <time datetime="2018-04-19T00:53:10.000Z" itemprop="datePublished">2018-04-19</time>
+</a>
+
+ 
+    <a href="/2018/04/19/%E5%88%87%E6%8D%A2163yum%E6%BA%90/#comments" title="查看评论">
+        <i class="fa fa-comments-o" aria-hidden="true"></i>
+        <span class="count-comment"></span>
+        
+        
+            <span class="disqus-comment-count" data-disqus-identifier="2018/04/19/切换163yum源/"></span>
+        
+    </a>
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/04/19/%E5%88%87%E6%8D%A2163yum%E6%BA%90/">切换163yum源</a>
+    </h1>
+  
+
+	
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+              <p>来篇福利文</p>
+          
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/categories/Devops/">Devops</a>
+    </div>
+
+
+      
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Centos7/" rel="tag">Centos7</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/yum/" rel="tag">yum</a></li></ul>
+    </div>
+
+      
+        <p class="article-more-link">
+          <a href="/2018/04/19/%E5%88%87%E6%8D%A2163yum%E6%BA%90/#more">阅读全文 >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
+
+  
     <article id="post-MySQL之SQL优化系列（三）" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -707,113 +786,6 @@
         <p class="article-more-link">
           <a href="/2018/03/30/python%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95%E6%A1%86%E6%9E%B6locust%EF%BC%88%E4%B8%80%EF%BC%89/#more">阅读全文 >></a>
         </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-loadrunner监控Mysql" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2018/03/30/loadrunner%E7%9B%91%E6%8E%A7Mysql/" class="article-date">
-      <time datetime="2018-03-29T23:31:34.000Z" itemprop="datePublished">2018-03-30</time>
-</a>
-
- 
-    <a href="/2018/03/30/loadrunner%E7%9B%91%E6%8E%A7Mysql/#comments" title="查看评论">
-        <i class="fa fa-comments-o" aria-hidden="true"></i>
-        <span class="count-comment"></span>
-        
-        
-            <span class="disqus-comment-count" data-disqus-identifier="2018/03/30/loadrunner监控Mysql/"></span>
-        
-    </a>
-
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/03/30/loadrunner%E7%9B%91%E6%8E%A7Mysql/">loadrunner监控Mysql</a>
-    </h1>
-  
-
-	
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-          
-        <p>使用loadrunner监控mysql</p>
-<!-- more  -->
-
-<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>最近工作需要研究怎么深度性能测试，使用的工具基本是loadrunner，jmeter或者基于python的框架locust。<br>近期一段时间应该和lr打交道会比较多，lr最为一个收费的专业性能测试软件，功能是毋庸置疑的相当强大，但是，貌似我没有找到监控mysql的模块。。sql server倒是有，也可能是我远离lr太长时间了。</p>
-<h3 id="mysql性能监控"><a href="#mysql性能监控" class="headerlink" title="mysql性能监控"></a>mysql性能监控</h3><p>在日常性能测试过程中，除了需要对系统TPS，RT这样的参数进行监控以及各服务器的CPU，MEMORY，IO之外，还要实时对数据库进行监控，因为接触的多的是mysql，就以MySQL为例。</p>
-<p>当mysql出现运行缓慢，或者出于某种原因无法响应查询，可以监控以下几个指标来获取解决：</p>
-<ol>
-<li>查询吞吐量</li>
-<li>查询执行性能</li>
-<li>连接情况</li>
-<li>数据库缓冲池</li>
-</ol>
-<h4 id="吞吐量"><a href="#吞吐量" class="headerlink" title="吞吐量"></a>吞吐量</h4><p>由于本篇重点是介绍监控MySQL，对于mysql的性能指标就只解释一种，以吞吐量为例：<br>MySQL中有一个<code>Questions</code>的内部计数器，客户端每发送一个查询，改值加一。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; show global status like &quot;Questions&quot;;</span><br><span class="line">+---------------+-------+</span><br><span class="line">| Variable_name | Value |</span><br><span class="line">+---------------+-------+</span><br><span class="line">| Questions     | 665   |</span><br><span class="line">+---------------+-------+</span><br><span class="line">1 row in set (0.00 sec)</span><br></pre></td></tr></table></figure>
-<p>所以对<code>Questions</code>该指标进行监控，当该指标发生突变，如骤降或者骤增，很可能数据库出现了问题。</p>
-<h3 id="HP-SiteScope"><a href="#HP-SiteScope" class="headerlink" title="HP SiteScope"></a>HP SiteScope</h3><p>WIKIPEDIA给的解释：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">HP SiteScope is agentless monitoring software focused on monitoring the availability and performance of distributed IT infrastructures, including Servers, Network devices and services, Applications and application components, operating systems and various IT enterprise components.</span><br></pre></td></tr></table></figure>
-<p>大致意思是：HP SiteScope是无代理监控软件，专注于监控分布式IT基础架构的可用性和性能，包括服务器，网络设备和服务，应用程序和应用程序组件，操作系统和各种IT企业组件。<br>所以，HP SiteScope很适合用来监控MySQL。</p>
-<h4 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h4><p>网上找一圈硬是没找到安装包，很怀疑对于mysql的监控有更简单的方法，或者就是压根没人做开源的。。直接梯子到官网下了个11.3的版本：</p>
-<blockquote>
-<p><a target="_blank" rel="noopener" href="https://pan.baidu.com/s/1h3MZP0JM3TTTw8q9nbcG2A">度娘盘连接</a>  密码：7l99<br><a target="_blank" rel="noopener" href="https://pan.baidu.com/s/1GpszOZXKS8od5barKx0c1g">mysql驱动</a>密码：y9i8</p>
-</blockquote>
-<p>安装很简单，压缩包打开，找到<code>HPSiteScope_11.30_setup.exe</code>一路next即可，mysql驱动放在<code>D:\HP\SiteScope\java\lib\ext</code>下。</p>
-<h3 id="LR监控MySQL操作"><a href="#LR监控MySQL操作" class="headerlink" title="LR监控MySQL操作"></a>LR监控MySQL操作</h3><p>安装完成HP SiteScope后，在浏览器输入url：<code>http://127.0.0.1:8080/SiteScope</code>即可打开主页</p>
-<h4 id="可能遇到的问题"><a href="#可能遇到的问题" class="headerlink" title="可能遇到的问题"></a>可能遇到的问题</h4><p>输入url之后，可能会遇见页面是空白的情况（我就遇到过），首先，别用chrome和firefox，这玩意貌似只能在IE上面打开；其次，你本地需要JDK环境（java -version）要求JDK1.6以上。最后，IE的internet选项中，把局域网设置里的代理勾掉。以上就是我解决的页面空白的三个办法（我全中过，折腾老半天）</p>
-<p>进入HP SiteScope首页，在<code>SiteScope</code>上右键，<code>新建组</code>，输入组名之后，右键创建的组，<code>新建监控器</code>，选择<code>数据库计数器</code>，只需要配置几项：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">数据库连接URL:	jdbc:mysql:&#x2F;&#x2F;localhost&#x2F;sakila</span><br><span class="line">查询：	show status</span><br><span class="line">数据库驱动程序： org.gjt.mm.mysql.Driver</span><br><span class="line">凭据：输入数据库用户名及密码</span><br><span class="line">计数器：选择计数器：</span><br><span class="line">Com_insert_select&#x2F;Value	</span><br><span class="line">Com_select&#x2F;Value	</span><br><span class="line">counters in error	</span><br><span class="line">Questions&#x2F;Value	</span><br><span class="line">Select_scan&#x2F;Value	</span><br></pre></td></tr></table></figure>
-<p>点击验证保存，完成保存。</p>
-<h4 id="lr配置监控"><a href="#lr配置监控" class="headerlink" title="lr配置监控"></a>lr配置监控</h4><p>打开LR Contraller，配置完场景，在run页面，可用图，选择<code>SiteScope图</code>，右键SiteScope，点击打开，右击打开的SiteScope图，点击<code>添加度量</code>，弹出的窗口有两个添加，上面一个是添加服务器，我添加的是<code>localhost</code>端口<code>8888</code>，下一个添加是选择添加的组件，选择需要的添加组件，点击确定，即可完成配置。<br>（没办法，图床都太坑了，所以全程无图。。。请原谅。。。）</p>
-<h3 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h3><p>官网下载的HP SiteScope是未破解版，有时间还是需要折腾个破解版的研究研究。工具是会用了，原理根本没去看，这是病，不懂原理就直接使用，总感觉不踏实。</p>
-<blockquote>
-<p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/fce30e333578">参考地址</a></p>
-</blockquote>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-    <div class="article-category tagcloud">
-    <a class="article-category-link" href="/categories/%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95/">性能测试</a>
-    </div>
-
-
-      
-    <div class="article-tag tagcloud">
-        <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/SiteScope/" rel="tag">SiteScope</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/loadrunner/" rel="tag">loadrunner</a></li></ul>
-    </div>
-
       
       <div class="clearfix"></div>
     </div>

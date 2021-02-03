@@ -4,6 +4,31 @@
   
     
     <entry>
+      <title>k8s踏坑记 第二篇</title>
+      <link href="2021/02/03/k8s%E8%B8%8F%E5%9D%91%E8%AE%B0-%E7%AC%AC%E4%BA%8C%E7%AF%87/"/>
+      <url>2021/02/03/k8s%E8%B8%8F%E5%9D%91%E8%AE%B0-%E7%AC%AC%E4%BA%8C%E7%AF%87/</url>
+      
+        <content type="html"><![CDATA[<p>master和node在同一台虚拟机，外部网络无法访问k8s配置好的service暴露的端口</p><a id="more"></a><h3 id="现象"><a href="#现象" class="headerlink" title="现象"></a>现象</h3><p>环境：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">CentOS Linux release 7.9.2009 (Core)</span><br><span class="line">Kubernetes v1.5.2</span><br><span class="line">Docker version 1.13.1, build 0be3e21&#x2F;1.13.1</span><br></pre></td></tr></table></figure><p>单机搭建master加node</p><p>tomcat-deployment.yaml内容：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">apiVersion: extensions&#x2F;v1beta1</span><br><span class="line">kind: Deployment</span><br><span class="line">metadata:</span><br><span class="line">  name: tomcat</span><br><span class="line">spec:</span><br><span class="line">  replicas: 1</span><br><span class="line">  selector:</span><br><span class="line">    matchLabels:</span><br><span class="line">      tier: tomcat</span><br><span class="line">    matchExpressions:</span><br><span class="line">    - &#123;key: tier, operator: In, values: [tomcat]&#125;</span><br><span class="line">  template:</span><br><span class="line">    metadata:</span><br><span class="line">      labels:</span><br><span class="line">        app: tomcat-demo</span><br><span class="line">        tier: tomcat</span><br><span class="line">    spec:</span><br><span class="line">      containers:</span><br><span class="line">      - name: tomcat-demo</span><br><span class="line">        image: tomcat</span><br><span class="line">        imagePullPolicy: IfNotPresent</span><br><span class="line">        ports:</span><br><span class="line">        - containerPort: 8080 </span><br></pre></td></tr></table></figure><p>tomcat-service.yaml内容：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">apiVersion: v1</span><br><span class="line">kind: Service</span><br><span class="line">metadata:</span><br><span class="line">  name: tomcat-service</span><br><span class="line">spec:</span><br><span class="line">  type: NodePort</span><br><span class="line">  ports:</span><br><span class="line">  - port: 8080</span><br><span class="line">    nodePort: 31002</span><br><span class="line">  selector:</span><br><span class="line">    tier: tomcat</span><br><span class="line">    app: tomcat-demo</span><br></pre></td></tr></table></figure><p>用<code>kubectl get pods</code>看状态正常，<code>kubectl describe pod xxx</code>也正常，就是<code>docker exec -it xxx /bin/bash</code>进容器看日志也正常，虚拟机内直接<code>curl http://127.0.0.1:31002</code>也是正常有访问的，并且虚拟机的防火墙也是关着的（用<code>docker run -d -p 31002:8080 --name xxx tomcat</code>直接起容器就可以访问）</p><h3 id="解决"><a href="#解决" class="headerlink" title="解决"></a>解决</h3><p>排查一圈之后，实在没办法，上网搜。解决办法，虚拟机内执行：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">iptables -P FORWARD ACCEPT</span><br></pre></td></tr></table></figure><p>完了就全正常了。。</p><p><a href="https://github.com/kubernetes/kubernetes/issues/40182">参考链接</a></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 容器化 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> k8s </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>k8s踏坑记 第一篇</title>
       <link href="2021/02/02/k8s%E8%B8%8F%E5%9D%91%E8%AE%B0-%E7%AC%AC%E4%B8%80%E7%AF%87/"/>
       <url>2021/02/02/k8s%E8%B8%8F%E5%9D%91%E8%AE%B0-%E7%AC%AC%E4%B8%80%E7%AF%87/</url>
