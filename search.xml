@@ -4,6 +4,31 @@
   
     
     <entry>
+      <title>关于员工管理几点记录</title>
+      <link href="2021/03/03/%E5%85%B3%E4%BA%8E%E5%91%98%E5%B7%A5%E7%AE%A1%E7%90%86%E5%87%A0%E7%82%B9%E8%AE%B0%E5%BD%95/"/>
+      <url>2021/03/03/%E5%85%B3%E4%BA%8E%E5%91%98%E5%B7%A5%E7%AE%A1%E7%90%86%E5%87%A0%E7%82%B9%E8%AE%B0%E5%BD%95/</url>
+      
+        <content type="html"><![CDATA[<p>关于团队中员工管理方法的一些记录，纸上谈兵型…</p><a id="more"></a><h3 id="工作安排"><a href="#工作安排" class="headerlink" title="工作安排"></a>工作安排</h3><p>团队中员工日常工作有幸福感和激情，恰当的方式之一是团队领导自上而下的拆分完大项任务，让员工自行自下而上的“任务认领”，甚至引导员工自发生成任务，积极引导员工思考。</p><h3 id="工程师文化"><a href="#工程师文化" class="headerlink" title="工程师文化"></a>工程师文化</h3><p>关于团队组建和日常工作，来自奈飞的成年人文化。</p><ol><li>只招能够管理好自己的人</li><li>每个人都要理解公司的业务</li><li>坦诚，意见当面讲</li><li>只有事实才能捍卫观点</li><li>录用员工取决于解决问题的方式</li><li>按员工带来的价值付薪</li><li>不挽留不应该挽留的员工</li><li>面向未来组建团队</li></ol><p>对于个人来说，更换一份工作的求职面试是一次投资；对企业来说，面试招录员工是一次未来发展的机会。</p><h3 id="热炉法则"><a href="#热炉法则" class="headerlink" title="热炉法则"></a>热炉法则</h3><p>关于奖励和处罚</p><ul><li>奖励要奖励基层员工</li><li>处罚要处罚中高层领导</li></ul><p>关注核心利益，以核心利益驱动制度遵守（例如不做codereview出现线上事故第一责任人是开发）</p><h3 id="黄金圈法则"><a href="#黄金圈法则" class="headerlink" title="黄金圈法则"></a>黄金圈法则</h3><p>最好的管理工具是问 why<br>对事物本身要赋予足够的意义，多问“我想做什么”，“我为什么要做”，以足够的意义去驱动更好的行动</p><h3 id="预期管理"><a href="#预期管理" class="headerlink" title="预期管理"></a>预期管理</h3><ol><li>多个好消息，分开发布：延迟幸福感的长度</li><li>多个坏消息，一起发布：降低心理损失感</li><li>一个大的坏消息和一个小的好消息，分别发布：低承诺，高交付</li><li>一个大的好消息和一个小的坏消息，一起发布：降低幸福的底线，让辛福感更强烈</li></ol><h3 id="工作管理"><a href="#工作管理" class="headerlink" title="工作管理"></a>工作管理</h3><p>工作时间划分<br>准备阶段：60%<br>执行阶段：20%<br>总结复盘：10%<br>下阶段规划：10%</p><p>行百里者半九十</p><p>以上，完~</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 团队管理 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 以人为本 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>python定义类加不加object区别</title>
       <link href="2021/02/26/python%E5%AE%9A%E4%B9%89%E7%B1%BB%E5%8A%A0%E4%B8%8D%E5%8A%A0object%E5%8C%BA%E5%88%AB/"/>
       <url>2021/02/26/python%E5%AE%9A%E4%B9%89%E7%B1%BB%E5%8A%A0%E4%B8%8D%E5%8A%A0object%E5%8C%BA%E5%88%AB/</url>
