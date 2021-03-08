@@ -15,18 +15,17 @@
 
 
 
-<meta name="description" content="通过explain分析低效SQL的执行计划">
+<meta name="description" content="一些经历和自我坚持">
 <meta property="og:type" content="article">
-<meta property="og:title" content="MySQL之SQL优化系列（二）">
-<meta property="og:url" content="https://spindriftks.github.io/2018/04/03/MySQL%E4%B9%8BSQL%E4%BC%98%E5%8C%96%E7%B3%BB%E5%88%97%EF%BC%88%E4%BA%8C%EF%BC%89/index.html">
+<meta property="og:title" content="成年人的“正义”">
+<meta property="og:url" content="https://spindriftks.github.io/2021/03/08/%E6%88%90%E5%B9%B4%E4%BA%BA%E7%9A%84%E2%80%9C%E6%AD%A3%E4%B9%89%E2%80%9D/index.html">
 <meta property="og:site_name" content="它夏了夏天">
-<meta property="og:description" content="通过explain分析低效SQL的执行计划">
+<meta property="og:description" content="一些经历和自我坚持">
 <meta property="og:locale">
-<meta property="article:published_time" content="2018-04-02T21:03:10.000Z">
-<meta property="article:modified_time" content="2020-12-21T06:39:15.028Z">
+<meta property="article:published_time" content="2021-03-08T00:23:53.000Z">
+<meta property="article:modified_time" content="2021-03-08T01:32:09.093Z">
 <meta property="article:author" content="Kyle">
-<meta property="article:tag" content="mysql">
-<meta property="article:tag" content="explain">
+<meta property="article:tag" content="lives">
 <meta name="twitter:card" content="summary">
 
 <link rel="apple-touch-icon" href= "/apple-touch-icon.png">
@@ -61,7 +60,7 @@
 <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
 
 
-<title>MySQL之SQL优化系列（二） | 它夏了夏天</title>
+<title>成年人的“正义” | 它夏了夏天</title>
 
 <script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
 <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
@@ -248,11 +247,11 @@
     </div>
     <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
 </nav>
-      <div class="body-wrap"><article id="post-MySQL之SQL优化系列（二）" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-成年人的“正义”" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2018/04/03/MySQL%E4%B9%8BSQL%E4%BC%98%E5%8C%96%E7%B3%BB%E5%88%97%EF%BC%88%E4%BA%8C%EF%BC%89/" class="article-date">
-      <time datetime="2018-04-02T21:03:10.000Z" itemprop="datePublished">2018-04-03</time>
+      <a href="/2021/03/08/%E6%88%90%E5%B9%B4%E4%BA%BA%E7%9A%84%E2%80%9C%E6%AD%A3%E4%B9%89%E2%80%9D/" class="article-date">
+      <time datetime="2021-03-08T00:23:53.000Z" itemprop="datePublished">2021-03-08</time>
 </a>
 
 
@@ -267,7 +266,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      MySQL之SQL优化系列（二）
+      成年人的“正义”
     </h1>
   
 
@@ -277,13 +276,13 @@
       <div class="article-info article-info-post">
         
     <div class="article-category tagcloud">
-    <a class="article-category-link" href="/categories/MySQL-SQL%E4%BC%98%E5%8C%96/">MySQL-SQL优化</a>
+    <a class="article-category-link" href="/categories/%E7%94%9F%E6%B4%BB/">生活</a>
     </div>
 
 
         
     <div class="article-tag tagcloud">
-        <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/explain/" rel="tag">explain</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mysql/" rel="tag">mysql</a></li></ul>
+        <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/lives/" rel="tag">lives</a></li></ul>
     </div>
 
         <div class="clearfix"></div>
@@ -293,37 +292,23 @@
     <div class="article-entry" itemprop="articleBody">
       
           
-        <p>通过explain分析低效SQL的执行计划</p>
+        <p>一些经历和自我坚持</p>
 <a id="more"></a>
 
-<h3 id="序言"><a href="#序言" class="headerlink" title="序言"></a>序言</h3><p>使用的数据库依然是mysql示例库sakila<br>接着上篇的<a target="_blank" rel="noopener" href="http://tokyle.com/2018/03/09/MySQL%E4%B9%8BSQL%E4%BC%98%E5%8C%96%E7%B3%BB%E5%88%97%EF%BC%88%E4%B8%80%EF%BC%89/#more">MySQL之SQL优化系列（一）</a><br>当通过慢查询日志定位到执行效率较低的SQL之后，使用explain进行低效SQL的分析。</p>
-<h3 id="使用EXPLAIN分析低效SQL的执行计划"><a href="#使用EXPLAIN分析低效SQL的执行计划" class="headerlink" title="使用EXPLAIN分析低效SQL的执行计划"></a>使用EXPLAIN分析低效SQL的执行计划</h3><p>使用EXPLAIN可以获取MySQL是如何执行SELECT语句的，包括在SELECT语句执行过程中表如何连接以及连接的顺序，如下示例SQL执行：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; explain select sum(amount) from customer a,payment b where 1&#x3D;1 and a.customer_id &#x3D; b.customer_id and email&#x3D;&#39;JANE.BENNETT@sakilacustomer.org&#39;\G  </span><br><span class="line">*************************** 1. row ***************************</span><br><span class="line">           id: 1</span><br><span class="line">  select_type: SIMPLE</span><br><span class="line">        table: a</span><br><span class="line">   partitions: NULL</span><br><span class="line">         type: ALL</span><br><span class="line">possible_keys: PRIMARY</span><br><span class="line">          key: NULL</span><br><span class="line">      key_len: NULL</span><br><span class="line">          ref: NULL</span><br><span class="line">         rows: 599</span><br><span class="line">     filtered: 10.00</span><br><span class="line">        Extra: Using where</span><br><span class="line">*************************** 2. row *************************** </span><br><span class="line">           id: 1                                               </span><br><span class="line">  select_type: SIMPLE                                          </span><br><span class="line">        table: b                                               </span><br><span class="line">   partitions: NULL                                            </span><br><span class="line">         type: ref                                             </span><br><span class="line">possible_keys: idx_fk_customer_id                              </span><br><span class="line">          key: idx_fk_customer_id                     	         </span><br><span class="line">      key_len: 2                                               </span><br><span class="line">          ref: sakila.a.customer_id                            </span><br><span class="line">         rows: 26                                              </span><br><span class="line">     filtered: 100.00                                          </span><br><span class="line">        Extra: NULL                                            </span><br><span class="line">2 rows in set, 1 warning (0.01 sec)                            </span><br></pre></td></tr></table></figure>
-<p>字段解释：</p>
-<ul>
-<li>select_type:表示select的类型，常见取值有SIMPLE(简单表，不使用表连接或子查询)、PRIMARY(主查询，外层的查询)、UNION(UNION中的第二个或者后面的查询语句)、SUBQUERY(子查询中的第一个SELECT)</li>
-<li>table:输出结果集的表</li>
-<li>type:表示MySQL在表中找到所需行的方法，或者称为访问类型，常见的有：<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ALL —— index —— range —— ref —— eq_ref —— const,system —— NULL</span><br></pre></td></tr></table></figure>
-从做到右，性能由最差到最好。示例：</li>
-</ul>
-<ol>
-<li>type=ALL，全表扫描，MySQL遍历全表来找到匹配行：<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; explain select * from film limit 1\G</span><br><span class="line">*************************** 1. row ***************************</span><br><span class="line">           id: 1                                              </span><br><span class="line">  select_type: SIMPLE                                         </span><br><span class="line">        table: film                                           </span><br><span class="line">   partitions: NULL                                           </span><br><span class="line">         type: ALL                                            </span><br><span class="line">possible_keys: NULL                                           </span><br><span class="line">          key: NULL                                           </span><br><span class="line">      key_len: NULL                                           </span><br><span class="line">          ref: NULL                                           </span><br><span class="line">         rows: 1000                                           </span><br><span class="line">     filtered: 100.00                                         </span><br><span class="line">        Extra: NULL                                           </span><br><span class="line">1 row in set, 1 warning (0.00 sec)                            </span><br></pre></td></tr></table></figure></li>
-<li>type=index，索引全扫描，MySQL遍历整个索引来查询匹配的行：<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; show index from film;</span><br></pre></td></tr></table></figure>
-获取得到film表的索引：<code>film_id(主键)</code>,<code>title</code>,<code>language_id</code>,<code>original_language_id</code><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt;  explain select title from film\G</span><br><span class="line">*************************** 1. row *************************** </span><br><span class="line">           id: 1                                               </span><br><span class="line">  select_type: SIMPLE                                          </span><br><span class="line">        table: film                                            </span><br><span class="line">   partitions: NULL                                            </span><br><span class="line">         type: index                                           </span><br><span class="line">possible_keys: NULL                                            </span><br><span class="line">          key: idx_title                                       </span><br><span class="line">      key_len: 767                                             </span><br><span class="line">          ref: NULL                                            </span><br><span class="line">         rows: 1000                                            </span><br><span class="line">     filtered: 100.00                                          </span><br><span class="line">        Extra: Using index                                     </span><br><span class="line">1 row in set, 1 warning (0.00 sec)                             </span><br></pre></td></tr></table></figure></li>
-<li>type=range,索引范围扫描，常见的有<code>between</code>,<code>&gt;</code>,<code>&lt;</code>等。</li>
-<li>type=ref，使用非唯一索引扫描或唯一索引的前缀扫描，返回匹配单独值得记录行，例如：<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; explain select * from payment where customer_id&#x3D;24\G</span><br><span class="line">*************************** 1. row ***************************</span><br><span class="line">           id: 1                                              </span><br><span class="line">  select_type: SIMPLE                                         </span><br><span class="line">        table: payment                                        </span><br><span class="line">   partitions: NULL                                           </span><br><span class="line">         type: ref                                            </span><br><span class="line">possible_keys: idx_fk_customer_id                             </span><br><span class="line">          key: idx_fk_customer_id                             </span><br><span class="line">      key_len: 2                                              </span><br><span class="line">          ref: const                                          </span><br><span class="line">         rows: 25                                             </span><br><span class="line">     filtered: 100.00                                         </span><br><span class="line">        Extra: NULL                                           </span><br><span class="line">1 row in set, 1 warning (0.00 sec)                            </span><br></pre></td></tr></table></figure>
-索引idx_fk_customer_id是非唯一索引，查询条件为等值查询条件customer_id=24，所以扫描索引的类型为ref。ref还经常出现在join操作中。</li>
-<li>type=eq_ref，类似ref，区别在于使用的索引是唯一索引，对于每一个索引的键值，表中只有一条记录匹配。换句换说，就是在进行多表连接时，使用得失primary key或者unique index作为关联条件。<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; explain select * from film a,film_text b where a.film_id &#x3D; b.film_id\G</span><br><span class="line">*************************** 1. row ***************************</span><br><span class="line">           id: 1                                              </span><br><span class="line">  select_type: SIMPLE                                         </span><br><span class="line">        table: b                                              </span><br><span class="line">   partitions: NULL                                           </span><br><span class="line">         type: ALL                                            </span><br><span class="line">possible_keys: PRIMARY                                        </span><br><span class="line">          key: NULL                                           </span><br><span class="line">      key_len: NULL                                           </span><br><span class="line">          ref: NULL                                           </span><br><span class="line">         rows: 1000                                           </span><br><span class="line">     filtered: 100.00                                         </span><br><span class="line">        Extra: NULL                                           </span><br><span class="line">*************************** 2. row ***************************</span><br><span class="line">           id: 1                                              </span><br><span class="line">  select_type: SIMPLE                                         </span><br><span class="line">        table: a                                              </span><br><span class="line">   partitions: NULL                                           </span><br><span class="line">         type: eq_ref                                         </span><br><span class="line">possible_keys: PRIMARY                                        </span><br><span class="line">          key: PRIMARY                                        </span><br><span class="line">      key_len: 2                                              </span><br><span class="line">          ref: sakila.b.film_id                               </span><br><span class="line">         rows: 1                                              </span><br><span class="line">     filtered: 100.00                                         </span><br><span class="line">        Extra: Using where                                    </span><br><span class="line">2 rows in set, 1 warning (0.00 sec)                           </span><br></pre></td></tr></table></figure></li>
-<li>type=const/system，表单中有最多一个匹配行，查询起来非常迅速，所以这个匹配行中的其他列的值可以被优化器在当前查询中当做常量来处理，例如，根据主键primary key或者唯一索引unique index进行的查询。<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">alter table customer add unique index uk_email(email);</span><br><span class="line">mysql&gt; explain select * from (select * from customer where email&#x3D;&#39;LINDA.WILLIAMS@sakilacustomer.org&#39;) a\G</span><br><span class="line">*************************** 1. row *************************** </span><br><span class="line">           id: 1                                               </span><br><span class="line">  select_type: SIMPLE                                          </span><br><span class="line">        table: customer                                        </span><br><span class="line">   partitions: NULL                                            </span><br><span class="line">         type: const                                           </span><br><span class="line">possible_keys: uk_email                                        </span><br><span class="line">          key: uk_email                                        </span><br><span class="line">      key_len: 153                                             </span><br><span class="line">          ref: const                                           </span><br><span class="line">         rows: 1                                               </span><br><span class="line">     filtered: 100.00                                          </span><br><span class="line">        Extra: NULL                                            </span><br><span class="line">1 row in set, 1 warning (0.00 sec)                             </span><br></pre></td></tr></table></figure>
-通过唯一索引uk_email访问的时候，类型type为const。</li>
-</ol>
-<ul>
-<li>possible_keys：表示查询时可能使用的索引</li>
-<li>key：表示实际使用的索引</li>
-<li>key_len：使用到索引字段的长度、</li>
-<li>rows：扫描行的数量</li>
-<li>Extra：执行情况的说明和描述，包含不适合在其他列中显示但是对执行计划非常重要的额外信息。</li>
-</ul>
+<p>学生时代我们或多或少都是棱角分明的热血青年，走上工作岗位之后，来自生活的压力、环境的同化、记忆的衰退等等，曾经的自己逐渐世故圆滑；其实也还好，满腔热血容易激动、冲动，没了棱角反而更注重三思而后行。只是，不要因此丢失了最基本的坚持</p>
+<p>以下都是自己的亲身经历（自己选公司多多少少有点洁癖，受益于征信公司经历，事先会调查公司基本信息、创始人背景、市场规模、盈利模式、竞品情况；因此最后投递简历、面试、入职的公司在苏州也算是拿的出手、名声在外的，即使是这样的公司也会存在着各种奇葩情况，我也只能感慨下，资本时代不能只相信规模和估值，以及资本都是黑暗的。）</p>
+<h3 id="经历一"><a href="#经历一" class="headerlink" title="经历一"></a>经历一</h3><p>某公司，面试通过了也发了offer，当时在上家公司还没真正走离职流程；该公司HR有一天找我，让我把现在公司某个系统的监控方案截图发给她，说是技术部想看一下我现在的成绩；就那一刻，我选择了拒绝这个offer。</p>
+<p>同样是这个公司，不同的是这是我亲人的经历，她是做产品经理的；该公司HR邀请她去面试，面试完之后，我那亲人就找我一顿吐槽，给她面试的一看就是没有行业经验的，问的问题基本都是在套她现在公司的实现方案，想到该公司有传言要成立XX产品线，也就明白了。</p>
+<p>这段经历我也不想表达的过于激愤，或许有的人会说互联网行业不存在抄袭，都是互相借鉴。还是要原谅我是被恶心到了，或许是我还是太天真，这类做法在我看来并没有体现任何正义，没有表现出一个公司该有的道德和价值观。</p>
+<h3 id="经历二"><a href="#经历二" class="headerlink" title="经历二"></a>经历二</h3><p>某公司，行业龙头，国内市场占有率甚至是数一数二的存在。有一个项目，我负责性能测试，过程的各种内耗这边就不说了，是个公司应该都有这不是本次要表达的重点。测试结果很不理想，距离客户的要求差了十万八千里，就是这样，领导直接拍板（最高领导之一）改测试结果的数据，用P图和拉长性能曲线的方式来伪造测试结果，生成一个还算好看的测试报告给客户。</p>
+<p>后续发展来了，客户毕竟不傻，知道这结果不可信，让该公司给个30/60/90天的改进目标。公司拉了好几号人研究定了这个目标，用正式的邮件回复了客户；整个改进过程只有PM和我在催开发人员改进，给领导反馈进度。结果呢，到了90天时候，连30天的目标都没有实现，就这样，领导就算是把事情揭过去了。事后，一个资深的PM离职了。</p>
+<p>所以公司的规模和核心产品知名度真的不能成为评判一个公司好坏的标准。可能我不是高层，掌握的信息不够，也不懂得权衡各个项目，所以无法理解领导的决定。以我微不足道的观点，测试人员还是需要遵守基本的职业操守和道德底线，既然公司把我录用为测试，那我就需要对产品质量进行客观理性的评估，如果只是为了让我出一份报告，我是觉得完全可以随便找个会P图的就行了。公司的发展、经营真的不能只看销售队伍，守业是需要自上而下的高质量服务的；联想前段时间德勤员工实名举报造假，会计行业是这样，测试一样会遇到这样的情况，个人觉得，还是遵守你的职业道德吧。</p>
+<h3 id="经历三"><a href="#经历三" class="headerlink" title="经历三"></a>经历三</h3><p>这段经历和公司关系没那么大，主角是个人。先说背景，领导和普调员工分部在不同的楼层办公，平时见不到。<br>某年度优秀员工A，平时上班大多数情况是让其他同事代打卡，8:30上班时间，10点，11点到，中午继续失踪一下午，晚上下班之后回家顺路来打个卡，看工作时长甚至出现天天辛苦加班的假象。这样的，拿了年度优秀员工。</p>
+<p>某年度优秀员工B，因为是组织架构原因是没有本部的一些门禁和食堂免费就餐权限；这位同事用手机复制了有权限员工的卡，至于做什么，就不用细说了吧。某天闲聊我问起这些，大多数人的概念都是给他们免费的，不拿就是傻的意思。</p>
+<p>至于还有的其他奇葩人和事，不列举了。</p>
+<h3 id="说回自己"><a href="#说回自己" class="headerlink" title="说回自己"></a>说回自己</h3><p>感觉自己要成一个充斥着负面情绪的人了，很不理解某些人、某些企业的做法，也许他们都能最后得到资本的青睐，最后实现经济上的成功，但我清楚的知道这些我骨子里不认可。</p>
+<p>自己是个什么样的人？学生时代直到工作至今，从未迟到过一次，对于时间有着近乎病态的执着。也成家了，知道金钱的好，但是坚持不坑蒙拐骗，不偷不抢，只拿真的属于自己的那份。对于未来，有期许有焦虑，相信世界终究很美好，也深知逆水行舟不进则退。</p>
+<p>成年人的正义，做一行爱一行，努力提升自己，发自内心的热爱你的事业、热爱和感恩提供给你机会的公司，共同成长；坚守本心，做一个诚实、诚信、坚持、对世界充满好奇心、有担当的人。<br>（衷心祝愿所有人都能有个圆满的归宿，所有公司都能谨守自己公布的企业价值观）</p>
 
       
     </div>
@@ -332,13 +317,13 @@
   
     
     <div class="copyright">
-        <p><span>本文标题:</span><a href="/2018/04/03/MySQL%E4%B9%8BSQL%E4%BC%98%E5%8C%96%E7%B3%BB%E5%88%97%EF%BC%88%E4%BA%8C%EF%BC%89/">MySQL之SQL优化系列（二）</a></p>
+        <p><span>本文标题:</span><a href="/2021/03/08/%E6%88%90%E5%B9%B4%E4%BA%BA%E7%9A%84%E2%80%9C%E6%AD%A3%E4%B9%89%E2%80%9D/">成年人的“正义”</a></p>
         <p><span>文章作者:</span><a href="/" title="回到主页">Kyle</a></p>
-        <p><span>发布时间:</span>2018-04-03, 05:03:10</p>
-        <p><span>最后更新:</span>2020-12-21, 14:39:15</p>
+        <p><span>发布时间:</span>2021-03-08, 08:23:53</p>
+        <p><span>最后更新:</span>2021-03-08, 09:32:09</p>
         <p>
-            <span>原始链接:</span><a class="post-url" href="/2018/04/03/MySQL%E4%B9%8BSQL%E4%BC%98%E5%8C%96%E7%B3%BB%E5%88%97%EF%BC%88%E4%BA%8C%EF%BC%89/" title="MySQL之SQL优化系列（二）">https://spindriftks.github.io/2018/04/03/MySQL%E4%B9%8BSQL%E4%BC%98%E5%8C%96%E7%B3%BB%E5%88%97%EF%BC%88%E4%BA%8C%EF%BC%89/</a>
-            <span class="copy-path" data-clipboard-text="原文: https://spindriftks.github.io/2018/04/03/MySQL%E4%B9%8BSQL%E4%BC%98%E5%8C%96%E7%B3%BB%E5%88%97%EF%BC%88%E4%BA%8C%EF%BC%89/　　作者: Kyle" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <span>原始链接:</span><a class="post-url" href="/2021/03/08/%E6%88%90%E5%B9%B4%E4%BA%BA%E7%9A%84%E2%80%9C%E6%AD%A3%E4%B9%89%E2%80%9D/" title="成年人的“正义”">https://spindriftks.github.io/2021/03/08/%E6%88%90%E5%B9%B4%E4%BA%BA%E7%9A%84%E2%80%9C%E6%AD%A3%E4%B9%89%E2%80%9D/</a>
+            <span class="copy-path" data-clipboard-text="原文: https://spindriftks.github.io/2021/03/08/%E6%88%90%E5%B9%B4%E4%BA%BA%E7%9A%84%E2%80%9C%E6%AD%A3%E4%B9%89%E2%80%9D/　　作者: Kyle" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
             <script> var clipboard = new Clipboard('.copy-path'); </script>
         </p>
         <p>
@@ -350,16 +335,10 @@
 
     <nav id="article-nav">
         
-            <div id="article-nav-newer" class="article-nav-title">
-                <a href="/2018/04/04/yum%E5%AE%89%E8%A3%85%E8%BD%AF%E4%BB%B6%E5%A4%B1%E8%B4%A5/">
-                    yum安装软件失败
-                </a>
-            </div>
-        
         
             <div id="article-nav-older" class="article-nav-title">
-                <a href="/2018/03/30/python%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95%E6%A1%86%E6%9E%B6locust%EF%BC%88%E4%B8%80%EF%BC%89/">
-                    python性能测试框架locust（一）
+                <a href="/2021/03/03/%E5%85%B3%E4%BA%8E%E5%91%98%E5%B7%A5%E7%AE%A1%E7%90%86%E5%87%A0%E7%82%B9%E8%AE%B0%E5%BD%95/">
+                    关于员工管理几点记录
                 </a>
             </div>
         
@@ -371,7 +350,7 @@
     <div id="toc" class="toc-article">
         <strong class="toc-title">文章目录</strong>
         
-            <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BA%8F%E8%A8%80"><span class="toc-text">序言</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8EXPLAIN%E5%88%86%E6%9E%90%E4%BD%8E%E6%95%88SQL%E7%9A%84%E6%89%A7%E8%A1%8C%E8%AE%A1%E5%88%92"><span class="toc-text">使用EXPLAIN分析低效SQL的执行计划</span></a></li></ol>
+            <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BB%8F%E5%8E%86%E4%B8%80"><span class="toc-text">经历一</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BB%8F%E5%8E%86%E4%BA%8C"><span class="toc-text">经历二</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BB%8F%E5%8E%86%E4%B8%89"><span class="toc-text">经历三</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AF%B4%E5%9B%9E%E8%87%AA%E5%B7%B1"><span class="toc-text">说回自己</span></a></li></ol>
         
     </div>
     <style>
@@ -406,7 +385,7 @@
         </div>
         <script>
             window._bd_share_config={
-                "common":{"bdSnsKey":{},"bdText":"MySQL之SQL优化系列（二）　| 它夏了夏天　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+                "common":{"bdSnsKey":{},"bdText":"成年人的“正义”　| 它夏了夏天　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
         </script>
     
 
@@ -449,15 +428,13 @@
 
     <div class="scroll" id="post-nav-button">
         
-            <a href="/2018/04/04/yum%E5%AE%89%E8%A3%85%E8%BD%AF%E4%BB%B6%E5%A4%B1%E8%B4%A5/" title="上一篇: yum安装软件失败">
-                <i class="fa fa-angle-left"></i>
-            </a>
+            <a href="/" title="回到主页"><i class="fa fa-home"></i></a>
         
 
         <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
 
         
-            <a href="/2018/03/30/python%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95%E6%A1%86%E6%9E%B6locust%EF%BC%88%E4%B8%80%EF%BC%89/" title="下一篇: python性能测试框架locust（一）">
+            <a href="/2021/03/03/%E5%85%B3%E4%BA%8E%E5%91%98%E5%B7%A5%E7%AE%A1%E7%90%86%E5%87%A0%E7%82%B9%E8%AE%B0%E5%BD%95/" title="下一篇: 关于员工管理几点记录">
                 <i class="fa fa-angle-right"></i>
             </a>
         
