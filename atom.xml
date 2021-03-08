@@ -6,7 +6,7 @@
   <link href="https://spindriftks.github.io/atom.xml" rel="self"/>
   
   <link href="https://spindriftks.github.io/"/>
-  <updated>2021-03-08T01:32:09.093Z</updated>
+  <updated>2021-03-08T07:57:49.559Z</updated>
   <id>https://spindriftks.github.io/</id>
   
   <author>
@@ -15,6 +15,27 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>软件项目常见风险</title>
+    <link href="https://spindriftks.github.io/2021/03/08/%E8%BD%AF%E4%BB%B6%E9%A1%B9%E7%9B%AE%E5%B8%B8%E8%A7%81%E9%A3%8E%E9%99%A9/"/>
+    <id>https://spindriftks.github.io/2021/03/08/%E8%BD%AF%E4%BB%B6%E9%A1%B9%E7%9B%AE%E5%B8%B8%E8%A7%81%E9%A3%8E%E9%99%A9/</id>
+    <published>2021-03-08T07:35:07.000Z</published>
+    <updated>2021-03-08T07:57:49.559Z</updated>
+    
+    <content type="html"><![CDATA[<p>软件项目中常见的一些风险</p><a id="more"></a><h3 id="Barry-Boehm-软件开发风险检查单"><a href="#Barry-Boehm-软件开发风险检查单" class="headerlink" title="Barry Boehm 软件开发风险检查单"></a>Barry Boehm 软件开发风险检查单</h3><p>软件风险前十列表基于Barry Boehm的著作《Tutorial on Software Risk Management》,IEEE Computer Society,1989</p><table><thead><tr><th>风险</th><th>风险缓解技术</th></tr></thead><tbody><tr><td>人员缺失</td><td>配置高技能员工；工作匹配；团队组建；培训和职业规划；关键人员尽早安排日程</td></tr><tr><td>不现实的时间和成本估计</td><td>多种估计技术；费用设计；增量开发；对过去项目的记录和分析；方法标准化</td></tr><tr><td>软件功能错误</td><td>提高软件评价；正式的规格说明方法；用户调查；原型；早期用户手册</td></tr><tr><td>用户界面错误</td><td>原型；任务分析；用户参与</td></tr><tr><td>镀金</td><td>需求清理；原型；成本-效益分析；费用设计</td></tr><tr><td>晚期需求变化</td><td>变更控制；高变更阈值；增量开发（变更推迟）</td></tr><tr><td>外购构件缺陷</td><td>基准化；审查；正式规格说明；正式合同；质量保证规程和证明</td></tr><tr><td>外部任务实现缺陷</td><td>质量保证规程；竞争设计或原型；正式合同</td></tr><tr><td>实时性能缺陷</td><td>模拟；基准化；原型；调整；技术分析</td></tr><tr><td>开发技术过难</td><td>技术分析；成本-效益分析；原型；员工培训和开发</td></tr><tr><td></td><td></td></tr></tbody></table><h3 id="Fairley的四种COTS软件购买风险"><a href="#Fairley的四种COTS软件购买风险" class="headerlink" title="Fairley的四种COTS软件购买风险"></a>Fairley的四种COTS软件购买风险</h3><p>Richard Fairley（1994）发表的”Risk management for software projects”，直接购买软件的分险</p><table><thead><tr><th>风险</th><th>风险描述</th></tr></thead><tbody><tr><td>集成</td><td>为不同的应用进行数据格式的统一和数据交换有困难</td></tr><tr><td>更新</td><td>当供应商更新软件之后，有可能不再满足用户最初的需求。坚持使用旧版本意味着丢失了供应商的技术支持</td></tr><tr><td>没有源代码</td><td>如果想改进系统，会因为没有源代码导致无法进行改进</td></tr><tr><td>供应商问题</td><td>产品供应商有可能不再从事该项业务或者被竞争对手并购</td></tr><tr><td></td><td></td></tr></tbody></table><h3 id="一些其他风险项"><a href="#一些其他风险项" class="headerlink" title="一些其他风险项"></a>一些其他风险项</h3><ol><li>客户群越大，风险越高（pv、用户数等）</li><li>系统操作越频繁，风险越高（方法被调用次数，引用次数等）</li><li>场景接近可用，风险越高（核心业务，主干功能）</li><li>场景失败给客户带来危害越大，风险越高（交易、支付等）</li><li>场景涉及信息安全和信息泄露，风险越高</li><li>系统可恢复性难度越大，风险越高</li><li>团队成熟度越低，风险越高</li></ol>]]></content>
+    
+    
+    <summary type="html">&lt;p&gt;软件项目中常见的一些风险&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="测试之道" scheme="https://spindriftks.github.io/categories/%E6%B5%8B%E8%AF%95%E4%B9%8B%E9%81%93/"/>
+    
+    
+    <category term="lives" scheme="https://spindriftks.github.io/tags/lives/"/>
+    
+  </entry>
   
   <entry>
     <title>成年人的“正义”</title>
@@ -435,28 +456,6 @@
     
     
     <category term="git" scheme="https://spindriftks.github.io/tags/git/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>正则表达式入门</title>
-    <link href="https://spindriftks.github.io/2019/07/30/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E5%85%A5%E9%97%A8/"/>
-    <id>https://spindriftks.github.io/2019/07/30/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E5%85%A5%E9%97%A8/</id>
-    <published>2019-07-29T20:39:20.000Z</published>
-    <updated>2020-12-21T06:39:17.392Z</updated>
-    
-    <content type="html"><![CDATA[<p>正则表达式入门</p><p>一个个的捡起因为懒放一边的</p><a id="more"></a><h3 id="几个元字符（metecharacter）"><a href="#几个元字符（metecharacter）" class="headerlink" title="几个元字符（metecharacter）"></a>几个元字符（metecharacter）</h3><p>| 语法 | 说明 | 示例|示例解释|<br>|——–|——–|<br>|  \b      |单词的开头或结尾        | \breg\b|精确查找reg这个单词|<br>|.    |匹配除换行符以外任意字符    ||    |<br>|*    |前面内容可以连续重复使用任意次|.*    |任意数量的不包含换行的字符|<br>|\d    |匹配一位数字（0或1或2…）    |0\d{2}    |    0开头，连续重复匹配两次数字，如010|<br>|\s    |匹配任意空白符，包括空格，tab，换行等    |    |    |<br>|\w    |匹配字母或数字或下划线或汉字等    |\ba\w{6}\b    |匹配以a开头的7个字符的单词    |<br>|^    |匹配字符串开头    |    |    |<br>|$    |匹配字符串结尾    |^\b{5,12}$    |匹配5到12位数字（QQ号）    |</p><h3 id="转义"><a href="#转义" class="headerlink" title="转义"></a>转义</h3><p>要匹配<code>.</code>，<code>\</code>，<code>*</code>这样本身，需要加转义<code>\</code><br>例如：<code>C:\\Windows</code>匹配<code>C:\Windows</code></p><h3 id="重复"><a href="#重复" class="headerlink" title="重复"></a>重复</h3><table><thead><tr><th>语法</th><th>说明</th></tr></thead><tbody><tr><td>*</td><td>重复零次或更多次</td></tr><tr><td>+</td><td>重复一次或更多次</td></tr><tr><td>？</td><td>重复零次或一次</td></tr><tr><td>{n}</td><td>重复n次</td></tr><tr><td>{n,}</td><td>重复n次或更多次</td></tr><tr><td>{n,m}</td><td>重复n到m次</td></tr></tbody></table><h3 id="字符类"><a href="#字符类" class="headerlink" title="字符类"></a>字符类</h3><p>想要匹配没有预定义元字符的字符集，只需要在方括号中列出即可，例如</p><ul><li>匹配任何一个英文元音字母： <code>[aeiou]</code></li><li>匹配标点符号： <code>[.?!]</code>（匹配.或?或！）</li><li>匹配一位数字：<code>[0-9]</code>(与<code>\d</code>含义一致)</li><li>匹配字母或数字：<code>[a-z0-9A-Z]</code>(英文下等同于<code>\w</code>)</li></ul><p>示例：<code>\(0\d&#123;2&#125;\)\s\d&#123;4&#125;\s\d&#123;4&#125;|\(0\d&#123;2,3&#125;\)\s\d&#123;7,8&#125;</code><br>匹配结果：</p><table><thead><tr><th>结果</th></tr></thead><tbody><tr><td>(010) 6554 6016</td></tr><tr><td>(010) 6825451</td></tr><tr><td>(0511) 87283179</td></tr><tr><td>(0512) 7708732</td></tr></tbody></table><p>然后对应IP地址的匹配，这个用正则怎么有点长啊。。。可能是我太菜了。。：<br>原来以为IP格式是：<code>1~255.0~255.0~255.0~255</code>，所以写成了这样<br><code>(\b[1-9]\d&#123;0,1&#125;\b|\b1\d&#123;2&#125;\b|\b2[0-4]\d\b|\b25[0-5]\b)(\.(\b[1-9]?\d\b|\b1\d&#123;2&#125;\b|\b2[0-4]\d\b|\b25[0-5]\b))&#123;3&#125;</code></p><p>然后翻了下格式，有<code>0.0.0.0</code>这个IP（本身）,所以改成了<br><code>((\b[1-9]?\d\b|\b1\d&#123;2&#125;\b|\b2[0-4]\d\b|\b25[0-5]\b)\.)&#123;3&#125;(\b[1-9]?\d\b|\b1\d&#123;2&#125;\b|\b2[0-4]\d\b|\b25[0-5]\b)</code></p><p>然后又看到IP中可以有<code>01.02.03.04</code>这样的存在，前导0的意思（leading zeroes），又改成了这样：<br><code>((2[0-4]\d|25[0-5]|[01]?\d\d?)\.)&#123;3&#125;(2[0-4]\d|25[0-5]|[01]?\d\d?)</code> (参考自教程)</p><h3 id="反义"><a href="#反义" class="headerlink" title="反义"></a>反义</h3><p>匹配不属于某个字符类的字符，例如匹配非数字字符</p><table><thead><tr><th>语法</th><th>说明</th></tr></thead><tbody><tr><td>\W</td><td>匹配任意不是字母，数字，下划线，汉字的字符</td></tr><tr><td>\S</td><td>匹配任意不是空白符的字符</td></tr><tr><td>\D</td><td>匹配任意非数字的字符</td></tr><tr><td>\B</td><td>匹配不是单词开头或结束的位置</td></tr><tr><td>[^x]</td><td>匹配除了x以外的任意字符</td></tr><tr><td>[^aeiou]</td><td>匹配除了aeiou以外的任意字符</td></tr></tbody></table><h3 id="贪婪与懒惰"><a href="#贪婪与懒惰" class="headerlink" title="贪婪与懒惰"></a>贪婪与懒惰</h3><p>贪婪匹配：匹配尽可能多的字符<br>懒惰匹配：匹配尽可能少的字符</p><p>例如有个字符串：<code>aabbabaaab</code><br>贪婪匹配：<code>a.*b</code>，匹配结果为：<code>aabbabaaab</code><br>懒惰匹配：<code>a.*?b</code>，匹配结果为：<code>aab</code>、<code>ab</code>、<code>aaab</code></p><p>懒惰限定符：</p><table><thead><tr><th>语法</th><th>说明</th></tr></thead><tbody><tr><td>*?</td><td>重复任意次，单尽可能少重复</td></tr><tr><td>+?</td><td>重复一次或更多次，但尽可能少重复</td></tr><tr><td>??</td><td>重复0次或1次，但尽可能少重复</td></tr><tr><td>{n,m}?</td><td>重复n到m次，但尽可能少重复</td></tr><tr><td>{n,}?</td><td>重复n次以上，但尽可能少重复</td></tr></tbody></table><h3 id="一些其他语法"><a href="#一些其他语法" class="headerlink" title="一些其他语法"></a>一些其他语法</h3><table><thead><tr><th>语法</th><th>说明</th></tr></thead><tbody><tr><td>\a</td><td>报警字符（打印它的效果是电脑嘀的一声）</td></tr><tr><td>\b</td><td>通常是单词分界位置，但如果在字符类里使用代表退格</td></tr><tr><td>\t</td><td>制表符，Tab</td></tr><tr><td>\r</td><td>回车</td></tr><tr><td>\v</td><td>竖向制表符</td></tr><tr><td>\f</td><td>换页符</td></tr><tr><td>\n</td><td>换行符</td></tr><tr><td>\e</td><td>Escape</td></tr><tr><td>\0nn</td><td>ASCII码中八进制代码为00的字符</td></tr><tr><td>\xnn</td><td>ASCII码中十六进制代码为nn的字符</td></tr><tr><td>\unnnn</td><td>Unicode码中十六进制代码为nnnn的字符</td></tr><tr><td>\A</td><td>字符类开头（类似^，但不受处理多行选项的影响）</td></tr><tr><td>\z</td><td>字符类结尾（类似$，但不受处理多行选项的影响）</td></tr><tr><td>\Z</td><td>字符串结尾或行尾，不受处理多行选项的影响</td></tr><tr><td>\G</td><td>当前搜索的开头</td></tr></tbody></table><p>以上只能说是记录的正则的一部分，教程说是30分钟，看了我三个小时都不止。。</p><blockquote><p><a href="http://deerchao.net/tutorials/regex/regex.htm">完整教程地址</a></p></blockquote><p>再次感谢deerchao的正则教程！</p>]]></content>
-    
-    
-    <summary type="html">&lt;p&gt;正则表达式入门&lt;/p&gt;
-&lt;p&gt;一个个的捡起因为懒放一边的&lt;/p&gt;</summary>
-    
-    
-    
-    <category term="计算机基础" scheme="https://spindriftks.github.io/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/"/>
-    
-    
-    <category term="regex" scheme="https://spindriftks.github.io/tags/regex/"/>
     
   </entry>
   
