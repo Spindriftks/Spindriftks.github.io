@@ -13,14 +13,18 @@
       
       <categories>
           
-          <category> -python基础 -计算机基础 </category>
+          <category> python基础 </category>
+          
+          <category> 计算机基础 </category>
           
       </categories>
       
       
         <tags>
             
-            <tag> -python3 -装饰器 </tag>
+            <tag> python3 </tag>
+            
+            <tag> 装饰器 </tag>
             
         </tags>
       
