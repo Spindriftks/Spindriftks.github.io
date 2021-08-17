@@ -6,7 +6,7 @@
   <link href="https://spindriftks.github.io/atom.xml" rel="self"/>
   
   <link href="https://spindriftks.github.io/"/>
-  <updated>2021-03-25T05:34:55.148Z</updated>
+  <updated>2021-08-17T01:45:10.893Z</updated>
   <id>https://spindriftks.github.io/</id>
   
   <author>
@@ -15,6 +15,19 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>测试123</title>
+    <link href="https://spindriftks.github.io/2021/08/17/%E6%B5%8B%E8%AF%95123/"/>
+    <id>https://spindriftks.github.io/2021/08/17/%E6%B5%8B%E8%AF%95123/</id>
+    <published>2021-08-17T01:45:10.000Z</published>
+    <updated>2021-08-17T01:45:10.893Z</updated>
+    
+    
+    
+    
+    
+  </entry>
   
   <entry>
     <title>Centos7-minimal安装完成后网络配置</title>
@@ -438,27 +451,6 @@
     
     
     <category term="python3" scheme="https://spindriftks.github.io/tags/python3/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>pycharm日常报错总结</title>
-    <link href="https://spindriftks.github.io/2020/12/25/pycharm%E6%97%A5%E5%B8%B8%E6%8A%A5%E9%94%99%E6%80%BB%E7%BB%93/"/>
-    <id>https://spindriftks.github.io/2020/12/25/pycharm%E6%97%A5%E5%B8%B8%E6%8A%A5%E9%94%99%E6%80%BB%E7%BB%93/</id>
-    <published>2020-12-25T05:06:44.000Z</published>
-    <updated>2020-12-25T05:09:47.029Z</updated>
-    
-    <content type="html"><![CDATA[<p>一些日常使用pycharm过程中遇到的问题的记录，持续更新</p><a id="more"></a><ol><li>print，range，len等函数，在pycharm中出现红色下划线（有错误），提示  “Unresolved reference ‘print’”，但是可以正常执行</li></ol><p><code>解决办法：File -&gt; Invalidate Caches / Restart... -&gt; Invalidate and Restart</code></p><ol start="2"><li>切换分支（checkout），报“Permission denied can’t cannot stat ‘xxx’”<br><code>解决办法：关闭pycharm，所有浏览器，文件管理器，重启pycharm，再切换</code></li></ol>]]></content>
-    
-    
-    <summary type="html">&lt;p&gt;一些日常使用pycharm过程中遇到的问题的记录，持续更新&lt;/p&gt;</summary>
-    
-    
-    
-    <category term="python基础" scheme="https://spindriftks.github.io/categories/python%E5%9F%BA%E7%A1%80/"/>
-    
-    
-    <category term="pycharm" scheme="https://spindriftks.github.io/tags/pycharm/"/>
     
   </entry>
   
